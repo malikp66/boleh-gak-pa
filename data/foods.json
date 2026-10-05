@@ -1,0 +1,4579 @@
+{
+ "_note": "Dibuat oleh tools/build_foods.py. Ringkasan panduan umum diet rendah purin & rendah garam; bukan data laboratorium. Selalu ikuti saran dokter.",
+ "foods": [
+  {
+   "name": "ketoprak",
+   "aliases": [
+    "katoprak"
+   ],
+   "kategori": "Kaki lima",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "setengah porsi, bumbu kacang sedikit",
+   "trik": [
+    "minta bumbu kacang dipisah",
+    "kecap tidak usah ditambah",
+    "kerupuk 1-2 keping",
+    "minum 2 gelas air putih"
+   ],
+   "pemicu": [
+    "bumbu kacang + kecap tinggi garam",
+    "tahu (purin nabati, risiko lebih kecil)",
+    "kerupuk asin"
+   ]
+  },
+  {
+   "name": "gado-gado",
+   "aliases": [
+    "gado gado"
+   ],
+   "kategori": "Kaki lima",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "1 porsi, bumbu setengah",
+   "trik": [
+    "minta tanpa emping",
+    "bumbu dipisah",
+    "perbanyak sayur"
+   ],
+   "pemicu": [
+    "bumbu kacang tinggi garam",
+    "emping kalau ada"
+   ]
+  },
+  {
+   "name": "lotek",
+   "aliases": [
+    "karedok"
+   ],
+   "kategori": "Kaki lima",
+   "purin": "rendah",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi, bumbu secukupnya",
+   "trik": [
+    "bumbu kacang sedikit",
+    "tanpa kerupuk tambahan"
+   ],
+   "pemicu": [
+    "bumbu kacang"
+   ]
+  },
+  {
+   "name": "pecel",
+   "aliases": [
+    "nasi pecel",
+    "pecel sayur"
+   ],
+   "kategori": "Kaki lima",
+   "purin": "rendah",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi, sambal secukupnya",
+   "trik": [
+    "hindari rempeyek teri",
+    "sambal kacang sedikit"
+   ],
+   "pemicu": [
+    "sambal kacang",
+    "rempeyek teri"
+   ]
+  },
+  {
+   "name": "siomay",
+   "aliases": [
+    "siomai"
+   ],
+   "kategori": "Kaki lima",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "1 porsi, bumbu sedikit",
+   "trik": [
+    "bumbu kacang sedikit",
+    "perbanyak kol dan kentang"
+   ],
+   "pemicu": [
+    "ikan olahan",
+    "bumbu kacang"
+   ]
+  },
+  {
+   "name": "batagor",
+   "aliases": [],
+   "kategori": "Kaki lima",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "setengah porsi",
+   "trik": [
+    "bumbu sedikit",
+    "jangan tambah kecap"
+   ],
+   "pemicu": [
+    "gorengan ikan",
+    "bumbu kacang"
+   ]
+  },
+  {
+   "name": "tahu gejrot",
+   "aliases": [],
+   "kategori": "Kaki lima",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "kuah secukupnya"
+   ],
+   "pemicu": [
+    "tahu",
+    "kuah gula merah asin"
+   ]
+  },
+  {
+   "name": "kerak telor",
+   "aliases": [],
+   "kategori": "Kaki lima",
+   "purin": "rendah",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "serundeng secukupnya"
+   ],
+   "pemicu": [
+    "ebi (udang kering) sedikit"
+   ]
+  },
+  {
+   "name": "cilok",
+   "aliases": [
+    "cimol",
+    "cireng"
+   ],
+   "kategori": "Kaki lima",
+   "purin": "rendah",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi kecil",
+   "trik": [
+    "saus kacang sedikit"
+   ],
+   "pemicu": [
+    "tepung + saus asin"
+   ]
+  },
+  {
+   "name": "seblak",
+   "aliases": [],
+   "kategori": "Kaki lima",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "setengah porsi",
+   "trik": [
+    "pilih kerupuk & telur",
+    "tanpa ceker dan sosis"
+   ],
+   "pemicu": [
+    "bumbu kencur asin",
+    "olahan daging"
+   ]
+  },
+  {
+   "name": "cakwe",
+   "aliases": [],
+   "kategori": "Kaki lima",
+   "purin": "rendah",
+   "garam": "sedang",
+   "porsi_aman": "2-3 potong",
+   "trik": [
+    "saus secukupnya"
+   ],
+   "pemicu": [
+    "gorengan"
+   ]
+  },
+  {
+   "name": "otak-otak",
+   "aliases": [],
+   "kategori": "Kaki lima",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "3-4 buah",
+   "trik": [
+    "saus kacang sedikit"
+   ],
+   "pemicu": [
+    "ikan olahan",
+    "saus"
+   ]
+  },
+  {
+   "name": "pempek",
+   "aliases": [
+    "empek-empek"
+   ],
+   "kategori": "Kaki lima",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "2-3 buah kecil",
+   "trik": [
+    "cuko secukupnya"
+   ],
+   "pemicu": [
+    "ikan",
+    "cuko manis"
+   ]
+  },
+  {
+   "name": "kue cubit",
+   "aliases": [],
+   "kategori": "Kaki lima",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "4-5 buah",
+   "trik": [
+    "jangan topping manis berlebihan"
+   ],
+   "pemicu": [
+    "gula"
+   ]
+  },
+  {
+   "name": "telur gulung",
+   "aliases": [],
+   "kategori": "Kaki lima",
+   "purin": "rendah",
+   "garam": "sedang",
+   "porsi_aman": "2-3 tusuk",
+   "trik": [
+    "saus sedikit"
+   ],
+   "pemicu": [
+    "saus botol asin"
+   ]
+  },
+  {
+   "name": "sosis bakar",
+   "aliases": [
+    "sosis"
+   ],
+   "kategori": "Kaki lima",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "1 tusuk",
+   "trik": [
+    "jarang-jarang saja"
+   ],
+   "pemicu": [
+    "daging olahan tinggi garam"
+   ]
+  },
+  {
+   "name": "bakso bakar",
+   "aliases": [],
+   "kategori": "Kaki lima",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "2 tusuk",
+   "trik": [
+    "saus sedikit"
+   ],
+   "pemicu": [
+    "bakso + saus kecap"
+   ]
+  },
+  {
+   "name": "nasi putih",
+   "aliases": [
+    "nasi",
+    "nasi merah",
+    "nasi hangat"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 centong (porsi biasa)",
+   "trik": [
+    "aman, batasi kalau ada diabetes"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "nasi goreng",
+   "aliases": [
+    "nasgor"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "1 porsi biasa",
+   "trik": [
+    "pilih telur/ayam",
+    "tanpa seafood dan ati",
+    "tambah acar timun"
+   ],
+   "pemicu": [
+    "kecap, garam, terasi",
+    "topping seafood/ati"
+   ]
+  },
+  {
+   "name": "bubur ayam",
+   "aliases": [
+    "bubur",
+    "bubur cirebon",
+    "bubur ayam cianjur"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "1 mangkuk",
+   "trik": [
+    "tanpa sate usus/ati",
+    "kecap asin sedikit",
+    "kerupuk secukupnya"
+   ],
+   "pemicu": [
+    "kecap asin, kerupuk",
+    "ati ampela / usus"
+   ]
+  },
+  {
+   "name": "nasi uduk",
+   "aliases": [
+    "nasi lemak"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "rendah",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "lauk telur/tempe"
+   ],
+   "pemicu": [
+    "santan",
+    "gorengan"
+   ]
+  },
+  {
+   "name": "nasi kuning",
+   "aliases": [
+    "tumpeng"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "rendah",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "hindari sambal goreng ati",
+    "lauk telur/ayam"
+   ],
+   "pemicu": [
+    "santan",
+    "lauk jeroan kalau ada"
+   ]
+  },
+  {
+   "name": "nasi liwet",
+   "aliases": [],
+   "kategori": "Nasi & lauk",
+   "purin": "rendah",
+   "garam": "tinggi",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "ikan asin/teri sedikit saja"
+   ],
+   "pemicu": [
+    "teri dan ikan asin"
+   ]
+  },
+  {
+   "name": "nasi padang rendang",
+   "aliases": [
+    "rendang",
+    "nasi padang"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "1 potong kecil",
+   "trik": [
+    "pilih ayam pop/sayur",
+    "kuah gulai sedikit"
+   ],
+   "pemicu": [
+    "daging merah",
+    "santan",
+    "kuah gulai"
+   ]
+  },
+  {
+   "name": "ayam pop",
+   "aliases": [],
+   "kategori": "Nasi & lauk",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 potong",
+   "trik": [
+    "buang kulit"
+   ],
+   "pemicu": [
+    "ayam"
+   ]
+  },
+  {
+   "name": "dendeng balado",
+   "aliases": [
+    "dendeng"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "1-2 lembar",
+   "trik": [
+    "jarang-jarang"
+   ],
+   "pemicu": [
+    "daging merah kering + garam"
+   ]
+  },
+  {
+   "name": "nasi campur",
+   "aliases": [
+    "nasi rames"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "pilih sayur, telur, tempe"
+   ],
+   "pemicu": [
+    "tergantung lauk"
+   ]
+  },
+  {
+   "name": "nasi kucing",
+   "aliases": [
+    "angkringan"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "rendah",
+   "garam": "tinggi",
+   "porsi_aman": "2 bungkus",
+   "trik": [
+    "hindari sate usus/ati",
+    "sambal teri sedikit"
+   ],
+   "pemicu": [
+    "sambal teri",
+    "sate jeroan"
+   ]
+  },
+  {
+   "name": "nasi bebek",
+   "aliases": [
+    "bebek goreng"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 potong",
+   "trik": [
+    "buang kulit",
+    "sambal secukupnya"
+   ],
+   "pemicu": [
+    "daging bebek",
+    "kulit berlemak"
+   ]
+  },
+  {
+   "name": "nasi kebuli",
+   "aliases": [
+    "nasi biryani"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "tinggi",
+   "garam": "sedang",
+   "porsi_aman": "setengah porsi",
+   "trik": [
+    "daging kambing sedikit"
+   ],
+   "pemicu": [
+    "daging kambing",
+    "kaldu"
+   ]
+  },
+  {
+   "name": "lontong sayur",
+   "aliases": [],
+   "kategori": "Nasi & lauk",
+   "purin": "rendah",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "kuah santan secukupnya"
+   ],
+   "pemicu": [
+    "santan",
+    "sambal goreng ati kalau ada"
+   ]
+  },
+  {
+   "name": "ketupat sayur",
+   "aliases": [
+    "opor",
+    "opor ayam"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "hindari sambal goreng ati",
+    "kuah sedikit"
+   ],
+   "pemicu": [
+    "santan",
+    "ayam"
+   ]
+  },
+  {
+   "name": "sambal goreng ati",
+   "aliases": [],
+   "kategori": "Nasi & lauk",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "sebaiknya dihindari",
+   "trik": [
+    "ganti telur pindang"
+   ],
+   "pemicu": [
+    "ati dan ampela tinggi purin"
+   ]
+  },
+  {
+   "name": "semur daging",
+   "aliases": [
+    "semur"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "1 potong kecil",
+   "trik": [
+    "kuah kecap sedikit"
+   ],
+   "pemicu": [
+    "daging merah",
+    "kecap"
+   ]
+  },
+  {
+   "name": "empal",
+   "aliases": [
+    "empal gentong"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "tinggi",
+   "garam": "sedang",
+   "porsi_aman": "1 potong kecil",
+   "trik": [
+    "pilih yang tanpa jeroan"
+   ],
+   "pemicu": [
+    "daging sapi"
+   ]
+  },
+  {
+   "name": "telur",
+   "aliases": [
+    "telur balado",
+    "telur dadar",
+    "telur ceplok",
+    "telur rebus",
+    "telur mata sapi",
+    "telur goreng",
+    "telur orak-arik"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1-2 butir",
+   "trik": [
+    "lauk aman untuk asam urat",
+    "dadar/balado jangan terlalu asin"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "telur asin",
+   "aliases": [],
+   "kategori": "Nasi & lauk",
+   "purin": "rendah",
+   "garam": "tinggi",
+   "porsi_aman": "setengah butir",
+   "trik": [
+    "jangan setiap hari"
+   ],
+   "pemicu": [
+    "garam sangat tinggi"
+   ]
+  },
+  {
+   "name": "pindang telur",
+   "aliases": [
+    "telur pindang"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "rendah",
+   "garam": "sedang",
+   "porsi_aman": "1 butir",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": [
+    "kecap"
+   ]
+  },
+  {
+   "name": "ayam goreng",
+   "aliases": [
+    "ayam",
+    "ayam bakar",
+    "ayam penyet",
+    "pecel ayam",
+    "ayam geprek"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 potong",
+   "trik": [
+    "buang kulit",
+    "pilih dada/paha tanpa kulit"
+   ],
+   "pemicu": [
+    "kulit ayam",
+    "sambal & kecap"
+   ]
+  },
+  {
+   "name": "ayam taliwang",
+   "aliases": [],
+   "kategori": "Nasi & lauk",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 potong",
+   "trik": [
+    "sambal secukupnya"
+   ],
+   "pemicu": [
+    "ayam"
+   ]
+  },
+  {
+   "name": "tahu goreng",
+   "aliases": [
+    "tahu",
+    "tahu isi",
+    "tahu bacem"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "sedang",
+   "garam": "rendah",
+   "porsi_aman": "2-3 potong",
+   "trik": [
+    "bacem tinggi gula, secukupnya"
+   ],
+   "pemicu": [
+    "purin nabati (risiko lebih kecil)"
+   ]
+  },
+  {
+   "name": "tempe goreng",
+   "aliases": [
+    "tempe",
+    "mendoan",
+    "tempe orek",
+    "tempe bacem"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "sedang",
+   "garam": "rendah",
+   "porsi_aman": "2-3 potong",
+   "trik": [
+    "orek manis & asin, secukupnya"
+   ],
+   "pemicu": [
+    "purin nabati (risiko lebih kecil)"
+   ]
+  },
+  {
+   "name": "perkedel",
+   "aliases": [
+    "perkedel kentang"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "rendah",
+   "garam": "sedang",
+   "porsi_aman": "1-2 buah",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "abon",
+   "aliases": [
+    "abon sapi"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "1 sendok",
+   "trik": [
+    "sedikit saja"
+   ],
+   "pemicu": [
+    "daging kering tinggi garam"
+   ]
+  },
+  {
+   "name": "kornet",
+   "aliases": [],
+   "kategori": "Nasi & lauk",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "1-2 sendok",
+   "trik": [
+    "jarang-jarang"
+   ],
+   "pemicu": [
+    "daging olahan tinggi garam"
+   ]
+  },
+  {
+   "name": "soto ayam",
+   "aliases": [
+    "soto lamongan",
+    "soto kudus"
+   ],
+   "kategori": "Berkuah",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "1 mangkuk, kuah tidak dihabiskan",
+   "trik": [
+    "tanpa ati ampela",
+    "jangan tambah garam/kecap",
+    "kuah sisakan setengah"
+   ],
+   "pemicu": [
+    "kuah kaldu",
+    "koya",
+    "ati ampela"
+   ]
+  },
+  {
+   "name": "soto betawi",
+   "aliases": [
+    "soto babat",
+    "soto jeroan",
+    "soto padang"
+   ],
+   "kategori": "Berkuah",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "isi daging saja, setengah mangkuk",
+   "trik": [
+    "minta tanpa jeroan",
+    "jangan habiskan kuah"
+   ],
+   "pemicu": [
+    "jeroan",
+    "kuah santan berkaldu"
+   ]
+  },
+  {
+   "name": "coto makassar",
+   "aliases": [
+    "coto"
+   ],
+   "kategori": "Berkuah",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "sebaiknya dihindari",
+   "trik": [
+    "kalau terpaksa pilih isi daging saja"
+   ],
+   "pemicu": [
+    "jeroan + kuah kacang"
+   ]
+  },
+  {
+   "name": "rawon",
+   "aliases": [],
+   "kategori": "Berkuah",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "setengah mangkuk",
+   "trik": [
+    "pilih daging tanpa babat",
+    "kuah sedikit"
+   ],
+   "pemicu": [
+    "daging sapi",
+    "kaldu pekat"
+   ]
+  },
+  {
+   "name": "sop buntut",
+   "aliases": [
+    "sop iga",
+    "sop konro",
+    "konro"
+   ],
+   "kategori": "Berkuah",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "setengah porsi, kuah sedikit",
+   "trik": [
+    "fokus ke sayur",
+    "jangan habiskan kuah"
+   ],
+   "pemicu": [
+    "daging merah",
+    "kaldu tulang pekat"
+   ]
+  },
+  {
+   "name": "sup kambing",
+   "aliases": [
+    "sop kaki kambing",
+    "sop kambing"
+   ],
+   "kategori": "Berkuah",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "sebaiknya dihindari",
+   "trik": [
+    "kalau terpaksa beberapa sendok kuah saja"
+   ],
+   "pemicu": [
+    "daging & kaki kambing",
+    "kaldu pekat"
+   ]
+  },
+  {
+   "name": "tengkleng",
+   "aliases": [],
+   "kategori": "Berkuah",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "sebaiknya dihindari",
+   "trik": [
+    "ganti menu lain"
+   ],
+   "pemicu": [
+    "tulang dan jeroan kambing"
+   ]
+  },
+  {
+   "name": "gulai kambing",
+   "aliases": [
+    "tongseng"
+   ],
+   "kategori": "Berkuah",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "maksimal 3 potong kecil",
+   "trik": [
+    "jangan minum kuahnya",
+    "banyak air putih"
+   ],
+   "pemicu": [
+    "daging merah",
+    "kuah santan/kecap"
+   ]
+  },
+  {
+   "name": "gulai ayam",
+   "aliases": [
+    "kari ayam"
+   ],
+   "kategori": "Berkuah",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 potong",
+   "trik": [
+    "kuah sedikit"
+   ],
+   "pemicu": [
+    "ayam",
+    "santan"
+   ]
+  },
+  {
+   "name": "sayur lodeh",
+   "aliases": [
+    "lodeh"
+   ],
+   "kategori": "Berkuah",
+   "purin": "rendah",
+   "garam": "sedang",
+   "porsi_aman": "1 mangkuk",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": [
+    "santan"
+   ]
+  },
+  {
+   "name": "sayur asem",
+   "aliases": [
+    "sayur bening",
+    "sop sayur"
+   ],
+   "kategori": "Berkuah",
+   "purin": "rendah",
+   "garam": "sedang",
+   "porsi_aman": "bebas, kuah jangan terlalu asin",
+   "trik": [
+    "pilihan aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "sup ayam",
+   "aliases": [
+    "sop ayam",
+    "sup jagung"
+   ],
+   "kategori": "Berkuah",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 mangkuk",
+   "trik": [
+    "buang kulit ayam"
+   ],
+   "pemicu": [
+    "kaldu ayam"
+   ]
+  },
+  {
+   "name": "pindang ikan",
+   "aliases": [
+    "pindang patin"
+   ],
+   "kategori": "Berkuah",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 potong",
+   "trik": [
+    "kuah secukupnya"
+   ],
+   "pemicu": [
+    "ikan"
+   ]
+  },
+  {
+   "name": "garang asem",
+   "aliases": [],
+   "kategori": "Berkuah",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": [
+    "ayam"
+   ]
+  },
+  {
+   "name": "brongkos",
+   "aliases": [],
+   "kategori": "Berkuah",
+   "purin": "tinggi",
+   "garam": "sedang",
+   "porsi_aman": "sedikit",
+   "trik": [
+    "pilih tahu dan telurnya"
+   ],
+   "pemicu": [
+    "daging + kuah kluwek"
+   ]
+  },
+  {
+   "name": "sate ayam",
+   "aliases": [
+    "sate madura"
+   ],
+   "kategori": "Sate & bakar",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "5 tusuk, bumbu sedikit",
+   "trik": [
+    "hindari sate kulit dan ati ampela",
+    "bumbu sedikit",
+    "makan dengan lontong dan timun"
+   ],
+   "pemicu": [
+    "daging ayam",
+    "bumbu kacang + kecap"
+   ]
+  },
+  {
+   "name": "sate kambing",
+   "aliases": [],
+   "kategori": "Sate & bakar",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "maksimal 3 tusuk",
+   "trik": [
+    "pilih tanpa jeroan",
+    "banyak air putih",
+    "hindari saat kambuh"
+   ],
+   "pemicu": [
+    "daging merah",
+    "kecap"
+   ]
+  },
+  {
+   "name": "sate padang",
+   "aliases": [],
+   "kategori": "Sate & bakar",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "3 tusuk",
+   "trik": [
+    "kuah sedikit"
+   ],
+   "pemicu": [
+    "daging dan lidah/jeroan sapi"
+   ]
+  },
+  {
+   "name": "sate maranggi",
+   "aliases": [],
+   "kategori": "Sate & bakar",
+   "purin": "tinggi",
+   "garam": "sedang",
+   "porsi_aman": "3-4 tusuk",
+   "trik": [
+    "sambal oncom sedikit"
+   ],
+   "pemicu": [
+    "daging sapi/kambing"
+   ]
+  },
+  {
+   "name": "sate taichan",
+   "aliases": [],
+   "kategori": "Sate & bakar",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "5 tusuk",
+   "trik": [
+    "sambal secukupnya"
+   ],
+   "pemicu": [
+    "ayam"
+   ]
+  },
+  {
+   "name": "sate usus",
+   "aliases": [
+    "sate ati",
+    "sate ampela",
+    "sate kulit"
+   ],
+   "kategori": "Sate & bakar",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "sebaiknya dihindari",
+   "trik": [
+    "ganti sate telur puyuh"
+   ],
+   "pemicu": [
+    "jeroan tinggi purin"
+   ]
+  },
+  {
+   "name": "sate telur puyuh",
+   "aliases": [
+    "telur puyuh"
+   ],
+   "kategori": "Sate & bakar",
+   "purin": "rendah",
+   "garam": "sedang",
+   "porsi_aman": "1-2 tusuk",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "ikan bakar",
+   "aliases": [
+    "ikan nila",
+    "ikan gurame",
+    "gurame"
+   ],
+   "kategori": "Sate & bakar",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 ekor kecil",
+   "trik": [
+    "kecap secukupnya"
+   ],
+   "pemicu": [
+    "ikan"
+   ]
+  },
+  {
+   "name": "ayam bakar madu",
+   "aliases": [],
+   "kategori": "Sate & bakar",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 potong",
+   "trik": [
+    "buang kulit"
+   ],
+   "pemicu": [
+    "ayam",
+    "gula"
+   ]
+  },
+  {
+   "name": "gulai otak",
+   "aliases": [
+    "otak",
+    "babat",
+    "usus",
+    "paru",
+    "ati ampela",
+    "jeroan",
+    "kikil",
+    "limpa",
+    "hati sapi"
+   ],
+   "kategori": "Daging & jeroan",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "sebaiknya dihindari",
+   "trik": [
+    "ganti telur atau ayam tanpa kulit"
+   ],
+   "pemicu": [
+    "jeroan termasuk paling tinggi purin"
+   ]
+  },
+  {
+   "name": "ceker",
+   "aliases": [
+    "ceker ayam",
+    "kepala ayam"
+   ],
+   "kategori": "Daging & jeroan",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "2-3 buah",
+   "trik": [
+    "kuah sedikit"
+   ],
+   "pemicu": [
+    "kolagen + kaldu"
+   ]
+  },
+  {
+   "name": "iga bakar",
+   "aliases": [
+    "iga",
+    "daging sapi"
+   ],
+   "kategori": "Daging & jeroan",
+   "purin": "tinggi",
+   "garam": "sedang",
+   "porsi_aman": "1 potong kecil",
+   "trik": [
+    "pilih porsi kecil",
+    "banyak sayur"
+   ],
+   "pemicu": [
+    "daging merah"
+   ]
+  },
+  {
+   "name": "daging kambing",
+   "aliases": [
+    "kambing"
+   ],
+   "kategori": "Daging & jeroan",
+   "purin": "tinggi",
+   "garam": "sedang",
+   "porsi_aman": "sebaiknya dibatasi",
+   "trik": [
+    "porsi kecil, jarang"
+   ],
+   "pemicu": [
+    "daging merah"
+   ]
+  },
+  {
+   "name": "bebek",
+   "aliases": [
+    "daging bebek"
+   ],
+   "kategori": "Daging & jeroan",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 potong",
+   "trik": [
+    "buang kulit"
+   ],
+   "pemicu": [
+    "unggas berlemak"
+   ]
+  },
+  {
+   "name": "seafood",
+   "aliases": [
+    "seafood saus padang"
+   ],
+   "kategori": "Seafood",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "sedikit saja, pilih ikan putih",
+   "trik": [
+    "pilih ikan bakar biasa",
+    "hindari teri, sarden, kerang"
+   ],
+   "pemicu": [
+    "kerang, teri, sarden tinggi purin",
+    "saus padang tinggi garam"
+   ]
+  },
+  {
+   "name": "udang",
+   "aliases": [
+    "udang goreng",
+    "udang balado"
+   ],
+   "kategori": "Seafood",
+   "purin": "tinggi",
+   "garam": "sedang",
+   "porsi_aman": "3-4 ekor",
+   "trik": [
+    "jangan sering"
+   ],
+   "pemicu": [
+    "udang cukup tinggi purin"
+   ]
+  },
+  {
+   "name": "kerang",
+   "aliases": [
+    "kerang hijau",
+    "kerang dara",
+    "remis"
+   ],
+   "kategori": "Seafood",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "sebaiknya dihindari",
+   "trik": [
+    "ganti ikan putih"
+   ],
+   "pemicu": [
+    "kerang tinggi purin"
+   ]
+  },
+  {
+   "name": "cumi",
+   "aliases": [
+    "cumi goreng",
+    "cumi hitam"
+   ],
+   "kategori": "Seafood",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "sedikit",
+   "trik": [
+    "jangan tiap hari"
+   ],
+   "pemicu": [
+    "cumi"
+   ]
+  },
+  {
+   "name": "kepiting",
+   "aliases": [
+    "rajungan"
+   ],
+   "kategori": "Seafood",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "sedikit",
+   "trik": [
+    "saus sedikit"
+   ],
+   "pemicu": [
+    "kepiting + saus"
+   ]
+  },
+  {
+   "name": "sarden",
+   "aliases": [
+    "ikan sarden"
+   ],
+   "kategori": "Seafood",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "sebaiknya dihindari",
+   "trik": [
+    "ganti telur"
+   ],
+   "pemicu": [
+    "sarden tinggi purin + kalengan asin"
+   ]
+  },
+  {
+   "name": "ikan teri",
+   "aliases": [
+    "teri",
+    "teri medan",
+    "sambal teri"
+   ],
+   "kategori": "Seafood",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "sebaiknya dihindari",
+   "trik": [
+    "ganti tempe"
+   ],
+   "pemicu": [
+    "teri tinggi purin dan asin"
+   ]
+  },
+  {
+   "name": "ikan tongkol",
+   "aliases": [
+    "tongkol",
+    "cakalang",
+    "ikan kembung",
+    "kembung"
+   ],
+   "kategori": "Seafood",
+   "purin": "tinggi",
+   "garam": "sedang",
+   "porsi_aman": "1 potong kecil",
+   "trik": [
+    "jangan sering"
+   ],
+   "pemicu": [
+    "ikan berlemak, purin cukup tinggi"
+   ]
+  },
+  {
+   "name": "ikan asin",
+   "aliases": [
+    "asin",
+    "jambal"
+   ],
+   "kategori": "Seafood",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "1 potong kecil",
+   "trik": [
+    "rendam/cuci dulu",
+    "makan dengan banyak sayur"
+   ],
+   "pemicu": [
+    "garam sangat tinggi"
+   ]
+  },
+  {
+   "name": "pecel lele",
+   "aliases": [
+    "lele goreng",
+    "lele"
+   ],
+   "kategori": "Seafood",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 ekor",
+   "trik": [
+    "lalapan diperbanyak"
+   ],
+   "pemicu": [
+    "ikan goreng",
+    "sambal terasi"
+   ]
+  },
+  {
+   "name": "ikan salmon",
+   "aliases": [
+    "salmon"
+   ],
+   "kategori": "Seafood",
+   "purin": "sedang",
+   "garam": "rendah",
+   "porsi_aman": "1 potong",
+   "trik": [
+    "dipanggang lebih baik"
+   ],
+   "pemicu": [
+    "ikan"
+   ]
+  },
+  {
+   "name": "bakso",
+   "aliases": [
+    "baso",
+    "bakso urat"
+   ],
+   "kategori": "Mi & bakso",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "1 mangkuk kecil, kuah sedikit",
+   "trik": [
+    "hindari tetelan banyak",
+    "kuah tidak dihabiskan"
+   ],
+   "pemicu": [
+    "daging olahan",
+    "kuah kaldu + MSG"
+   ]
+  },
+  {
+   "name": "mi ayam",
+   "aliases": [
+    "mie ayam"
+   ],
+   "kategori": "Mi & bakso",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "1 porsi, kuah sedikit",
+   "trik": [
+    "tanpa ceker/kepala",
+    "kecap dan saus tidak ditambah"
+   ],
+   "pemicu": [
+    "topping ayam kecap",
+    "kuah kaldu"
+   ]
+  },
+  {
+   "name": "mi instan",
+   "aliases": [
+    "indomie",
+    "mie instan",
+    "mie goreng instan",
+    "mie kuah"
+   ],
+   "kategori": "Mi & bakso",
+   "purin": "rendah",
+   "garam": "tinggi",
+   "porsi_aman": "jarang-jarang, bumbu setengah",
+   "trik": [
+    "pakai setengah bumbu",
+    "tambah sayur dan telur"
+   ],
+   "pemicu": [
+    "bumbu sangat tinggi garam"
+   ]
+  },
+  {
+   "name": "mi goreng",
+   "aliases": [
+    "mie goreng",
+    "bakmi goreng",
+    "kwetiau goreng",
+    "kwetiau"
+   ],
+   "kategori": "Mi & bakso",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "tanpa seafood",
+    "kecap sedikit"
+   ],
+   "pemicu": [
+    "kecap",
+    "topping seafood"
+   ]
+  },
+  {
+   "name": "bihun goreng",
+   "aliases": [
+    "bihun"
+   ],
+   "kategori": "Mi & bakso",
+   "purin": "rendah",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "kecap secukupnya"
+   ],
+   "pemicu": [
+    "kecap"
+   ]
+  },
+  {
+   "name": "mi aceh",
+   "aliases": [
+    "mie aceh"
+   ],
+   "kategori": "Mi & bakso",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "setengah porsi",
+   "trik": [
+    "pilih topping ayam, bukan kepiting/kambing"
+   ],
+   "pemicu": [
+    "kepiting/kambing",
+    "bumbu kari"
+   ]
+  },
+  {
+   "name": "mi kocok",
+   "aliases": [
+    "mie kocok"
+   ],
+   "kategori": "Mi & bakso",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "setengah porsi",
+   "trik": [
+    "minta tanpa kikil"
+   ],
+   "pemicu": [
+    "kikil + kaldu sapi"
+   ]
+  },
+  {
+   "name": "pangsit",
+   "aliases": [
+    "mi pangsit",
+    "wonton"
+   ],
+   "kategori": "Mi & bakso",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "kuah sedikit"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "gorengan",
+   "aliases": [
+    "bakwan",
+    "pisang goreng",
+    "ubi goreng",
+    "tahu goreng tepung",
+    "combro",
+    "misro"
+   ],
+   "kategori": "Gorengan & camilan",
+   "purin": "rendah",
+   "garam": "sedang",
+   "porsi_aman": "2 potong",
+   "trik": [
+    "jangan lebih dari 2",
+    "tiriskan minyak"
+   ],
+   "pemicu": [
+    "minyak + tepung"
+   ]
+  },
+  {
+   "name": "emping melinjo",
+   "aliases": [
+    "emping"
+   ],
+   "kategori": "Gorengan & camilan",
+   "purin": "tinggi",
+   "garam": "sedang",
+   "porsi_aman": "sebaiknya dihindari",
+   "trik": [
+    "ganti kerupuk biasa 1-2 keping"
+   ],
+   "pemicu": [
+    "melinjo dikenal tinggi purin"
+   ]
+  },
+  {
+   "name": "kerupuk",
+   "aliases": [
+    "kerupuk udang",
+    "krupuk",
+    "kerupuk kulit"
+   ],
+   "kategori": "Gorengan & camilan",
+   "purin": "rendah",
+   "garam": "tinggi",
+   "porsi_aman": "1-2 keping",
+   "trik": [
+    "jangan lebih dari 2"
+   ],
+   "pemicu": [
+    "garam"
+   ]
+  },
+  {
+   "name": "rempeyek",
+   "aliases": [
+    "peyek",
+    "rempeyek kacang"
+   ],
+   "kategori": "Gorengan & camilan",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1-2 keping",
+   "trik": [
+    "pilih kacang, bukan teri/udang"
+   ],
+   "pemicu": [
+    "kacang",
+    "teri/udang kalau ada"
+   ]
+  },
+  {
+   "name": "kacang goreng",
+   "aliases": [
+    "kacang tanah",
+    "kacang bawang",
+    "kacang kulit"
+   ],
+   "kategori": "Gorengan & camilan",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "segenggam kecil",
+   "trik": [
+    "pilih yang tanpa garam"
+   ],
+   "pemicu": [
+    "kacang asin"
+   ]
+  },
+  {
+   "name": "keripik",
+   "aliases": [
+    "keripik singkong",
+    "keripik kentang",
+    "keripik pedas",
+    "chitato",
+    "potato chips",
+    "qtela",
+    "taro",
+    "lays",
+    "pringles",
+    "cheetos"
+   ],
+   "kategori": "Gorengan & camilan",
+   "purin": "rendah",
+   "garam": "tinggi",
+   "porsi_aman": "segenggam kecil",
+   "trik": [
+    "jangan habiskan sebungkus"
+   ],
+   "pemicu": [
+    "garam dan minyak"
+   ]
+  },
+  {
+   "name": "martabak telur",
+   "aliases": [
+    "martabak",
+    "martabak asin",
+    "martabak mesir"
+   ],
+   "kategori": "Gorengan & camilan",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "1-2 potong",
+   "trik": [
+    "acar diperbanyak"
+   ],
+   "pemicu": [
+    "daging cincang",
+    "minyak"
+   ]
+  },
+  {
+   "name": "risoles",
+   "aliases": [
+    "risol",
+    "lumpia",
+    "pastel"
+   ],
+   "kategori": "Gorengan & camilan",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1-2 buah",
+   "trik": [
+    "aman dalam jumlah kecil"
+   ],
+   "pemicu": [
+    "isian daging/ragout"
+   ]
+  },
+  {
+   "name": "martabak manis",
+   "aliases": [
+    "terang bulan",
+    "martabak bangka",
+    "martabak coklat",
+    "martabak keju"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1-2 potong",
+   "trik": [
+    "hindari topping super manis"
+   ],
+   "pemicu": [
+    "gula tinggi (fruktosa/gula bisa menaikkan asam urat)"
+   ]
+  },
+  {
+   "name": "klepon",
+   "aliases": [
+    "kue lapis",
+    "onde-onde",
+    "nagasari",
+    "kue basah"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1-2 buah",
+   "trik": [
+    "aman dalam jumlah kecil"
+   ],
+   "pemicu": [
+    "gula"
+   ]
+  },
+  {
+   "name": "bubur kacang hijau",
+   "aliases": [
+    "burjo",
+    "kacang hijau",
+    "bubur kacang ijo",
+    "kacang ijo",
+    "bubur kacang"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "sedang",
+   "garam": "rendah",
+   "porsi_aman": "1 mangkuk kecil",
+   "trik": [
+    "gula sedikit"
+   ],
+   "pemicu": [
+    "kacang hijau (purin nabati)",
+    "gula"
+   ]
+  },
+  {
+   "name": "kolak",
+   "aliases": [
+    "kolak pisang"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 mangkuk kecil",
+   "trik": [
+    "gula sedikit"
+   ],
+   "pemicu": [
+    "gula + santan"
+   ]
+  },
+  {
+   "name": "es campur",
+   "aliases": [
+    "es teler",
+    "es buah"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 gelas kecil",
+   "trik": [
+    "sirup sedikit"
+   ],
+   "pemicu": [
+    "gula/sirup tinggi"
+   ]
+  },
+  {
+   "name": "roti bakar",
+   "aliases": [
+    "roti",
+    "roti tawar"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "rendah",
+   "garam": "sedang",
+   "porsi_aman": "1-2 lembar",
+   "trik": [
+    "selai secukupnya"
+   ],
+   "pemicu": [
+    "roti mengandung garam"
+   ]
+  },
+  {
+   "name": "sourdough",
+   "aliases": [
+    "roti sourdough",
+    "roti gandum",
+    "roti gandum utuh",
+    "baguette",
+    "roti prancis"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "rendah",
+   "garam": "sedang",
+   "porsi_aman": "1-2 iris",
+   "trik": [
+    "pilih isian sayur/telur, bukan daging asap",
+    "mentega dan keju sedikit"
+   ],
+   "pemicu": [
+    "roti mengandung garam"
+   ]
+  },
+  {
+   "name": "croissant",
+   "aliases": [
+    "roti mentega",
+    "danish",
+    "pastry"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "rendah",
+   "garam": "sedang",
+   "porsi_aman": "1 buah",
+   "trik": [
+    "jangan sering, tinggi mentega"
+   ],
+   "pemicu": [
+    "mentega + garam"
+   ]
+  },
+  {
+   "name": "roti manis",
+   "aliases": [
+    "roti sobek",
+    "roti isi",
+    "roti coklat",
+    "roti keju",
+    "bakery"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "rendah",
+   "garam": "sedang",
+   "porsi_aman": "1 buah",
+   "trik": [
+    "pilih yang tidak terlalu manis"
+   ],
+   "pemicu": [
+    "gula + garam"
+   ]
+  },
+  {
+   "name": "donat",
+   "aliases": [
+    "donut",
+    "kue"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 buah",
+   "trik": [
+    "jangan sering"
+   ],
+   "pemicu": [
+    "gula"
+   ]
+  },
+  {
+   "name": "capcay",
+   "aliases": [
+    "cap cay"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "minta tanpa ati ayam/seafood"
+   ],
+   "pemicu": [
+    "topping ati/seafood kalau ada"
+   ]
+  },
+  {
+   "name": "tumis kangkung",
+   "aliases": [
+    "kangkung",
+    "cah kangkung"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "terasi sedikit"
+   ],
+   "pemicu": [
+    "purin nabati (aman)",
+    "terasi"
+   ]
+  },
+  {
+   "name": "bayam",
+   "aliases": [
+    "sayur bayam"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 mangkuk",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": [
+    "purin nabati (aman)"
+   ]
+  },
+  {
+   "name": "urap",
+   "aliases": [],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "lalapan",
+   "aliases": [
+    "lalap",
+    "lalapan sunda"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "bebas",
+   "trik": [
+    "sangat dianjurkan, sambal secukupnya"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "tumis jamur",
+   "aliases": [
+    "jamur"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": [
+    "jamur (purin sedang)"
+   ]
+  },
+  {
+   "name": "sayur nangka",
+   "aliases": [
+    "gudeg"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "hindari krecek & ati ampela"
+   ],
+   "pemicu": [
+    "gula",
+    "krecek"
+   ]
+  },
+  {
+   "name": "oseng tempe",
+   "aliases": [
+    "oseng-oseng"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": [
+    "tempe"
+   ]
+  },
+  {
+   "name": "sambal",
+   "aliases": [
+    "sambal terasi",
+    "sambal botol",
+    "saus sambal"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "tinggi",
+   "porsi_aman": "1 sendok",
+   "trik": [
+    "sedikit saja"
+   ],
+   "pemicu": [
+    "terasi/garam"
+   ]
+  },
+  {
+   "name": "buah potong",
+   "aliases": [
+    "buah",
+    "buah-buahan",
+    "potongan buah"
+   ],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 piring kecil",
+   "trik": [
+    "bagus untuk camilan pengganti gorengan"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "ceri",
+   "aliases": [
+    "cherry"
+   ],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "segenggam",
+   "trik": [
+    "bagus untuk penderita asam urat"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "durian",
+   "aliases": [],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1-2 biji",
+   "trik": [
+    "jangan banyak"
+   ],
+   "pemicu": [
+    "gula tinggi"
+   ]
+  },
+  {
+   "name": "nangka",
+   "aliases": [
+    "cempedak"
+   ],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "3-4 biji",
+   "trik": [
+    "secukupnya"
+   ],
+   "pemicu": [
+    "gula"
+   ]
+  },
+  {
+   "name": "alpukat",
+   "aliases": [
+    "jus alpukat"
+   ],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 buah",
+   "trik": [
+    "jus tanpa susu kental manis"
+   ],
+   "pemicu": [
+    "gula kalau dijus"
+   ]
+  },
+  {
+   "name": "es teh manis",
+   "aliases": [
+    "teh manis",
+    "es jeruk",
+    "minuman manis",
+    "jus kemasan",
+    "teh botol"
+   ],
+   "kategori": "Minuman",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 gelas, minta kurang manis",
+   "trik": [
+    "minta gula sedikit",
+    "ganti air putih"
+   ],
+   "pemicu": [
+    "gula/fruktosa tinggi bisa menaikkan asam urat"
+   ]
+  },
+  {
+   "name": "minuman soda",
+   "aliases": [
+    "soda",
+    "minuman bersoda",
+    "coca cola",
+    "coca-cola",
+    "cola",
+    "sprite",
+    "fanta",
+    "pepsi",
+    "big cola",
+    "7up",
+    "a&w",
+    "root beer",
+    "soda gembira",
+    "fruit tea",
+    "teh pucuk",
+    "nu green tea",
+    "teh kotak"
+   ],
+   "kategori": "Minuman",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "sebaiknya dihindari, maksimal 1 kaleng kecil sesekali",
+   "trik": [
+    "ganti air putih atau teh tawar",
+    "kalau terpaksa, minum setengah",
+    "jangan tiap hari"
+   ],
+   "pemicu": [
+    "minuman berfruktosa tinggi: terbukti menaikkan risiko asam urat",
+    "gula tinggi"
+   ]
+  },
+  {
+   "name": "soda tanpa gula",
+   "aliases": [
+    "coca cola zero",
+    "coke zero",
+    "diet coke",
+    "pepsi black",
+    "sprite zero",
+    "soda zero",
+    "air soda",
+    "soda water"
+   ],
+   "kategori": "Minuman",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 kaleng sesekali",
+   "trik": [
+    "lebih baik dari soda biasa, tapi air putih tetap terbaik"
+   ],
+   "pemicu": [
+    "pemanis buatan",
+    "kafein (cola)"
+   ]
+  },
+  {
+   "name": "air putih",
+   "aliases": [
+    "air mineral",
+    "air"
+   ],
+   "kategori": "Minuman",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "8+ gelas sehari",
+   "trik": [
+    "sangat dianjurkan"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "teh tawar",
+   "aliases": [
+    "teh hijau",
+    "es teh tawar"
+   ],
+   "kategori": "Minuman",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "bebas",
+   "trik": [
+    "pilihan aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "kopi",
+   "aliases": [
+    "kopi hitam",
+    "kopi tubruk"
+   ],
+   "kategori": "Minuman",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1-2 cangkir tanpa banyak gula",
+   "trik": [
+    "hindari kopi sachet manis"
+   ],
+   "pemicu": [
+    "kopi sachet tinggi gula"
+   ]
+  },
+  {
+   "name": "kopi susu",
+   "aliases": [
+    "es kopi susu",
+    "kopi sachet"
+   ],
+   "kategori": "Minuman",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 gelas",
+   "trik": [
+    "minta gula aren sedikit"
+   ],
+   "pemicu": [
+    "gula"
+   ]
+  },
+  {
+   "name": "susu",
+   "aliases": [
+    "susu rendah lemak",
+    "yogurt"
+   ],
+   "kategori": "Minuman",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 gelas",
+   "trik": [
+    "susu rendah lemak baik untuk asam urat"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "jus buah",
+   "aliases": [
+    "jus jeruk",
+    "jus mangga"
+   ],
+   "kategori": "Minuman",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 gelas kecil",
+   "trik": [
+    "tanpa gula tambahan"
+   ],
+   "pemicu": [
+    "fruktosa"
+   ]
+  },
+  {
+   "name": "wedang jahe",
+   "aliases": [
+    "jahe",
+    "bandrek",
+    "bajigur",
+    "sekoteng"
+   ],
+   "kategori": "Minuman",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 gelas",
+   "trik": [
+    "gula sedikit"
+   ],
+   "pemicu": [
+    "gula"
+   ]
+  },
+  {
+   "name": "bir",
+   "aliases": [
+    "alkohol",
+    "tuak",
+    "ciu",
+    "anggur merah"
+   ],
+   "kategori": "Minuman",
+   "purin": "tinggi",
+   "garam": "rendah",
+   "porsi_aman": "sebaiknya tidak sama sekali",
+   "trik": [
+    "ganti air putih atau teh tawar"
+   ],
+   "pemicu": [
+    "alkohol, terutama bir, pemicu kuat asam urat"
+   ]
+  },
+  {
+   "name": "minuman energi",
+   "aliases": [
+    "kratingdaeng",
+    "extra joss",
+    "minuman isotonik"
+   ],
+   "kategori": "Minuman",
+   "purin": "rendah",
+   "garam": "sedang",
+   "porsi_aman": "jarang",
+   "trik": [
+    "ganti air putih"
+   ],
+   "pemicu": [
+    "gula + natrium"
+   ]
+  },
+  {
+   "name": "pizza",
+   "aliases": [
+    "piza",
+    "pizza keju",
+    "pizza pepperoni",
+    "pizza hut",
+    "domino"
+   ],
+   "kategori": "Fast food & western",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "1-2 potong",
+   "trik": [
+    "pilih topping sayur/ayam",
+    "hindari pepperoni, sosis, extra cheese",
+    "jangan tambah saus"
+   ],
+   "pemicu": [
+    "keju + daging olahan tinggi garam",
+    "pepperoni/sosis"
+   ]
+  },
+  {
+   "name": "burger",
+   "aliases": [
+    "hamburger",
+    "cheeseburger",
+    "burger daging",
+    "burger king",
+    "mcd"
+   ],
+   "kategori": "Fast food & western",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "1 buah, tanpa extra keju",
+   "trik": [
+    "pilih burger ayam panggang",
+    "tanpa bacon dan extra cheese",
+    "saus sedikit"
+   ],
+   "pemicu": [
+    "patty daging sapi",
+    "keju + saus tinggi garam"
+   ]
+  },
+  {
+   "name": "fried chicken",
+   "aliases": [
+    "ayam goreng tepung",
+    "kfc",
+    "ayam krispi",
+    "richeese",
+    "ayam crispy"
+   ],
+   "kategori": "Fast food & western",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "1 potong, kulit dikurangi",
+   "trik": [
+    "buang kulit tepungnya",
+    "jangan pesan nasi + kentang + soda sekaligus"
+   ],
+   "pemicu": [
+    "tepung berbumbu asin",
+    "kulit berlemak"
+   ]
+  },
+  {
+   "name": "kentang goreng",
+   "aliases": [
+    "french fries",
+    "fries"
+   ],
+   "kategori": "Fast food & western",
+   "purin": "rendah",
+   "garam": "tinggi",
+   "porsi_aman": "porsi kecil",
+   "trik": [
+    "minta tanpa garam",
+    "saus sedikit"
+   ],
+   "pemicu": [
+    "garam taburan"
+   ]
+  },
+  {
+   "name": "hot dog",
+   "aliases": [
+    "corn dog"
+   ],
+   "kategori": "Fast food & western",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "1 buah",
+   "trik": [
+    "jarang-jarang"
+   ],
+   "pemicu": [
+    "sosis olahan tinggi garam"
+   ]
+  },
+  {
+   "name": "spaghetti",
+   "aliases": [
+    "spageti",
+    "pasta",
+    "bolognese",
+    "carbonara",
+    "lasagna",
+    "makaroni"
+   ],
+   "kategori": "Fast food & western",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "pilih saus tomat",
+    "hindari carbonara bacon"
+   ],
+   "pemicu": [
+    "daging cincang/bacon",
+    "keju"
+   ]
+  },
+  {
+   "name": "steak sapi",
+   "aliases": [
+    "steak",
+    "sirloin",
+    "tenderloin",
+    "wagyu"
+   ],
+   "kategori": "Fast food & western",
+   "purin": "tinggi",
+   "garam": "sedang",
+   "porsi_aman": "1 potong kecil (100 g)",
+   "trik": [
+    "saus blackpepper sedikit",
+    "perbanyak sayur"
+   ],
+   "pemicu": [
+    "daging merah"
+   ]
+  },
+  {
+   "name": "chicken steak",
+   "aliases": [
+    "steak ayam",
+    "chicken katsu",
+    "katsu"
+   ],
+   "kategori": "Fast food & western",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "saus sedikit"
+   ],
+   "pemicu": [
+    "ayam goreng tepung"
+   ]
+  },
+  {
+   "name": "sandwich",
+   "aliases": [
+    "roti lapis",
+    "sandwich tuna",
+    "kebab",
+    "shawarma",
+    "burrito"
+   ],
+   "kategori": "Fast food & western",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 buah",
+   "trik": [
+    "pilih isian ayam/telur",
+    "saus sedikit"
+   ],
+   "pemicu": [
+    "daging olahan",
+    "saus"
+   ]
+  },
+  {
+   "name": "salad",
+   "aliases": [
+    "salad sayur",
+    "salad buah"
+   ],
+   "kategori": "Fast food & western",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "bebas",
+   "trik": [
+    "dressing sedikit"
+   ],
+   "pemicu": [
+    "dressing manis/mayones"
+   ]
+  },
+  {
+   "name": "sup krim",
+   "aliases": [
+    "cream soup",
+    "sup jamur",
+    "clam chowder"
+   ],
+   "kategori": "Fast food & western",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "1 mangkuk kecil",
+   "trik": [
+    "hindari yang isi kerang"
+   ],
+   "pemicu": [
+    "kaldu + krim"
+   ]
+  },
+  {
+   "name": "nugget",
+   "aliases": [
+    "chicken nugget",
+    "sosis goreng"
+   ],
+   "kategori": "Fast food & western",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "3-4 buah",
+   "trik": [
+    "jangan sering"
+   ],
+   "pemicu": [
+    "olahan tinggi garam"
+   ]
+  },
+  {
+   "name": "bakmi",
+   "aliases": [
+    "bakmi ayam",
+    "bakmi babi",
+    "mie pangsit",
+    "bakmi gm"
+   ],
+   "kategori": "Chinese & oriental",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "kuah sedikit",
+    "minyak dan kecap jangan ditambah"
+   ],
+   "pemicu": [
+    "kuah kaldu",
+    "kecap asin"
+   ]
+  },
+  {
+   "name": "kwetiau siram",
+   "aliases": [
+    "kwetiau sapi",
+    "ifumie",
+    "i fu mie",
+    "mie siram"
+   ],
+   "kategori": "Chinese & oriental",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "pilih ayam, bukan seafood/sapi"
+   ],
+   "pemicu": [
+    "kuah kental berkaldu"
+   ]
+  },
+  {
+   "name": "fuyunghai",
+   "aliases": [
+    "fu yung hai",
+    "puyonghai"
+   ],
+   "kategori": "Chinese & oriental",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "saus asam manis sedikit"
+   ],
+   "pemicu": [
+    "telur + udang/kepiting"
+   ]
+  },
+  {
+   "name": "dimsum",
+   "aliases": [
+    "dim sum",
+    "hakau",
+    "siomay ayam",
+    "bakpao",
+    "lumpia udang"
+   ],
+   "kategori": "Chinese & oriental",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "3-4 buah",
+   "trik": [
+    "pilih ayam",
+    "hindari ceker saus & udang"
+   ],
+   "pemicu": [
+    "udang",
+    "saus"
+   ]
+  },
+  {
+   "name": "ayam asam manis",
+   "aliases": [
+    "sapo tahu",
+    "ayam kungpao",
+    "koloke"
+   ],
+   "kategori": "Chinese & oriental",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "saus sedikit"
+   ],
+   "pemicu": [
+    "gula + saus"
+   ]
+  },
+  {
+   "name": "bebek peking",
+   "aliases": [
+    "peking duck",
+    "babi panggang",
+    "char siu"
+   ],
+   "kategori": "Chinese & oriental",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "sedikit",
+   "trik": [
+    "jarang-jarang"
+   ],
+   "pemicu": [
+    "daging berlemak + saus asin"
+   ]
+  },
+  {
+   "name": "nasi hainan",
+   "aliases": [
+    "nasi ayam hainan",
+    "hainanese chicken rice"
+   ],
+   "kategori": "Chinese & oriental",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "kecap asin sedikit"
+   ],
+   "pemicu": [
+    "kaldu ayam"
+   ]
+  },
+  {
+   "name": "bubur ayam kanton",
+   "aliases": [
+    "bubur kanton",
+    "bubur hongkong",
+    "congee"
+   ],
+   "kategori": "Chinese & oriental",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 mangkuk",
+   "trik": [
+    "hindari ati dan century egg banyak"
+   ],
+   "pemicu": [
+    "kaldu",
+    "topping jeroan"
+   ]
+  },
+  {
+   "name": "hotpot",
+   "aliases": [
+    "shabu shabu",
+    "suki",
+    "suki-suki",
+    "steamboat"
+   ],
+   "kategori": "Chinese & oriental",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "sedikit kuah",
+   "trik": [
+    "pilih sayur, jamur, tahu",
+    "jangan minum kuahnya"
+   ],
+   "pemicu": [
+    "kaldu pekat + seafood/daging"
+   ]
+  },
+  {
+   "name": "mala",
+   "aliases": [
+    "mala hotpot",
+    "malatang"
+   ],
+   "kategori": "Chinese & oriental",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "sedikit",
+   "trik": [
+    "jangan minum kuahnya"
+   ],
+   "pemicu": [
+    "kuah pedas berkaldu + jeroan"
+   ]
+  },
+  {
+   "name": "sushi",
+   "aliases": [
+    "sashimi",
+    "onigiri",
+    "sushi roll"
+   ],
+   "kategori": "Jepang & Korea",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "4-6 potong",
+   "trik": [
+    "kecap asin sedikit",
+    "hindari telur ikan dan sarden"
+   ],
+   "pemicu": [
+    "kecap asin",
+    "ikan/telur ikan"
+   ]
+  },
+  {
+   "name": "ramen",
+   "aliases": [
+    "shoyu ramen",
+    "tonkotsu",
+    "miso ramen"
+   ],
+   "kategori": "Jepang & Korea",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "setengah porsi, kuah sedikit",
+   "trik": [
+    "jangan habiskan kuah",
+    "minta tanpa topping babi berlemak"
+   ],
+   "pemicu": [
+    "kaldu tulang pekat + kecap asin"
+   ]
+  },
+  {
+   "name": "udon",
+   "aliases": [
+    "soba"
+   ],
+   "kategori": "Jepang & Korea",
+   "purin": "rendah",
+   "garam": "tinggi",
+   "porsi_aman": "1 porsi, kuah sedikit",
+   "trik": [
+    "jangan habiskan kuah"
+   ],
+   "pemicu": [
+    "kuah dashi asin"
+   ]
+  },
+  {
+   "name": "takoyaki",
+   "aliases": [
+    "okonomiyaki"
+   ],
+   "kategori": "Jepang & Korea",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "4-5 butir",
+   "trik": [
+    "saus sedikit"
+   ],
+   "pemicu": [
+    "gurita",
+    "saus"
+   ]
+  },
+  {
+   "name": "beef bowl",
+   "aliases": [
+    "gyudon",
+    "yoshinoya",
+    "rice bowl",
+    "donburi"
+   ],
+   "kategori": "Jepang & Korea",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "1 porsi kecil",
+   "trik": [
+    "minta saus sedikit"
+   ],
+   "pemicu": [
+    "daging sapi + saus kecap"
+   ]
+  },
+  {
+   "name": "chicken teriyaki",
+   "aliases": [
+    "teriyaki",
+    "ayam teriyaki",
+    "yakitori"
+   ],
+   "kategori": "Jepang & Korea",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "saus sedikit"
+   ],
+   "pemicu": [
+    "kecap manis/asin"
+   ]
+  },
+  {
+   "name": "tempura",
+   "aliases": [
+    "ebi furai",
+    "ebi tempura"
+   ],
+   "kategori": "Jepang & Korea",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "3-4 potong",
+   "trik": [
+    "pilih sayur"
+   ],
+   "pemicu": [
+    "udang goreng tepung"
+   ]
+  },
+  {
+   "name": "korean bbq",
+   "aliases": [
+    "samgyeopsal",
+    "bulgogi",
+    "daging panggang"
+   ],
+   "kategori": "Jepang & Korea",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "sedikit",
+   "trik": [
+    "perbanyak selada",
+    "saus sedikit"
+   ],
+   "pemicu": [
+    "daging merah + saus"
+   ]
+  },
+  {
+   "name": "tteokbokki",
+   "aliases": [
+    "toppoki",
+    "topokki"
+   ],
+   "kategori": "Jepang & Korea",
+   "purin": "rendah",
+   "garam": "tinggi",
+   "porsi_aman": "setengah porsi",
+   "trik": [
+    "saus sedikit"
+   ],
+   "pemicu": [
+    "saus gochujang asin manis"
+   ]
+  },
+  {
+   "name": "kimchi",
+   "aliases": [],
+   "kategori": "Jepang & Korea",
+   "purin": "rendah",
+   "garam": "tinggi",
+   "porsi_aman": "2-3 sendok",
+   "trik": [
+    "sedikit saja"
+   ],
+   "pemicu": [
+    "fermentasi tinggi garam"
+   ]
+  },
+  {
+   "name": "ramyeon",
+   "aliases": [
+    "samyang",
+    "mi korea",
+    "jjajangmyeon"
+   ],
+   "kategori": "Jepang & Korea",
+   "purin": "rendah",
+   "garam": "tinggi",
+   "porsi_aman": "jarang, bumbu setengah",
+   "trik": [
+    "pakai setengah bumbu"
+   ],
+   "pemicu": [
+    "bumbu sangat tinggi garam"
+   ]
+  },
+  {
+   "name": "ayam korea",
+   "aliases": [
+    "korean fried chicken",
+    "chicken wings",
+    "sayap ayam"
+   ],
+   "kategori": "Jepang & Korea",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "3-4 potong",
+   "trik": [
+    "saus dipisah"
+   ],
+   "pemicu": [
+    "saus manis asin",
+    "kulit"
+   ]
+  },
+  {
+   "name": "nasi tutug oncom",
+   "aliases": [
+    "tutug oncom",
+    "nasi tutug"
+   ],
+   "kategori": "Masakan daerah",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "1 porsi kecil",
+   "trik": [
+    "ikan asin sedikit"
+   ],
+   "pemicu": [
+    "oncom",
+    "ikan asin"
+   ]
+  },
+  {
+   "name": "nasi timbel",
+   "aliases": [
+    "timbel",
+    "nasi bakar"
+   ],
+   "kategori": "Masakan daerah",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "ikan asin dan sambal secukupnya"
+   ],
+   "pemicu": [
+    "lauk ikan asin/jeroan kalau ada"
+   ]
+  },
+  {
+   "name": "gudeg krecek",
+   "aliases": [
+    "krecek",
+    "gudeg komplit"
+   ],
+   "kategori": "Masakan daerah",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "krecek sedikit",
+    "hindari ati ampela"
+   ],
+   "pemicu": [
+    "krecek",
+    "ati ampela"
+   ]
+  },
+  {
+   "name": "pecak lele",
+   "aliases": [
+    "pecak ikan"
+   ],
+   "kategori": "Masakan daerah",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "sambal secukupnya"
+   ],
+   "pemicu": [
+    "ikan"
+   ]
+  },
+  {
+   "name": "papeda",
+   "aliases": [
+    "ikan kuah kuning"
+   ],
+   "kategori": "Masakan daerah",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": [
+    "ikan"
+   ]
+  },
+  {
+   "name": "ayam betutu",
+   "aliases": [
+    "betutu",
+    "bebek betutu",
+    "babi guling"
+   ],
+   "kategori": "Masakan daerah",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "sedikit",
+   "trik": [
+    "pilih daging tanpa kulit"
+   ],
+   "pemicu": [
+    "daging berbumbu asin",
+    "babi/bebek berlemak"
+   ]
+  },
+  {
+   "name": "sate lilit",
+   "aliases": [],
+   "kategori": "Masakan daerah",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "3 tusuk",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": [
+    "ikan/ayam cincang"
+   ]
+  },
+  {
+   "name": "rujak cingur",
+   "aliases": [
+    "cingur"
+   ],
+   "kategori": "Masakan daerah",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "sebaiknya dihindari",
+   "trik": [
+    "minta tanpa cingur"
+   ],
+   "pemicu": [
+    "cingur (moncong sapi) + petis"
+   ]
+  },
+  {
+   "name": "rujak buah",
+   "aliases": [
+    "rujak",
+    "rujak serut"
+   ],
+   "kategori": "Masakan daerah",
+   "purin": "rendah",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "bumbu gula merah secukupnya"
+   ],
+   "pemicu": [
+    "gula + garam bumbu"
+   ]
+  },
+  {
+   "name": "lontong balap",
+   "aliases": [
+    "lontong kupang",
+    "kupang"
+   ],
+   "kategori": "Masakan daerah",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "setengah porsi",
+   "trik": [
+    "minta tanpa kupang"
+   ],
+   "pemicu": [
+    "kupang (kerang) + petis"
+   ]
+  },
+  {
+   "name": "tahu tek",
+   "aliases": [
+    "tahu campur"
+   ],
+   "kategori": "Masakan daerah",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "bumbu petis sedikit"
+   ],
+   "pemicu": [
+    "petis + kecap"
+   ]
+  },
+  {
+   "name": "pallubasa",
+   "aliases": [
+    "konro bakar",
+    "sop saudara"
+   ],
+   "kategori": "Masakan daerah",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "porsi_aman": "sebaiknya dihindari",
+   "trik": [
+    "kalau terpaksa sedikit, tanpa jeroan"
+   ],
+   "pemicu": [
+    "jeroan + kuah pekat"
+   ]
+  },
+  {
+   "name": "ikan bakar rica",
+   "aliases": [
+    "rica-rica",
+    "ayam rica",
+    "woku"
+   ],
+   "kategori": "Masakan daerah",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "sambal secukupnya"
+   ],
+   "pemicu": [
+    "ikan/ayam"
+   ]
+  },
+  {
+   "name": "nasi jamblang",
+   "aliases": [
+    "nasi lengko",
+    "empal asem"
+   ],
+   "kategori": "Masakan daerah",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "pilih lauk tahu, tempe, telur"
+   ],
+   "pemicu": [
+    "lauk jeroan kalau ada"
+   ]
+  },
+  {
+   "name": "bakso malang",
+   "aliases": [
+    "bakwan malang",
+    "cuanki"
+   ],
+   "kategori": "Masakan daerah",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "1 mangkuk kecil",
+   "trik": [
+    "kuah sedikit"
+   ],
+   "pemicu": [
+    "bakso + kuah kaldu"
+   ]
+  },
+  {
+   "name": "soto banjar",
+   "aliases": [
+    "soto bandung",
+    "soto mie"
+   ],
+   "kategori": "Masakan daerah",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "porsi_aman": "1 mangkuk",
+   "trik": [
+    "kuah sedikit",
+    "tanpa jeroan"
+   ],
+   "pemicu": [
+    "kaldu",
+    "jeroan kalau ada"
+   ]
+  },
+  {
+   "name": "kerupuk mie",
+   "aliases": [
+    "seblak kering",
+    "basreng"
+   ],
+   "kategori": "Masakan daerah",
+   "purin": "rendah",
+   "garam": "tinggi",
+   "porsi_aman": "segenggam kecil",
+   "trik": [
+    "jangan habiskan sebungkus"
+   ],
+   "pemicu": [
+    "bumbu asin pedas"
+   ]
+  },
+  {
+   "name": "roti bakar bandung",
+   "aliases": [
+    "roti bakar coklat",
+    "roti john"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1-2 potong",
+   "trik": [
+    "selai secukupnya"
+   ],
+   "pemicu": [
+    "gula"
+   ]
+  },
+  {
+   "name": "pisang goreng keju",
+   "aliases": [
+    "pisang molen",
+    "pisang nugget"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1-2 buah",
+   "trik": [
+    "topping sedikit"
+   ],
+   "pemicu": [
+    "gula + keju"
+   ]
+  },
+  {
+   "name": "bolu",
+   "aliases": [
+    "brownies",
+    "cake",
+    "kue tart",
+    "bolu kukus",
+    "black forest"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 potong",
+   "trik": [
+    "jangan sering"
+   ],
+   "pemicu": [
+    "gula"
+   ]
+  },
+  {
+   "name": "kue kering",
+   "aliases": [
+    "nastar",
+    "kastengel",
+    "putri salju",
+    "biskuit",
+    "oreo",
+    "wafer",
+    "tango",
+    "roma",
+    "biskuit kemasan",
+    "good time"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "rendah",
+   "garam": "sedang",
+   "porsi_aman": "3-4 buah",
+   "trik": [
+    "jangan habiskan setoples"
+   ],
+   "pemicu": [
+    "gula/keju"
+   ]
+  },
+  {
+   "name": "es krim",
+   "aliases": [
+    "eskrim",
+    "ice cream",
+    "gelato"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 scoop",
+   "trik": [
+    "jangan sering"
+   ],
+   "pemicu": [
+    "gula"
+   ]
+  },
+  {
+   "name": "puding",
+   "aliases": [
+    "agar-agar",
+    "jelly"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 potong",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": [
+    "gula"
+   ]
+  },
+  {
+   "name": "permen",
+   "aliases": [
+    "permen jelly",
+    "gummy",
+    "gummies",
+    "chupa chups",
+    "yupi",
+    "lolipop",
+    "lollipop",
+    "permen asam",
+    "permen karet",
+    "mentos",
+    "sugus",
+    "kopiko",
+    "marshmallow"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1-2 butir saja",
+   "trik": [
+    "jangan jadi camilan rutin",
+    "sikat gigi/kumur setelahnya",
+    "pilih buah sebagai ganti"
+   ],
+   "pemicu": [
+    "gula tinggi (fruktosa/gula bisa menaikkan asam urat)"
+   ]
+  },
+  {
+   "name": "cokelat",
+   "aliases": [
+    "coklat",
+    "chocolate",
+    "silverqueen",
+    "cadbury",
+    "kitkat",
+    "coklat batang"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1-2 potong kecil",
+   "trik": [
+    "pilih dark chocolate"
+   ],
+   "pemicu": [
+    "gula"
+   ]
+  },
+  {
+   "name": "serabi",
+   "aliases": [
+    "surabi",
+    "apem",
+    "kue pukis",
+    "kue lumpur"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1-2 buah",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": [
+    "gula + santan"
+   ]
+  },
+  {
+   "name": "lemper",
+   "aliases": [
+    "arem-arem",
+    "lontong isi"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "1-2 buah",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": [
+    "isian ayam"
+   ]
+  },
+  {
+   "name": "mi lidi",
+   "aliases": [
+    "makaroni pedas",
+    "chiki",
+    "snack kemasan",
+    "jajanan kemasan",
+    "ciki"
+   ],
+   "kategori": "Gorengan & camilan",
+   "purin": "rendah",
+   "garam": "tinggi",
+   "porsi_aman": "segenggam kecil",
+   "trik": [
+    "baca label natrium"
+   ],
+   "pemicu": [
+    "bumbu tinggi garam"
+   ]
+  },
+  {
+   "name": "popcorn",
+   "aliases": [
+    "berondong"
+   ],
+   "kategori": "Gorengan & camilan",
+   "purin": "rendah",
+   "garam": "sedang",
+   "porsi_aman": "1 mangkuk kecil",
+   "trik": [
+    "pilih tanpa garam/karamel"
+   ],
+   "pemicu": [
+    "garam/gula"
+   ]
+  },
+  {
+   "name": "kacang mete",
+   "aliases": [
+    "mete",
+    "almond",
+    "kenari"
+   ],
+   "kategori": "Gorengan & camilan",
+   "purin": "sedang",
+   "garam": "rendah",
+   "porsi_aman": "segenggam kecil",
+   "trik": [
+    "pilih tanpa garam"
+   ],
+   "pemicu": [
+    "kacang (purin nabati)"
+   ]
+  },
+  {
+   "name": "boba",
+   "aliases": [
+    "bubble tea",
+    "milk tea",
+    "thai tea",
+    "chatime"
+   ],
+   "kategori": "Minuman",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 gelas kecil, less sugar",
+   "trik": [
+    "minta gula 25%"
+   ],
+   "pemicu": [
+    "gula/fruktosa tinggi"
+   ]
+  },
+  {
+   "name": "es kelapa muda",
+   "aliases": [
+    "air kelapa",
+    "kelapa muda"
+   ],
+   "kategori": "Minuman",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 gelas",
+   "trik": [
+    "tanpa sirup"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "jus sayur",
+   "aliases": [
+    "jus seledri",
+    "jus tomat",
+    "jus wortel"
+   ],
+   "kategori": "Minuman",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 gelas",
+   "trik": [
+    "tanpa gula"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "cincau",
+   "aliases": [
+    "es cincau",
+    "dawet",
+    "cendol",
+    "es doger"
+   ],
+   "kategori": "Minuman",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 gelas",
+   "trik": [
+    "gula sedikit"
+   ],
+   "pemicu": [
+    "gula"
+   ]
+  },
+  {
+   "name": "susu kedelai",
+   "aliases": [
+    "sari kedelai"
+   ],
+   "kategori": "Minuman",
+   "purin": "sedang",
+   "garam": "rendah",
+   "porsi_aman": "1 gelas",
+   "trik": [
+    "tanpa gula banyak"
+   ],
+   "pemicu": [
+    "kedelai (purin nabati)"
+   ]
+  },
+  {
+   "name": "jamu",
+   "aliases": [
+    "kunyit asam",
+    "beras kencur"
+   ],
+   "kategori": "Minuman",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 gelas",
+   "trik": [
+    "gula sedikit"
+   ],
+   "pemicu": [
+    "gula"
+   ]
+  },
+  {
+   "name": "pisang",
+   "aliases": [
+    "pisang ambon",
+    "pisang raja",
+    "pisang kepok"
+   ],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1-2 buah",
+   "trik": [
+    "kaya kalium, bagus untuk tensi"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "pepaya",
+   "aliases": [],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 potong besar",
+   "trik": [
+    "bagus untuk pencernaan"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "jeruk",
+   "aliases": [
+    "jeruk manis",
+    "jeruk medan",
+    "jeruk peras",
+    "sunkist"
+   ],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1-2 buah",
+   "trik": [
+    "makan buahnya lebih baik dari jus"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "jeruk bali",
+   "aliases": [
+    "grapefruit",
+    "pomelo"
+   ],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "sedikit, tanya dokter dulu",
+   "trik": [
+    "bisa berinteraksi dengan beberapa obat darah tinggi (mis. amlodipin) — tanya dokter"
+   ],
+   "pemicu": [
+    "interaksi dengan obat tensi"
+   ]
+  },
+  {
+   "name": "semangka",
+   "aliases": [],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "2-3 potong",
+   "trik": [
+    "segar dan banyak air"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "melon",
+   "aliases": [
+    "blewah"
+   ],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "2-3 potong",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "apel",
+   "aliases": [
+    "apel malang",
+    "apel fuji"
+   ],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 buah",
+   "trik": [
+    "makan dengan kulitnya"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "mangga",
+   "aliases": [
+    "mangga harum manis",
+    "mangga muda"
+   ],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 buah kecil",
+   "trik": [
+    "jangan berlebihan, cukup manis"
+   ],
+   "pemicu": [
+    "fruktosa"
+   ]
+  },
+  {
+   "name": "nanas",
+   "aliases": [
+    "nenas"
+   ],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "2-3 potong",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "anggur",
+   "aliases": [
+    "anggur hijau",
+    "anggur merah buah"
+   ],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "segenggam kecil",
+   "trik": [
+    "jangan berlebihan"
+   ],
+   "pemicu": [
+    "fruktosa"
+   ]
+  },
+  {
+   "name": "salak",
+   "aliases": [
+    "salak pondoh"
+   ],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "2-3 buah",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "rambutan",
+   "aliases": [],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "5-6 buah",
+   "trik": [
+    "jangan berlebihan"
+   ],
+   "pemicu": [
+    "gula"
+   ]
+  },
+  {
+   "name": "duku",
+   "aliases": [
+    "langsat",
+    "kokosan"
+   ],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "segenggam",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "manggis",
+   "aliases": [],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "3-4 buah",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "jambu biji",
+   "aliases": [
+    "jambu merah",
+    "jambu klutuk"
+   ],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 buah",
+   "trik": [
+    "tinggi vitamin C, bagus untuk asam urat"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "jambu air",
+   "aliases": [
+    "jambu semarang"
+   ],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "3-4 buah",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "belimbing",
+   "aliases": [
+    "belimbing manis"
+   ],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 buah",
+   "trik": [
+    "hindari kalau ada gangguan ginjal"
+   ],
+   "pemicu": [
+    "berbahaya untuk penderita gangguan ginjal"
+   ]
+  },
+  {
+   "name": "sirsak",
+   "aliases": [
+    "jus sirsak"
+   ],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 potong / 1 gelas tanpa gula",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "sawo",
+   "aliases": [
+    "sawo manila"
+   ],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1-2 buah",
+   "trik": [
+    "manis, secukupnya"
+   ],
+   "pemicu": [
+    "gula"
+   ]
+  },
+  {
+   "name": "kelengkeng",
+   "aliases": [
+    "lengkeng",
+    "leci"
+   ],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "segenggam kecil",
+   "trik": [
+    "jangan berlebihan"
+   ],
+   "pemicu": [
+    "gula"
+   ]
+  },
+  {
+   "name": "buah naga",
+   "aliases": [
+    "naga merah"
+   ],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "setengah buah",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "stroberi",
+   "aliases": [
+    "strawberry"
+   ],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "segenggam",
+   "trik": [
+    "bagus untuk camilan"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "kiwi",
+   "aliases": [],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1-2 buah",
+   "trik": [
+    "tinggi vitamin C"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "pir",
+   "aliases": [
+    "pear",
+    "pir yali"
+   ],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 buah",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "markisa",
+   "aliases": [],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1-2 buah",
+   "trik": [
+    "tanpa gula tambahan"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "kedondong",
+   "aliases": [],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1-2 buah",
+   "trik": [
+    "rujak kedondong: bumbu secukupnya"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "srikaya",
+   "aliases": [
+    "buah nona"
+   ],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 buah kecil",
+   "trik": [
+    "manis, secukupnya"
+   ],
+   "pemicu": [
+    "gula"
+   ]
+  },
+  {
+   "name": "kurma",
+   "aliases": [],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "3 butir",
+   "trik": [
+    "manis sekali, secukupnya"
+   ],
+   "pemicu": [
+    "gula tinggi"
+   ]
+  },
+  {
+   "name": "kelapa",
+   "aliases": [
+    "daging kelapa",
+    "kelapa parut"
+   ],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "sedikit",
+   "trik": [
+    "lemak jenuh, secukupnya"
+   ],
+   "pemicu": [
+    "lemak"
+   ]
+  },
+  {
+   "name": "timun",
+   "aliases": [
+    "mentimun",
+    "ketimun"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "bebas",
+   "trik": [
+    "sangat dianjurkan"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "selada",
+   "aliases": [
+    "lettuce",
+    "selada air"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "bebas",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "kemangi",
+   "aliases": [],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "bebas",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "wortel",
+   "aliases": [],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "bebas",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "tomat",
+   "aliases": [],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1-2 buah",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "brokoli",
+   "aliases": [],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "kembang kol",
+   "aliases": [
+    "bunga kol"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "sedang",
+   "garam": "rendah",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "purin nabati, risiko kecil"
+   ],
+   "pemicu": [
+    "purin nabati"
+   ]
+  },
+  {
+   "name": "kol",
+   "aliases": [
+    "kubis",
+    "kol goreng"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "bebas (kol goreng secukupnya)",
+   "trik": [
+    "kol goreng menyerap minyak"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "sawi",
+   "aliases": [
+    "sawi hijau",
+    "caisim",
+    "pakcoy",
+    "sawi putih"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "buncis",
+   "aliases": [],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "kacang panjang",
+   "aliases": [],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "tauge",
+   "aliases": [
+    "toge",
+    "kecambah"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "sedang",
+   "garam": "rendah",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "rebus/tumis, secukupnya"
+   ],
+   "pemicu": [
+    "purin nabati sedang"
+   ]
+  },
+  {
+   "name": "terong",
+   "aliases": [
+    "terong balado",
+    "terong goreng"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "balado/goreng menyerap minyak & garam"
+   ],
+   "pemicu": [
+    "bumbu balado"
+   ]
+  },
+  {
+   "name": "labu siam",
+   "aliases": [
+    "jipang"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "labu kuning",
+   "aliases": [
+    "waluh"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "oyong",
+   "aliases": [
+    "gambas"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "pare",
+   "aliases": [
+    "paria"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "daun singkong",
+   "aliases": [
+    "daun singkong rebus"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "aman (versi gulai: santan secukupnya)"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "daun pepaya",
+   "aliases": [],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "asparagus",
+   "aliases": [],
+   "kategori": "Sayur & lalapan",
+   "purin": "sedang",
+   "garam": "rendah",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "purin nabati, risiko kecil"
+   ],
+   "pemicu": [
+    "purin nabati"
+   ]
+  },
+  {
+   "name": "daun melinjo",
+   "aliases": [
+    "melinjo",
+    "biji melinjo",
+    "sayur daun melinjo"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "tinggi",
+   "garam": "rendah",
+   "porsi_aman": "sebaiknya dihindari",
+   "trik": [
+    "di sayur asem: sisihkan melinjonya"
+   ],
+   "pemicu": [
+    "melinjo dikenal tinggi purin"
+   ]
+  },
+  {
+   "name": "petai",
+   "aliases": [
+    "pete"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "sedang",
+   "garam": "rendah",
+   "porsi_aman": "sedikit",
+   "trik": [
+    "secukupnya"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "jengkol",
+   "aliases": [
+    "semur jengkol"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "sedang",
+   "garam": "sedang",
+   "porsi_aman": "sebaiknya dihindari",
+   "trik": [
+    "bisa membebani ginjal, minum banyak air"
+   ],
+   "pemicu": [
+    "asam jengkolat (ginjal)"
+   ]
+  },
+  {
+   "name": "jagung",
+   "aliases": [
+    "jagung rebus",
+    "jagung bakar"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 tongkol",
+   "trik": [
+    "rebus lebih baik dari bakar bermentega"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "kentang",
+   "aliases": [
+    "kentang rebus"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1-2 buah",
+   "trik": [
+    "rebus/kukus lebih baik dari goreng"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "singkong",
+   "aliases": [
+    "ubi kayu",
+    "singkong rebus"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 potong",
+   "trik": [
+    "rebus lebih baik dari goreng"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "ubi",
+   "aliases": [
+    "ubi jalar",
+    "ubi ungu",
+    "ubi cilembu"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 buah",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "genjer",
+   "aliases": [],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "pakis",
+   "aliases": [
+    "paku",
+    "sayur pakis"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "rebung",
+   "aliases": [],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "nangka muda",
+   "aliases": [
+    "sayur nangka muda"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "sedang",
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "kuah santan secukupnya"
+   ],
+   "pemicu": [
+    "santan"
+   ]
+  },
+  {
+   "name": "kacang merah",
+   "aliases": [
+    "sup kacang merah",
+    "kacang tolo"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "sedang",
+   "garam": "rendah",
+   "porsi_aman": "1 mangkuk kecil",
+   "trik": [
+    "purin nabati, secukupnya"
+   ],
+   "pemicu": [
+    "purin nabati"
+   ]
+  },
+  {
+   "name": "edamame",
+   "aliases": [
+    "kedelai rebus"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "sedang",
+   "garam": "rendah",
+   "porsi_aman": "segenggam",
+   "trik": [
+    "purin nabati, secukupnya"
+   ],
+   "pemicu": [
+    "purin nabati"
+   ]
+  },
+  {
+   "name": "cabai",
+   "aliases": [
+    "cabe",
+    "cabai rawit"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "secukupnya",
+   "trik": [
+    "aman, asal bukan sambal asin"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "bawang putih",
+   "aliases": [
+    "bawang merah",
+    "bawang bombay"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "porsi_aman": "secukupnya",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  }
+ ]
+}

@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Boleh Gak, Pa?</title>
+  <meta name="description" content="Teman makan Papa: cek makanan untuk asam urat & darah tinggi, pakai Gemma lokal.">
+  <meta name="theme-color" content="#ffd23f">
+  <meta name="color-scheme" content="light">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <h1>Boleh Gak, Pa?</h1>
+      <p class="sub">Asam urat · Tensi</p>
+    </div>
+    <span id="ai-pill" class="pill">…</span>
+  </header>
+
+  <main>
+    <!-- ======================= CEK ======================= -->
+    <section id="tab-cek" class="tab active">
+      <div id="flare-banner" class="banner hidden"></div>
+
+      <div class="card">
+        <p class="eyebrow">Langkah 1</p>
+        <h2>Lagi ditawari apa, Pa?</h2>
+        <label class="btn big ink">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+          Foto makanannya
+          <input id="photo" type="file" accept="image/*" capture="environment" hidden>
+        </label>
+        <img id="preview" class="preview hidden" alt="Foto makanan">
+        <div id="photo-info" class="photo-info hidden"></div>
+        <div class="or"><span>atau ketik</span></div>
+        <form id="cek-form">
+          <input id="food" type="text" placeholder="mis. ketoprak" autocomplete="off" enterkeyhint="go" list="food-names">
+          <datalist id="food-names"></datalist>
+          <div class="chips" id="food-chips"></div>
+          <p class="eyebrow">Situasinya</p>
+          <div class="chips" id="note-chips"></div>
+          <button class="btn big primary" type="submit">Boleh gak? →</button>
+        </form>
+      </div>
+
+      <div id="loading" class="card loading hidden">
+        <div class="bar"><span></span></div>
+        <p id="loading-text"><b>Gemma lagi mikir di laptop…</b></p>
+        <p class="muted small">Tanpa internet. Data Papa tidak keluar rumah.</p>
+      </div>
+
+      <div id="result" class="hidden"></div>
+    </section>
+
+    <!-- ======================= DAFTAR ======================= -->
+    <section id="tab-daftar" class="tab">
+      <button id="add-open" class="btn big primary add-open">+ Tambah makanan sendiri</button>
+      <div id="add-card" class="card hidden">
+        <p class="eyebrow">Makanan keluarga</p>
+        <h2>Tambah ke daftar</h2>
+        <form id="add-form">
+          <label class="field">Nama makanan
+            <input id="add-name" type="text" placeholder="mis. nasi tutug oncom" autocomplete="off" required>
+          </label>
+          <label class="field">Bahan / cara masak <span class="muted small">(makin lengkap makin akurat)</span>
+            <textarea id="add-bahan" rows="3" placeholder="mis. nasi, oncom bakar, ikan asin, sambal, lalapan"></textarea>
+          </label>
+          <button class="btn big ink" type="submit">Analisis dengan Gemma</button>
+        </form>
+        <div id="add-loading" class="hidden">
+          <div class="bar"><span></span></div>
+          <p class="small"><b>Gemma lagi menilai bahan-bahannya…</b></p>
+        </div>
+        <div id="add-review" class="hidden">
+          <div class="review-head">
+            <p class="eyebrow">Usulan Gemma · periksa dulu</p>
+            <p id="add-alasan" class="small"></p>
+          </div>
+          <div class="grid2">
+            <label class="field">Purin <select id="add-purin"><option>rendah</option><option>sedang</option><option>tinggi</option></select></label>
+            <label class="field">Garam <select id="add-garam"><option>rendah</option><option>sedang</option><option>tinggi</option></select></label>
+          </div>
+          <label class="field">Kategori <select id="add-kategori"></select></label>
+          <label class="field">Porsi aman <input id="add-porsi" type="text"></label>
+          <label class="field">Tips (satu per baris) <textarea id="add-trik" rows="3"></textarea></label>
+          <label class="field">Nama lain <span class="muted small">(pisahkan koma)</span> <input id="add-alias" type="text" placeholder="mis. tutug oncom"></label>
+          <p id="add-refs" class="muted small"></p>
+          <div class="row">
+            <button id="add-cancel" class="btn" type="button">Batal</button>
+            <button id="add-save" class="btn good" type="button">Simpan ke daftar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card flat">
+        <h2>Daftar makanan</h2>
+        <input id="search" type="text" placeholder="Cari: soto, sate, emping…" autocomplete="off">
+        <div class="filter-row" id="status-filter"></div>
+        <div class="scroll-x" id="cat-filter"></div>
+        <p class="muted small" id="food-count"></p>
+      </div>
+      <div id="food-grid" class="food-grid"></div>
+    </section>
+
+    <!-- ======================= CATATAN ======================= -->
+    <section id="tab-catatan" class="tab">
+      <div id="meal-summary"></div>
+      <div class="card">
+        <h2>Semua catatan</h2>
+        <div id="meal-list"></div>
+      </div>
+    </section>
+
+    <!-- ======================= KAMBUH ======================= -->
+    <section id="tab-kambuh" class="tab">
+      <div id="flare-summary"></div>
+      <div id="flare-active"></div>
+      <div id="flare-new" class="card">
+        <div class="title-row"><span class="emo-box red">🦶</span><h2>Asam urat kambuh?</h2></div>
+        <p class="eyebrow">1 · Sendi yang sakit</p>
+        <div class="chips" id="joint-chips"></div>
+        <p class="eyebrow">2 · Seberapa sakit?</p>
+        <div class="pain-face"><span id="pain-emo">😣</span><b id="pain-val">5</b><small>/10</small><em id="pain-word">sakit</em></div>
+        <input id="pain" type="range" min="1" max="10" value="5">
+        <div class="scale"><span>sedikit</span><span>tak tertahankan</span></div>
+        <p class="eyebrow">3 · Ada tanda bahaya?</p>
+        <label class="check"><input id="fever" type="checkbox"> 🌡️ Demam / sendi merah panas sekali</label>
+        <button id="flare-save" class="btn big danger">Catat kambuh</button>
+      </div>
+      <div class="card">
+        <div class="title-row"><span class="emo-box">📜</span><h2>Riwayat kambuh</h2></div>
+        <div id="flare-list"></div>
+      </div>
+      <div class="card doctor">
+        <div class="title-row"><span class="emo-box red">🏥</span><h2>Kapan ke dokter?</h2></div>
+        <ul class="plain">
+          <li>Nyeri lebih dari <b>7 hari</b> atau makin parah</li>
+          <li>Ada <b>demam</b>, menggigil, atau sendi sangat merah dan panas</li>
+          <li>Lebih dari satu sendi sakit sekaligus</li>
+          <li>Nyeri <b>8/10 ke atas</b> sampai tidak bisa jalan</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ======================= REVIEW ======================= -->
+    <section id="tab-review" class="tab">
+      <div id="review"></div>
+    </section>
+
+    <p class="disclaimer">Bukan pengganti dokter. Lampu ditentukan tabel makanan, kata-katanya ditulis Gemma.</p>
+  </main>
+
+  <nav class="bottom">
+    <button data-tab="cek" class="active">Cek</button>
+    <button data-tab="daftar">Daftar</button>
+    <button data-tab="catatan">Catatan</button>
+    <button data-tab="kambuh">Kambuh</button>
+    <button data-tab="review">Review</button>
+  </nav>
+
+  <div id="toast" class="toast hidden"></div>
+  <script src="app.js"></script>
+</body>
+</html>
