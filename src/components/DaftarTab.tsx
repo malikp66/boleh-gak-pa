@@ -1,0 +1,164 @@
+"use client";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { api, Chips, useToast } from "./ui";
+import { FoodItem, Profile } from "./types";
+
+const STATUS_FILTER = ["semua", "hijau", "kuning", "merah"] as const;
+const STATUS_LABEL = { semua: "Semua", hijau: "Aman", kuning: "Batasi", merah: "Hindari" };
+const BADGE = { hijau: "rendah", kuning: "sedang", merah: "tinggi" } as const;
+
+interface Analysis { kategori: string; purin: string; garam: string; porsi_aman: string; trik: string[]; pemicu: string[]; alasan: string; refs: string[] }
+
+export default function DaftarTab({ profile, addName, onCheck }: {
+  profile: Profile; addName: { name: string; n: number } | null; onCheck: (food: string) => void;
+}) {
+  const toast = useToast();
+  const [foods, setFoods] = useState<FoodItem[]>([]);
+  const [q, setQ] = useState("");
+  const [cat, setCat] = useState("Semua");
+  const [status, setStatus] = useState<(typeof STATUS_FILTER)[number]>("semua");
+  const [adding, setAdding] = useState(Boolean(addName));
+  const [form, setForm] = useState({ name: addName?.name ?? "", bahan: "", alias: "" });
+  const [analysis, setAnalysis] = useState<Analysis | null>(null);
+  const [busy, setBusy] = useState(false);
+
+  const load = useCallback(
+    () => api<FoodItem[]>(`/api/foods?profileId=${profile.id}`).then(setFoods).catch((e) => toast(e.message)),
+    [profile.id, toast],
+  );
+  useEffect(() => { load(); }, [load]);
+
+  const cats = useMemo(() => ["Semua", ...new Set(foods.map((f) => f.kategori))], [foods]);
+  const list = foods.filter((f) =>
+    (cat === "Semua" || f.kategori === cat) &&
+    (status === "semua" || f.status === status) &&
+    (!q || [f.name, ...f.aliases].some((n) => n.includes(q.trim().toLowerCase()))));
+
+  async function analyze(e: React.FormEvent) {
+    e.preventDefault();
+    setBusy(true);
+    try {
+      setAnalysis(await api<Analysis>("/api/foods/analyze", { name: form.name, bahan: form.bahan }));
+    } catch (err) {
+      toast("Gagal menganalisis: " + (err as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function save() {
+    if (!analysis) return;
+    try {
+      await api("/api/foods", {
+        profileId: profile.id, name: form.name, bahan: form.bahan, kategori: analysis.kategori,
+        purin: analysis.purin, garam: analysis.garam, porsi_aman: analysis.porsi_aman,
+        trik: analysis.trik.filter(Boolean), pemicu: analysis.pemicu, alasan: analysis.alasan,
+        aliases: form.alias.split(",").map((s) => s.trim()).filter(Boolean),
+      });
+      toast(`"${form.name}" masuk daftar keluarga`);
+      setAdding(false);
+      setAnalysis(null);
+      setQ(form.name.toLowerCase());
+      setCat("Semua");
+      load();
+    } catch (err) {
+      toast((err as Error).message);
+    }
+  }
+
+  async function remove(f: FoodItem) {
+    if (!f.id || !confirm(`Hapus "${f.name}" dari daftar?`)) return;
+    await api(`/api/foods/${f.id}`, undefined, "DELETE").catch((e) => toast(e.message));
+    load();
+  }
+
+  const setA = (k: keyof Analysis, v: string | string[]) => setAnalysis((a) => (a ? { ...a, [k]: v } : a));
+
+  return (
+    <>
+      {!adding ? (
+        <button className="btn big primary add-open" onClick={() => { setAdding(true); setAnalysis(null); setForm({ name: "", bahan: "", alias: "" }); }}>
+          + Tambah makanan sendiri
+        </button>
+      ) : (
+        <div className="card">
+          <p className="eyebrow">Makanan keluarga</p>
+          <h2>Tambah ke daftar</h2>
+          {!analysis ? (
+            <form onSubmit={analyze}>
+              <label className="field">Nama makanan
+                <input type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="mis. nasi tutug oncom" required />
+              </label>
+              <label className="field">Bahan / cara masak <span className="muted small">(makin lengkap makin akurat)</span>
+                <textarea rows={3} value={form.bahan} onChange={(e) => setForm({ ...form, bahan: e.target.value })} placeholder="mis. nasi, oncom bakar, ikan asin, sambal" />
+              </label>
+              {busy && <div className="bar"><span /></div>}
+              <div className="row">
+                <button type="button" className="btn" onClick={() => setAdding(false)}>Batal</button>
+                <button className="btn ink" disabled={busy}>{busy ? "Menilai…" : "Analisis dengan AI"}</button>
+              </div>
+            </form>
+          ) : (
+            <>
+              <div className="review-head"><p className="eyebrow">Usulan AI · periksa dulu</p><p className="small">{analysis.alasan}</p></div>
+              <div className="grid2">
+                <label className="field">Purin
+                  <select value={analysis.purin} onChange={(e) => setA("purin", e.target.value)}>{["rendah", "sedang", "tinggi"].map((l) => <option key={l}>{l}</option>)}</select>
+                </label>
+                <label className="field">Garam
+                  <select value={analysis.garam} onChange={(e) => setA("garam", e.target.value)}>{["rendah", "sedang", "tinggi"].map((l) => <option key={l}>{l}</option>)}</select>
+                </label>
+              </div>
+              <label className="field">Kategori
+                <select value={analysis.kategori} onChange={(e) => setA("kategori", e.target.value)}>
+                  {cats.filter((c) => c !== "Semua" && c !== "Buatan keluarga").map((c) => <option key={c}>{c}</option>)}
+                </select>
+              </label>
+              <label className="field">Porsi aman <input type="text" value={analysis.porsi_aman} onChange={(e) => setA("porsi_aman", e.target.value)} /></label>
+              <label className="field">Tips (satu per baris)
+                <textarea rows={3} value={analysis.trik.join("\n")} onChange={(e) => setA("trik", e.target.value.split("\n"))} />
+              </label>
+              <label className="field">Nama lain <span className="muted small">(pisahkan koma)</span>
+                <input type="text" value={form.alias} onChange={(e) => setForm({ ...form, alias: e.target.value })} />
+              </label>
+              {analysis.refs.length > 0 && <p className="muted small">Dibandingkan dengan: {analysis.refs.join(", ")}</p>}
+              <div className="row">
+                <button className="btn" onClick={() => setAnalysis(null)}>Ulangi</button>
+                <button className="btn good" onClick={save}>Simpan ke daftar</button>
+              </div>
+            </>
+          )}
+        </div>
+      )}
+
+      <div className="card flat">
+        <h2>Daftar makanan</h2>
+        <input type="text" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Cari: soto, sate, emping…" autoComplete="off" />
+        <div className="filter-row"><Chips items={STATUS_FILTER} value={status} onPick={setStatus} labels={STATUS_LABEL} /></div>
+        <div className="scroll-x"><Chips items={cats} value={cat} onPick={setCat} /></div>
+        <p className="muted small">{list.length} dari {foods.length} makanan · ketuk untuk cek</p>
+      </div>
+
+      <div className="food-grid">
+        {list.length ? list.slice(0, 120).map((f) => (
+          <article className="food" key={f.id ?? f.name} onClick={() => onCheck(f.name)}>
+            <div className={`rail ${f.status}`} />
+            <div className="body">
+              <div className="top-line"><h3>{f.name}</h3><span className="kat">{f.kategori}</span></div>
+              {f.aliases.length > 0 && <div className="alias">{f.aliases.slice(0, 4).join(", ")}</div>}
+              <div className="badges">
+                <span className={`badge ${BADGE[f.status]}`}>{STATUS_LABEL[f.status]}</span>
+                <span className={`badge ${f.purin}`}>Purin {f.purin}</span>
+                <span className={`badge ${f.garam}`}>Garam {f.garam}</span>
+                {f.custom && <span className="badge keluarga">Buatan keluarga</span>}
+              </div>
+              <p className="porsi">{f.porsi_aman}</p>
+              {f.custom && <button className="btn del" onClick={(e) => { e.stopPropagation(); remove(f); }}>Hapus</button>}
+            </div>
+          </article>
+        )) : <div className="card empty">Belum ada di daftar. Coba cek langsung di tab Cek, AI akan menilai.</div>}
+        {list.length > 120 && <p className="muted small" style={{ textAlign: "center" }}>Ketik di kolom cari untuk melihat sisanya.</p>}
+      </div>
+    </>
+  );
+}

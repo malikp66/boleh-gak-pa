@@ -120,7 +120,11 @@ export function findFoods(text: string, foods: Food[] = FOODS): MatchedFood[] {
   }
 
   found.sort((x, y) => x._pos - y._pos);
-  const clean: MatchedFood[] = found.map(({ _pos, ...f }) => f);
+  const clean: MatchedFood[] = found.map((f) => {
+    const { _pos, ...rest } = f;
+    void _pos;
+    return rest;
+  });
 
   // buang yang sebenarnya bahan dari makanan lain ('ketoprak tahu' → tahu sudah termasuk ketoprak),
   // tapi hanya kalau risikonya tidak lebih berat dari makanan induknya
