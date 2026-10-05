@@ -5,6 +5,7 @@ import { AIUnavailableError } from "./ai";
 import { AssessAI, FlareSummary, Profile } from "./domain";
 import { FOODS } from "./foods/match";
 import { Food } from "./foods/types";
+import { supabaseConfigured } from "./supabase/env";
 import { createAdminClient, createClient } from "./supabase/server";
 
 export class HttpError extends Error {
@@ -29,6 +30,7 @@ export function route<C>(fn: (req: Request, ctx: C) => Promise<unknown>) {
 }
 
 export async function requireUser() {
+  if (!supabaseConfigured) throw new HttpError(503, "Supabase belum dikonfigurasi (lihat .env.example)");
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getUser();
   if (error || !data.user) throw new HttpError(401, "Silakan login dulu");
