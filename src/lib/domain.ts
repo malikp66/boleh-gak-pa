@@ -223,7 +223,7 @@ export async function identify(imageB64: string, foods: Food[]) {
     jenis: z.enum(["makanan jadi", "jajanan kemasan", "buah", "sayur", "minuman", "lainnya"]),
     komponen: z.array(z.string()),
     berkuah: z.boolean(),
-    food: z.string(),
+    food: z.enum([...names, "lainnya"] as [string, ...string[]]),
     confidence: z.enum(["yakin", "kurang yakin"]),
   });
   const r = await generateJSON(

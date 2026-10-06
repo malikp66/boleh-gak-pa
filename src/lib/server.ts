@@ -3,7 +3,7 @@ import { cookies, headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { createHash } from "node:crypto";
 import { ZodError, z } from "zod";
-import { AIUnavailableError } from "./ai";
+import { AIUnavailableError, estimateUSD, onBudgetCheck, onSpend } from "./ai";
 import { one, q } from "./db";
 import { formatKey, generateKey, hashKey, isValidKey, normalizeKey } from "./device-key";
 import { AssessAI, FlareSummary, Profile } from "./domain";
@@ -166,6 +166,35 @@ export function aiCache() {
     },
   };
 }
+
+// ---------------------------------------------------------------- rem anggaran AI bulanan
+const MONTHLY_BUDGET = Number(process.env.AI_MONTHLY_BUDGET_USD ?? 5);
+let budgetCache: { at: number; spent: number } | null = null;
+
+onSpend(async (model, input, output) => {
+  const usd = estimateUSD(model, input, output);
+  await q(
+    `insert into ai_spend (day, model, calls, input_tokens, output_tokens, est_usd)
+     values ((now() at time zone 'Asia/Jakarta')::date, $1, 1, $2, $3, $4)
+     on conflict (day, model) do update set calls = ai_spend.calls + 1, input_tokens = ai_spend.input_tokens + $2,
+       output_tokens = ai_spend.output_tokens + $3, est_usd = ai_spend.est_usd + $4`,
+    [model, input, output, usd],
+  );
+  if (budgetCache) budgetCache.spent += usd;
+});
+
+onBudgetCheck(async () => {
+  if (!budgetCache || Date.now() - budgetCache.at > 60_000) {
+    const row = await one<{ spent: string }>(
+      `select coalesce(sum(est_usd), 0) as spent from ai_spend
+       where day >= date_trunc('month', now() at time zone 'Asia/Jakarta')::date`,
+    );
+    budgetCache = { at: Date.now(), spent: Number(row?.spent ?? 0) };
+  }
+  if (budgetCache.spent >= MONTHLY_BUDGET) {
+    throw new AIUnavailableError("Anggaran AI bulan ini sudah tercapai; sementara memakai tabel saja.");
+  }
+});
 
 export const todayStartISO = () => {
   // awal hari menurut WIB, supaya "hari ini" sesuai jam pengguna di Indonesia
