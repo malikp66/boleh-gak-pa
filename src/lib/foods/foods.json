@@ -12,6 +12,7 @@
    "karbo": "tinggi",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": "tinggi",
    "alergen": [
     "kacang tanah",
     "kedelai",
@@ -41,6 +42,7 @@
    "karbo": "sedang",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [
     "kacang tanah",
     "kedelai",
@@ -68,6 +70,7 @@
    "karbo": "sedang",
    "gula": "sedang",
    "lemak": "rendah",
+   "ig": "sedang",
    "alergen": [
     "kacang tanah"
    ],
@@ -92,6 +95,7 @@
    "karbo": "sedang",
    "gula": "sedang",
    "lemak": "rendah",
+   "ig": "sedang",
    "alergen": [
     "kacang tanah"
    ],
@@ -116,6 +120,7 @@
    "karbo": "sedang",
    "gula": "sedang",
    "lemak": "rendah",
+   "ig": "sedang",
    "alergen": [
     "ikan",
     "kacang tanah",
@@ -141,6 +146,7 @@
    "karbo": "sedang",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [
     "ikan",
     "kacang tanah",
@@ -165,6 +171,7 @@
    "karbo": "rendah",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [
     "kedelai"
    ],
@@ -186,6 +193,7 @@
    "karbo": "tinggi",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "tinggi",
    "alergen": [
     "telur",
     "krustasea"
@@ -210,6 +218,7 @@
    "karbo": "tinggi",
    "gula": "sedang",
    "lemak": "rendah",
+   "ig": "tinggi",
    "alergen": [
     "kacang tanah"
    ],
@@ -230,6 +239,7 @@
    "karbo": "tinggi",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "tinggi",
    "alergen": [
     "telur"
    ],
@@ -252,6 +262,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [
     "gluten"
    ],
@@ -272,6 +283,7 @@
    "karbo": "sedang",
    "gula": "sedang",
    "lemak": "rendah",
+   "ig": "sedang",
    "alergen": [
     "ikan",
     "kacang tanah"
@@ -296,6 +308,7 @@
    "karbo": "tinggi",
    "gula": "tinggi",
    "lemak": "rendah",
+   "ig": "tinggi",
    "alergen": [
     "ikan",
     "telur",
@@ -319,6 +332,7 @@
    "karbo": "sedang",
    "gula": "tinggi",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [
     "gluten",
     "telur",
@@ -341,6 +355,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [
     "telur"
    ],
@@ -363,6 +378,7 @@
    "karbo": "rendah",
    "gula": "sedang",
    "lemak": "tinggi",
+   "ig": null,
    "alergen": [
     "gluten"
    ],
@@ -383,6 +399,7 @@
    "karbo": "rendah",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "2 tusuk",
    "trik": [
@@ -396,7 +413,6 @@
    "name": "nasi putih",
    "aliases": [
     "nasi",
-    "nasi merah",
     "nasi hangat"
    ],
    "kategori": "Nasi & lauk",
@@ -405,6 +421,7 @@
    "karbo": "tinggi",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "tinggi",
    "alergen": [],
    "porsi_aman": "1 centong (porsi biasa)",
    "trik": [
@@ -423,6 +440,7 @@
    "karbo": "tinggi",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": "tinggi",
    "alergen": [
     "telur",
     "kedelai"
@@ -451,6 +469,7 @@
    "karbo": "tinggi",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "tinggi",
    "alergen": [
     "kedelai",
     "gluten"
@@ -477,6 +496,7 @@
    "karbo": "tinggi",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "tinggi",
    "alergen": [
     "kedelai"
    ],
@@ -500,6 +520,7 @@
    "karbo": "tinggi",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "tinggi",
    "alergen": [
     "telur"
    ],
@@ -522,6 +543,7 @@
    "karbo": "tinggi",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "tinggi",
    "alergen": [
     "ikan"
    ],
@@ -545,6 +567,7 @@
    "karbo": "tinggi",
    "gula": "rendah",
    "lemak": "tinggi",
+   "ig": "tinggi",
    "alergen": [],
    "porsi_aman": "1 potong kecil",
    "trik": [
@@ -566,6 +589,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 potong",
    "trik": [
@@ -586,6 +610,7 @@
    "karbo": "rendah",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1-2 lembar",
    "trik": [
@@ -606,6 +631,7 @@
    "karbo": "tinggi",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": "tinggi",
    "alergen": [
     "telur"
    ],
@@ -628,6 +654,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "tinggi",
    "alergen": [
     "ikan"
    ],
@@ -652,6 +679,7 @@
    "karbo": "tinggi",
    "gula": "rendah",
    "lemak": "tinggi",
+   "ig": "tinggi",
    "alergen": [],
    "porsi_aman": "1 potong",
    "trik": [
@@ -674,6 +702,7 @@
    "karbo": "tinggi",
    "gula": "rendah",
    "lemak": "tinggi",
+   "ig": "sedang",
    "alergen": [
     "susu"
    ],
@@ -695,6 +724,7 @@
    "karbo": "tinggi",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "tinggi",
    "alergen": [
     "telur"
    ],
@@ -709,16 +739,14 @@
   },
   {
    "name": "ketupat sayur",
-   "aliases": [
-    "opor",
-    "opor ayam"
-   ],
+   "aliases": [],
    "kategori": "Nasi & lauk",
    "purin": "sedang",
    "garam": "sedang",
    "karbo": "tinggi",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "tinggi",
    "alergen": [
     "telur"
    ],
@@ -741,6 +769,7 @@
    "karbo": "rendah",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "sebaiknya dihindari",
    "trik": [
@@ -761,6 +790,7 @@
    "karbo": "rendah",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [
     "kedelai"
    ],
@@ -784,6 +814,7 @@
    "karbo": "rendah",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 potong kecil",
    "trik": [
@@ -810,6 +841,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [
     "telur"
    ],
@@ -829,6 +861,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [
     "telur"
    ],
@@ -851,6 +884,7 @@
    "karbo": "rendah",
    "gula": "sedang",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [
     "telur",
     "kedelai"
@@ -878,6 +912,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 potong",
    "trik": [
@@ -898,6 +933,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 potong",
    "trik": [
@@ -920,6 +956,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [
     "kedelai"
    ],
@@ -945,6 +982,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [
     "kedelai"
    ],
@@ -967,6 +1005,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "tinggi",
    "alergen": [
     "telur"
    ],
@@ -987,6 +1026,7 @@
    "karbo": "rendah",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 sendok",
    "trik": [
@@ -1005,6 +1045,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "tinggi",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1-2 sendok",
    "trik": [
@@ -1026,6 +1067,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [
     "telur"
    ],
@@ -1054,6 +1096,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "tinggi",
+   "ig": "sedang",
    "alergen": [
     "susu"
    ],
@@ -1078,6 +1121,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "tinggi",
    "alergen": [
     "kacang tanah"
    ],
@@ -1098,6 +1142,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [],
    "porsi_aman": "setengah mangkuk",
    "trik": [
@@ -1122,6 +1167,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "tinggi",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "setengah porsi, kuah sedikit",
    "trik": [
@@ -1145,6 +1191,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "tinggi",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "sebaiknya dihindari",
    "trik": [
@@ -1164,6 +1211,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "tinggi",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "sebaiknya dihindari",
    "trik": [
@@ -1184,6 +1232,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "tinggi",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "maksimal 3 potong kecil",
    "trik": [
@@ -1206,6 +1255,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 potong",
    "trik": [
@@ -1227,6 +1277,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 mangkuk",
    "trik": [
@@ -1239,8 +1290,7 @@
   {
    "name": "sayur asem",
    "aliases": [
-    "sayur bening",
-    "sop sayur"
+    "sayur bening"
    ],
    "kategori": "Berkuah",
    "purin": "rendah",
@@ -1248,6 +1298,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [
     "kacang tanah"
    ],
@@ -1269,6 +1320,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "tinggi",
    "alergen": [],
    "porsi_aman": "1 mangkuk",
    "trik": [
@@ -1289,6 +1341,7 @@
    "karbo": "rendah",
    "gula": "sedang",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [
     "ikan"
    ],
@@ -1309,6 +1362,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
@@ -1327,6 +1381,7 @@
    "karbo": "rendah",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [
     "kedelai"
    ],
@@ -1349,6 +1404,7 @@
    "karbo": "sedang",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [
     "kacang tanah",
     "kedelai"
@@ -1373,6 +1429,7 @@
    "karbo": "rendah",
    "gula": "sedang",
    "lemak": "tinggi",
+   "ig": null,
    "alergen": [
     "kedelai"
    ],
@@ -1396,6 +1453,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "tinggi",
    "alergen": [],
    "porsi_aman": "3 tusuk",
    "trik": [
@@ -1414,6 +1472,7 @@
    "karbo": "rendah",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [
     "kedelai"
    ],
@@ -1434,6 +1493,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "5 tusuk",
    "trik": [
@@ -1456,6 +1516,7 @@
    "karbo": "rendah",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [
     "kedelai"
    ],
@@ -1478,6 +1539,7 @@
    "karbo": "rendah",
    "gula": "sedang",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [
     "telur",
     "kedelai"
@@ -1501,6 +1563,7 @@
    "karbo": "rendah",
    "gula": "sedang",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [
     "ikan",
     "kedelai"
@@ -1522,6 +1585,7 @@
    "karbo": "rendah",
    "gula": "tinggi",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [
     "kedelai"
    ],
@@ -1553,6 +1617,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "tinggi",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "sebaiknya dihindari",
    "trik": [
@@ -1574,6 +1639,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "2-3 buah",
    "trik": [
@@ -1595,6 +1661,7 @@
    "karbo": "rendah",
    "gula": "sedang",
    "lemak": "tinggi",
+   "ig": null,
    "alergen": [
     "kedelai"
    ],
@@ -1618,6 +1685,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "tinggi",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "sebaiknya dibatasi",
    "trik": [
@@ -1638,6 +1706,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "tinggi",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 potong",
    "trik": [
@@ -1658,6 +1727,7 @@
    "karbo": "rendah",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [
     "krustasea",
     "moluska",
@@ -1685,6 +1755,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [
     "krustasea"
    ],
@@ -1709,6 +1780,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [
     "moluska"
    ],
@@ -1732,6 +1804,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [
     "moluska"
    ],
@@ -1754,6 +1827,7 @@
    "karbo": "rendah",
    "gula": "sedang",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [
     "krustasea"
    ],
@@ -1776,6 +1850,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [
     "ikan"
    ],
@@ -1800,6 +1875,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [
     "ikan"
    ],
@@ -1825,6 +1901,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [
     "ikan"
    ],
@@ -1848,6 +1925,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [
     "ikan"
    ],
@@ -1872,6 +1950,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [
     "ikan"
    ],
@@ -1895,6 +1974,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [
     "ikan"
    ],
@@ -1918,6 +1998,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [
     "gluten"
    ],
@@ -1942,6 +2023,7 @@
    "karbo": "tinggi",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": "rendah",
    "alergen": [
     "gluten",
     "kedelai"
@@ -1970,6 +2052,7 @@
    "karbo": "tinggi",
    "gula": "rendah",
    "lemak": "tinggi",
+   "ig": "rendah",
    "alergen": [
     "gluten",
     "kedelai"
@@ -1997,6 +2080,7 @@
    "karbo": "tinggi",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": "rendah",
    "alergen": [
     "gluten",
     "kedelai",
@@ -2023,6 +2107,7 @@
    "karbo": "tinggi",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [
     "kedelai",
     "telur"
@@ -2046,6 +2131,7 @@
    "karbo": "tinggi",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "rendah",
    "alergen": [
     "gluten",
     "krustasea"
@@ -2070,6 +2156,7 @@
    "karbo": "tinggi",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "rendah",
    "alergen": [
     "gluten"
    ],
@@ -2093,6 +2180,7 @@
    "karbo": "tinggi",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "rendah",
    "alergen": [
     "gluten"
    ],
@@ -2118,6 +2206,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [
     "gluten"
    ],
@@ -2141,6 +2230,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "sedang",
    "alergen": [],
    "porsi_aman": "sebaiknya dihindari",
    "trik": [
@@ -2163,6 +2253,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [
     "krustasea"
    ],
@@ -2186,6 +2277,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [
     "kacang tanah"
    ],
@@ -2211,6 +2303,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [
     "kacang tanah"
    ],
@@ -2242,6 +2335,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [],
    "porsi_aman": "segenggam kecil",
    "trik": [
@@ -2264,6 +2358,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "tinggi",
+   "ig": "sedang",
    "alergen": [
     "gluten",
     "telur"
@@ -2290,6 +2385,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [
     "gluten",
     "telur",
@@ -2317,6 +2413,7 @@
    "karbo": "tinggi",
    "gula": "tinggi",
    "lemak": "tinggi",
+   "ig": "tinggi",
    "alergen": [
     "gluten",
     "telur",
@@ -2335,7 +2432,6 @@
    "name": "klepon",
    "aliases": [
     "kue lapis",
-    "onde-onde",
     "nagasari",
     "kue basah"
    ],
@@ -2345,6 +2441,7 @@
    "karbo": "sedang",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": "tinggi",
    "alergen": [],
    "porsi_aman": "1-2 buah",
    "trik": [
@@ -2369,6 +2466,7 @@
    "karbo": "tinggi",
    "gula": "tinggi",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [],
    "porsi_aman": "1 mangkuk kecil",
    "trik": [
@@ -2390,6 +2488,7 @@
    "karbo": "tinggi",
    "gula": "tinggi",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [],
    "porsi_aman": "1 mangkuk kecil",
    "trik": [
@@ -2411,6 +2510,7 @@
    "karbo": "sedang",
    "gula": "tinggi",
    "lemak": "rendah",
+   "ig": "sedang",
    "alergen": [
     "susu"
    ],
@@ -2434,6 +2534,7 @@
    "karbo": "sedang",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": "tinggi",
    "alergen": [
     "gluten",
     "susu"
@@ -2461,6 +2562,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "rendah",
    "alergen": [
     "gluten"
    ],
@@ -2486,6 +2588,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "tinggi",
+   "ig": "sedang",
    "alergen": [
     "gluten",
     "susu",
@@ -2514,6 +2617,7 @@
    "karbo": "sedang",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": "tinggi",
    "alergen": [
     "gluten",
     "susu",
@@ -2539,6 +2643,7 @@
    "karbo": "sedang",
    "gula": "tinggi",
    "lemak": "sedang",
+   "ig": "tinggi",
    "alergen": [
     "gluten",
     "telur",
@@ -2563,6 +2668,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
@@ -2584,6 +2690,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [
     "krustasea"
    ],
@@ -2607,6 +2714,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 mangkuk",
    "trik": [
@@ -2625,6 +2733,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
@@ -2644,6 +2753,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "bebas",
    "trik": [
@@ -2662,6 +2772,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
@@ -2682,6 +2793,7 @@
    "karbo": "sedang",
    "gula": "tinggi",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [
     "telur"
    ],
@@ -2705,6 +2817,7 @@
    "karbo": "rendah",
    "gula": "sedang",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [
     "kedelai"
    ],
@@ -2729,6 +2842,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [
     "krustasea"
    ],
@@ -2753,6 +2867,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "sedang",
    "alergen": [],
    "porsi_aman": "1 piring kecil",
    "trik": [
@@ -2771,6 +2886,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "segenggam",
    "trik": [
@@ -2787,6 +2903,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "rendah",
    "alergen": [],
    "porsi_aman": "1-2 biji",
    "trik": [
@@ -2807,6 +2924,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "sedang",
    "alergen": [],
    "porsi_aman": "3-4 biji",
    "trik": [
@@ -2827,6 +2945,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 buah",
    "trik": [
@@ -2851,6 +2970,7 @@
    "karbo": "sedang",
    "gula": "tinggi",
    "lemak": "rendah",
+   "ig": "sedang",
    "alergen": [],
    "porsi_aman": "1 gelas, minta kurang manis",
    "trik": [
@@ -2888,6 +3008,7 @@
    "karbo": "sedang",
    "gula": "tinggi",
    "lemak": "rendah",
+   "ig": "sedang",
    "alergen": [],
    "porsi_aman": "sebaiknya dihindari, maksimal 1 kaleng kecil sesekali",
    "trik": [
@@ -2918,6 +3039,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 kaleng sesekali",
    "trik": [
@@ -2940,6 +3062,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "8+ gelas sehari",
    "trik": [
@@ -2959,6 +3082,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "bebas",
    "trik": [
@@ -2978,6 +3102,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1-2 cangkir tanpa banyak gula",
    "trik": [
@@ -2999,6 +3124,7 @@
    "karbo": "sedang",
    "gula": "tinggi",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [
     "susu"
    ],
@@ -3022,6 +3148,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [
     "susu"
    ],
@@ -3043,6 +3170,7 @@
    "karbo": "sedang",
    "gula": "tinggi",
    "lemak": "rendah",
+   "ig": "rendah",
    "alergen": [],
    "porsi_aman": "1 gelas kecil",
    "trik": [
@@ -3066,6 +3194,7 @@
    "karbo": "sedang",
    "gula": "sedang",
    "lemak": "rendah",
+   "ig": "sedang",
    "alergen": [],
    "porsi_aman": "1 gelas",
    "trik": [
@@ -3089,6 +3218,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "tinggi",
    "alergen": [
     "gluten"
    ],
@@ -3113,6 +3243,7 @@
    "karbo": "sedang",
    "gula": "tinggi",
    "lemak": "rendah",
+   "ig": "tinggi",
    "alergen": [],
    "porsi_aman": "jarang",
    "trik": [
@@ -3137,6 +3268,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "tinggi",
+   "ig": "sedang",
    "alergen": [
     "gluten",
     "susu"
@@ -3167,6 +3299,7 @@
    "karbo": "sedang",
    "gula": "sedang",
    "lemak": "tinggi",
+   "ig": "sedang",
    "alergen": [
     "gluten",
     "susu",
@@ -3198,6 +3331,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [
     "gluten"
    ],
@@ -3223,6 +3357,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [],
    "porsi_aman": "porsi kecil",
    "trik": [
@@ -3244,6 +3379,7 @@
    "karbo": "sedang",
    "gula": "sedang",
    "lemak": "tinggi",
+   "ig": "sedang",
    "alergen": [
     "gluten"
    ],
@@ -3271,6 +3407,7 @@
    "karbo": "tinggi",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": "rendah",
    "alergen": [
     "gluten",
     "susu",
@@ -3300,6 +3437,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "tinggi",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 potong kecil (100 g)",
    "trik": [
@@ -3323,6 +3461,7 @@
    "karbo": "sedang",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [
     "gluten",
     "telur"
@@ -3350,6 +3489,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [
     "gluten",
     "telur"
@@ -3376,6 +3516,7 @@
    "karbo": "rendah",
    "gula": "sedang",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [
     "telur"
    ],
@@ -3400,6 +3541,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "tinggi",
+   "ig": "sedang",
    "alergen": [
     "susu",
     "gluten",
@@ -3425,6 +3567,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [
     "gluten",
     "telur"
@@ -3451,6 +3594,7 @@
    "karbo": "tinggi",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": "rendah",
    "alergen": [
     "gluten",
     "kedelai",
@@ -3480,6 +3624,7 @@
    "karbo": "tinggi",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [
     "kedelai",
     "telur"
@@ -3504,6 +3649,7 @@
    "karbo": "sedang",
    "gula": "tinggi",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [
     "telur",
     "krustasea"
@@ -3531,6 +3677,7 @@
    "karbo": "sedang",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [
     "gluten",
     "krustasea",
@@ -3559,6 +3706,7 @@
    "karbo": "sedang",
    "gula": "tinggi",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [
     "gluten"
    ],
@@ -3583,6 +3731,7 @@
    "karbo": "sedang",
    "gula": "tinggi",
    "lemak": "tinggi",
+   "ig": "sedang",
    "alergen": [
     "gluten",
     "kedelai"
@@ -3607,6 +3756,7 @@
    "karbo": "tinggi",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "tinggi",
    "alergen": [
     "kedelai"
    ],
@@ -3631,6 +3781,7 @@
    "karbo": "tinggi",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "tinggi",
    "alergen": [
     "telur",
     "kedelai"
@@ -3658,6 +3809,7 @@
    "karbo": "sedang",
    "gula": "sedang",
    "lemak": "tinggi",
+   "ig": "sedang",
    "alergen": [
     "krustasea",
     "moluska",
@@ -3686,6 +3838,7 @@
    "karbo": "sedang",
    "gula": "sedang",
    "lemak": "tinggi",
+   "ig": "sedang",
    "alergen": [
     "kedelai",
     "gluten",
@@ -3712,6 +3865,7 @@
    "karbo": "tinggi",
    "gula": "sedang",
    "lemak": "rendah",
+   "ig": "sedang",
    "alergen": [
     "ikan",
     "kedelai",
@@ -3743,6 +3897,7 @@
    "karbo": "tinggi",
    "gula": "rendah",
    "lemak": "tinggi",
+   "ig": "rendah",
    "alergen": [
     "gluten",
     "kedelai",
@@ -3768,6 +3923,7 @@
    "karbo": "tinggi",
    "gula": "sedang",
    "lemak": "rendah",
+   "ig": "rendah",
    "alergen": [
     "gluten",
     "kedelai",
@@ -3792,6 +3948,7 @@
    "karbo": "sedang",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [
     "gluten",
     "telur",
@@ -3820,6 +3977,7 @@
    "karbo": "tinggi",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": "tinggi",
    "alergen": [
     "kedelai",
     "gluten"
@@ -3845,6 +4003,7 @@
    "karbo": "rendah",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [
     "kedelai",
     "gluten"
@@ -3869,6 +4028,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [
     "gluten",
     "telur",
@@ -3895,9 +4055,11 @@
    "karbo": "rendah",
    "gula": "sedang",
    "lemak": "tinggi",
+   "ig": null,
    "alergen": [
     "kedelai",
-    "gluten"
+    "gluten",
+    "wijen"
    ],
    "porsi_aman": "sedikit",
    "trik": [
@@ -3920,6 +4082,7 @@
    "karbo": "tinggi",
    "gula": "tinggi",
    "lemak": "rendah",
+   "ig": "tinggi",
    "alergen": [
     "gluten",
     "kedelai",
@@ -3942,6 +4105,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [
     "ikan",
     "krustasea"
@@ -3967,6 +4131,7 @@
    "karbo": "tinggi",
    "gula": "rendah",
    "lemak": "tinggi",
+   "ig": "rendah",
    "alergen": [
     "gluten",
     "kedelai"
@@ -3992,6 +4157,7 @@
    "karbo": "sedang",
    "gula": "tinggi",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [
     "gluten",
     "kedelai"
@@ -4017,6 +4183,7 @@
    "karbo": "tinggi",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "tinggi",
    "alergen": [
     "kacang tanah",
     "ikan"
@@ -4033,8 +4200,7 @@
   {
    "name": "nasi timbel",
    "aliases": [
-    "timbel",
-    "nasi bakar"
+    "timbel"
    ],
    "kategori": "Masakan daerah",
    "purin": "sedang",
@@ -4042,6 +4208,7 @@
    "karbo": "tinggi",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "tinggi",
    "alergen": [
     "ikan",
     "kedelai"
@@ -4066,6 +4233,7 @@
    "karbo": "tinggi",
    "gula": "tinggi",
    "lemak": "tinggi",
+   "ig": "sedang",
    "alergen": [
     "telur"
    ],
@@ -4090,6 +4258,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [
     "ikan"
    ],
@@ -4112,6 +4281,7 @@
    "karbo": "tinggi",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "tinggi",
    "alergen": [
     "ikan"
    ],
@@ -4136,6 +4306,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "tinggi",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "sedikit",
    "trik": [
@@ -4155,6 +4326,7 @@
    "karbo": "rendah",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [
     "ikan"
    ],
@@ -4177,6 +4349,7 @@
    "karbo": "sedang",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [
     "kacang tanah",
     "krustasea"
@@ -4201,6 +4374,7 @@
    "karbo": "sedang",
    "gula": "tinggi",
    "lemak": "rendah",
+   "ig": "sedang",
    "alergen": [
     "kacang tanah",
     "krustasea"
@@ -4225,6 +4399,7 @@
    "karbo": "tinggi",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": "tinggi",
    "alergen": [
     "moluska",
     "kedelai",
@@ -4249,6 +4424,7 @@
    "karbo": "sedang",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [
     "kedelai",
     "kacang tanah",
@@ -4275,6 +4451,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "tinggi",
+   "ig": "tinggi",
    "alergen": [],
    "porsi_aman": "sebaiknya dihindari",
    "trik": [
@@ -4297,6 +4474,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [
     "ikan"
    ],
@@ -4320,6 +4498,7 @@
    "karbo": "tinggi",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "tinggi",
    "alergen": [
     "kedelai",
     "telur"
@@ -4344,6 +4523,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [
     "gluten",
     "kedelai",
@@ -4369,6 +4549,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [
     "telur"
    ],
@@ -4394,6 +4575,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "tinggi",
    "alergen": [
     "ikan",
     "gluten"
@@ -4418,6 +4600,7 @@
    "karbo": "tinggi",
    "gula": "tinggi",
    "lemak": "sedang",
+   "ig": "tinggi",
    "alergen": [
     "gluten",
     "susu"
@@ -4442,6 +4625,7 @@
    "karbo": "tinggi",
    "gula": "tinggi",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [
     "gluten",
     "susu"
@@ -4469,6 +4653,7 @@
    "karbo": "sedang",
    "gula": "tinggi",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [
     "gluten",
     "telur",
@@ -4502,6 +4687,7 @@
    "karbo": "sedang",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [
     "gluten",
     "telur",
@@ -4528,6 +4714,7 @@
    "karbo": "sedang",
    "gula": "tinggi",
    "lemak": "sedang",
+   "ig": "rendah",
    "alergen": [
     "susu"
    ],
@@ -4551,6 +4738,7 @@
    "karbo": "sedang",
    "gula": "tinggi",
    "lemak": "rendah",
+   "ig": "sedang",
    "alergen": [
     "susu"
    ],
@@ -4585,6 +4773,7 @@
    "karbo": "rendah",
    "gula": "sedang",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1-2 butir saja",
    "trik": [
@@ -4612,6 +4801,7 @@
    "karbo": "rendah",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [
     "susu"
    ],
@@ -4637,6 +4827,7 @@
    "karbo": "tinggi",
    "gula": "sedang",
    "lemak": "sedang",
+   "ig": "tinggi",
    "alergen": [],
    "porsi_aman": "1-2 buah",
    "trik": [
@@ -4658,6 +4849,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "tinggi",
    "alergen": [],
    "porsi_aman": "1-2 buah",
    "trik": [
@@ -4682,6 +4874,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": "tinggi",
    "alergen": [
     "gluten"
    ],
@@ -4704,6 +4897,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "sedang",
    "alergen": [],
    "porsi_aman": "1 mangkuk kecil",
    "trik": [
@@ -4726,6 +4920,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [
     "kacang pohon"
    ],
@@ -4751,6 +4946,7 @@
    "karbo": "tinggi",
    "gula": "tinggi",
    "lemak": "sedang",
+   "ig": "tinggi",
    "alergen": [
     "susu"
    ],
@@ -4774,6 +4970,7 @@
    "karbo": "sedang",
    "gula": "sedang",
    "lemak": "rendah",
+   "ig": "rendah",
    "alergen": [],
    "porsi_aman": "1 gelas",
    "trik": [
@@ -4794,6 +4991,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 gelas",
    "trik": [
@@ -4815,6 +5013,7 @@
    "karbo": "tinggi",
    "gula": "tinggi",
    "lemak": "sedang",
+   "ig": "sedang",
    "alergen": [],
    "porsi_aman": "1 gelas",
    "trik": [
@@ -4835,6 +5034,7 @@
    "karbo": "sedang",
    "gula": "sedang",
    "lemak": "rendah",
+   "ig": "rendah",
    "alergen": [
     "kedelai"
    ],
@@ -4858,6 +5058,7 @@
    "karbo": "sedang",
    "gula": "sedang",
    "lemak": "rendah",
+   "ig": "sedang",
    "alergen": [],
    "porsi_aman": "1 gelas",
    "trik": [
@@ -4880,6 +5081,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "rendah",
    "alergen": [],
    "porsi_aman": "1-2 buah",
    "trik": [
@@ -4896,6 +5098,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "sedang",
    "alergen": [],
    "porsi_aman": "1 potong besar",
    "trik": [
@@ -4917,6 +5120,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "rendah",
    "alergen": [],
    "porsi_aman": "1-2 buah",
    "trik": [
@@ -4936,6 +5140,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "rendah",
    "alergen": [],
    "porsi_aman": "sedikit, tanya dokter dulu",
    "trik": [
@@ -4954,6 +5159,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "tinggi",
    "alergen": [],
    "porsi_aman": "2-3 potong",
    "trik": [
@@ -4972,6 +5178,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "sedang",
    "alergen": [],
    "porsi_aman": "2-3 potong",
    "trik": [
@@ -4991,6 +5198,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "rendah",
    "alergen": [],
    "porsi_aman": "1 buah",
    "trik": [
@@ -5010,6 +5218,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "rendah",
    "alergen": [],
    "porsi_aman": "1 buah kecil",
    "trik": [
@@ -5030,6 +5239,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "sedang",
    "alergen": [],
    "porsi_aman": "2-3 potong",
    "trik": [
@@ -5049,6 +5259,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "rendah",
    "alergen": [],
    "porsi_aman": "segenggam kecil",
    "trik": [
@@ -5069,6 +5280,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "sedang",
    "alergen": [],
    "porsi_aman": "2-3 buah",
    "trik": [
@@ -5085,6 +5297,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "sedang",
    "alergen": [],
    "porsi_aman": "5-6 buah",
    "trik": [
@@ -5106,6 +5319,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "sedang",
    "alergen": [],
    "porsi_aman": "segenggam",
    "trik": [
@@ -5122,6 +5336,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "sedang",
    "alergen": [],
    "porsi_aman": "3-4 buah",
    "trik": [
@@ -5141,6 +5356,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "rendah",
    "alergen": [],
    "porsi_aman": "1 buah",
    "trik": [
@@ -5159,6 +5375,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "3-4 buah",
    "trik": [
@@ -5177,6 +5394,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 buah",
    "trik": [
@@ -5197,6 +5415,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "rendah",
    "alergen": [],
    "porsi_aman": "1 potong / 1 gelas tanpa gula",
    "trik": [
@@ -5215,6 +5434,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "sedang",
    "alergen": [],
    "porsi_aman": "1-2 buah",
    "trik": [
@@ -5236,6 +5456,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "sedang",
    "alergen": [],
    "porsi_aman": "segenggam kecil",
    "trik": [
@@ -5256,6 +5477,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "rendah",
    "alergen": [],
    "porsi_aman": "setengah buah",
    "trik": [
@@ -5274,6 +5496,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "segenggam",
    "trik": [
@@ -5290,6 +5513,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "rendah",
    "alergen": [],
    "porsi_aman": "1-2 buah",
    "trik": [
@@ -5309,6 +5533,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "rendah",
    "alergen": [],
    "porsi_aman": "1 buah",
    "trik": [
@@ -5325,6 +5550,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1-2 buah",
    "trik": [
@@ -5341,6 +5567,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1-2 buah",
    "trik": [
@@ -5359,6 +5586,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "sedang",
    "alergen": [],
    "porsi_aman": "1 buah kecil",
    "trik": [
@@ -5377,6 +5605,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "rendah",
    "alergen": [],
    "porsi_aman": "3 butir",
    "trik": [
@@ -5398,6 +5627,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "tinggi",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "sedikit",
    "trik": [
@@ -5419,6 +5649,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "bebas",
    "trik": [
@@ -5438,6 +5669,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "bebas",
    "trik": [
@@ -5454,6 +5686,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "bebas",
    "trik": [
@@ -5470,6 +5703,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "bebas",
    "trik": [
@@ -5486,6 +5720,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1-2 buah",
    "trik": [
@@ -5502,6 +5737,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
@@ -5520,6 +5756,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
@@ -5541,6 +5778,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "bebas (kol goreng secukupnya)",
    "trik": [
@@ -5562,6 +5800,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
@@ -5578,6 +5817,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
@@ -5594,6 +5834,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
@@ -5613,6 +5854,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
@@ -5634,6 +5876,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
@@ -5654,6 +5897,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
@@ -5672,6 +5916,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
@@ -5690,6 +5935,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
@@ -5708,6 +5954,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
@@ -5726,6 +5973,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
@@ -5742,6 +5990,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
@@ -5758,6 +6007,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
@@ -5780,6 +6030,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "sebaiknya dihindari",
    "trik": [
@@ -5800,6 +6051,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "sedikit",
    "trik": [
@@ -5818,6 +6070,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "rendah",
    "alergen": [],
    "porsi_aman": "sebaiknya dihindari",
    "trik": [
@@ -5839,6 +6092,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "rendah",
    "alergen": [],
    "porsi_aman": "1 tongkol",
    "trik": [
@@ -5857,6 +6111,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "tinggi",
    "alergen": [],
    "porsi_aman": "1-2 buah",
    "trik": [
@@ -5876,6 +6131,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "sedang",
    "alergen": [],
    "porsi_aman": "1 potong",
    "trik": [
@@ -5896,6 +6152,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "sedang",
    "alergen": [],
    "porsi_aman": "1 buah",
    "trik": [
@@ -5912,6 +6169,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
@@ -5931,6 +6189,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
@@ -5947,6 +6206,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
@@ -5965,6 +6225,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "sedang",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
@@ -5986,6 +6247,7 @@
    "karbo": "sedang",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": "rendah",
    "alergen": [],
    "porsi_aman": "1 mangkuk kecil",
    "trik": [
@@ -6006,6 +6268,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [
     "kedelai"
    ],
@@ -6029,6 +6292,7 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "secukupnya",
    "trik": [
@@ -6048,12 +6312,1661 @@
    "karbo": "rendah",
    "gula": "rendah",
    "lemak": "rendah",
+   "ig": null,
    "alergen": [],
    "porsi_aman": "secukupnya",
    "trik": [
     "aman"
    ],
    "pemicu": []
+  },
+  {
+   "name": "nasi merah",
+   "aliases": [
+    "beras merah",
+    "nasi beras merah"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "tinggi",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "ig": "sedang",
+   "alergen": [],
+   "porsi_aman": "¾ gelas",
+   "trik": [
+    "lebih baik dari nasi putih untuk gula darah",
+    "tetap jaga porsi"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "nasi jagung",
+   "aliases": [
+    "jagung giling",
+    "nasi ampok"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "tinggi",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "ig": "sedang",
+   "alergen": [],
+   "porsi_aman": "¾ gelas",
+   "trik": [
+    "serat lebih tinggi"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "lontong",
+   "aliases": [
+    "ketupat",
+    "lontong polos"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "tinggi",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "ig": "tinggi",
+   "alergen": [],
+   "porsi_aman": "2-3 potong",
+   "trik": [
+    "karbo setara nasi, jangan ditambah nasi lagi"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "nasi goreng kambing",
+   "aliases": [
+    "nasgor kambing"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "karbo": "tinggi",
+   "gula": "sedang",
+   "lemak": "tinggi",
+   "ig": "tinggi",
+   "alergen": [
+    "susu"
+   ],
+   "porsi_aman": "setengah porsi",
+   "trik": [
+    "minta minyak/samin sedikit"
+   ],
+   "pemicu": [
+    "daging kambing",
+    "minyak samin"
+   ]
+  },
+  {
+   "name": "nasi bakar",
+   "aliases": [
+    "nasi bakar ayam"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "sedang",
+   "garam": "sedang",
+   "karbo": "tinggi",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "ig": "tinggi",
+   "alergen": [],
+   "porsi_aman": "1 bungkus",
+   "trik": [
+    "pilih isi ayam/tahu"
+   ],
+   "pemicu": [
+    "santan",
+    "lauk asin"
+   ]
+  },
+  {
+   "name": "oatmeal",
+   "aliases": [
+    "havermut",
+    "oat",
+    "bubur oat",
+    "overnight oat"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "ig": "rendah",
+   "alergen": [
+    "gluten"
+   ],
+   "porsi_aman": "½ gelas oat kering",
+   "trik": [
+    "serat larut baik untuk kolesterol & gula darah",
+    "tanpa gula atau kental manis"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "sereal",
+   "aliases": [
+    "cornflakes",
+    "sereal manis",
+    "koko krunch",
+    "granola"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "rendah",
+   "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "rendah",
+   "ig": "tinggi",
+   "alergen": [
+    "gluten",
+    "susu"
+   ],
+   "porsi_aman": "1 mangkuk kecil + susu tawar",
+   "trik": [
+    "pilih tanpa gula tambahan"
+   ],
+   "pemicu": [
+    "gula tambahan"
+   ]
+  },
+  {
+   "name": "mie shirataki",
+   "aliases": [
+    "shirataki",
+    "konjac"
+   ],
+   "kategori": "Mi & bakso",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "ig": null,
+   "alergen": [],
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "rendah karbo",
+    "bumbu jangan terlalu asin"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "sukun",
+   "aliases": [
+    "sukun goreng",
+    "sukun rebus"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "ig": "sedang",
+   "alergen": [],
+   "porsi_aman": "2 potong",
+   "trik": [
+    "karbo setara nasi, rebus lebih baik"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "ayam kecap",
+   "aliases": [
+    "semur ayam"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "ig": null,
+   "alergen": [
+    "kedelai",
+    "gluten"
+   ],
+   "porsi_aman": "1 potong",
+   "trik": [
+    "kecap sedikit",
+    "buang kulit"
+   ],
+   "pemicu": [
+    "kecap tinggi garam & gula"
+   ]
+  },
+  {
+   "name": "opor ayam",
+   "aliases": [
+    "opor"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "sedang",
+   "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "tinggi",
+   "ig": null,
+   "alergen": [],
+   "porsi_aman": "1 potong, kuah sedikit",
+   "trik": [
+    "kuah santan secukupnya",
+    "buang kulit"
+   ],
+   "pemicu": [
+    "santan kental"
+   ]
+  },
+  {
+   "name": "rendang ayam",
+   "aliases": [],
+   "kategori": "Nasi & lauk",
+   "purin": "sedang",
+   "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "tinggi",
+   "ig": null,
+   "alergen": [],
+   "porsi_aman": "1 potong",
+   "trik": [
+    "lebih ringan dari rendang sapi",
+    "bumbu sedikit"
+   ],
+   "pemicu": [
+    "santan",
+    "bumbu"
+   ]
+  },
+  {
+   "name": "pepes ikan",
+   "aliases": [
+    "pepes",
+    "pepes ayam"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "sedang",
+   "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "ig": null,
+   "alergen": [
+    "ikan"
+   ],
+   "porsi_aman": "1 bungkus",
+   "trik": [
+    "pilihan baik, dikukus"
+   ],
+   "pemicu": [
+    "ikan"
+   ]
+  },
+  {
+   "name": "pepes tahu",
+   "aliases": [
+    "botok",
+    "botok tempe"
+   ],
+   "kategori": "Nasi & lauk",
+   "purin": "sedang",
+   "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "ig": null,
+   "alergen": [
+    "kedelai"
+   ],
+   "porsi_aman": "1-2 bungkus",
+   "trik": [
+    "pilihan baik"
+   ],
+   "pemicu": [
+    "purin nabati"
+   ]
+  },
+  {
+   "name": "bandeng presto",
+   "aliases": [
+    "ikan bandeng",
+    "bandeng"
+   ],
+   "kategori": "Seafood",
+   "purin": "sedang",
+   "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "ig": null,
+   "alergen": [
+    "ikan"
+   ],
+   "porsi_aman": "1 potong",
+   "trik": [
+    "tulang lunak, sumber kalsium"
+   ],
+   "pemicu": [
+    "ikan"
+   ]
+  },
+  {
+   "name": "sate bandeng",
+   "aliases": [],
+   "kategori": "Masakan daerah",
+   "purin": "sedang",
+   "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "ig": null,
+   "alergen": [
+    "ikan"
+   ],
+   "porsi_aman": "1 potong",
+   "trik": [
+    "jangan habiskan kulitnya"
+   ],
+   "pemicu": [
+    "ikan",
+    "kelapa"
+   ]
+  },
+  {
+   "name": "gulai tunjang",
+   "aliases": [
+    "tunjang",
+    "kikil gulai",
+    "gulai babat"
+   ],
+   "kategori": "Daging & jeroan",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "tinggi",
+   "ig": null,
+   "alergen": [],
+   "porsi_aman": "sebaiknya dihindari",
+   "trik": [
+    "ganti gulai ayam tanpa kulit"
+   ],
+   "pemicu": [
+    "jeroan",
+    "santan"
+   ]
+  },
+  {
+   "name": "tahu bulat",
+   "aliases": [
+    "tahu crispy",
+    "tahu sumedang"
+   ],
+   "kategori": "Gorengan & camilan",
+   "purin": "sedang",
+   "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "ig": null,
+   "alergen": [
+    "kedelai"
+   ],
+   "porsi_aman": "3-5 buah",
+   "trik": [
+    "tiriskan minyak"
+   ],
+   "pemicu": [
+    "gorengan"
+   ]
+  },
+  {
+   "name": "keripik tempe",
+   "aliases": [
+    "tempe kripik"
+   ],
+   "kategori": "Gorengan & camilan",
+   "purin": "sedang",
+   "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "ig": null,
+   "alergen": [
+    "kedelai"
+   ],
+   "porsi_aman": "segenggam",
+   "trik": [
+    "jangan habiskan sebungkus"
+   ],
+   "pemicu": [
+    "gorengan asin"
+   ]
+  },
+  {
+   "name": "ikan goreng",
+   "aliases": [
+    "ikan nila goreng",
+    "ikan kembung goreng",
+    "ikan mujair"
+   ],
+   "kategori": "Seafood",
+   "purin": "sedang",
+   "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "ig": null,
+   "alergen": [
+    "ikan"
+   ],
+   "porsi_aman": "1 potong",
+   "trik": [
+    "ikan bakar/kukus lebih baik"
+   ],
+   "pemicu": [
+    "ikan goreng"
+   ]
+  },
+  {
+   "name": "tahu bakso",
+   "aliases": [],
+   "kategori": "Gorengan & camilan",
+   "purin": "sedang",
+   "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "ig": null,
+   "alergen": [
+    "kedelai"
+   ],
+   "porsi_aman": "2-3 buah",
+   "trik": [
+    "saus sedikit"
+   ],
+   "pemicu": [
+    "daging olahan"
+   ]
+  },
+  {
+   "name": "amplang",
+   "aliases": [
+    "kerupuk ikan"
+   ],
+   "kategori": "Gorengan & camilan",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "ig": "sedang",
+   "alergen": [
+    "ikan"
+   ],
+   "porsi_aman": "segenggam",
+   "trik": [
+    "jangan habiskan sebungkus"
+   ],
+   "pemicu": [
+    "ikan",
+    "garam"
+   ]
+  },
+  {
+   "name": "sop kaki sapi",
+   "aliases": [
+    "sop kaki",
+    "sop sumsum"
+   ],
+   "kategori": "Berkuah",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "tinggi",
+   "ig": null,
+   "alergen": [],
+   "porsi_aman": "setengah mangkuk",
+   "trik": [
+    "fokus ke sayur, kuah sedikit"
+   ],
+   "pemicu": [
+    "kaldu tulang pekat",
+    "lemak sumsum"
+   ]
+  },
+  {
+   "name": "sayur sop",
+   "aliases": [
+    "sop sayuran"
+   ],
+   "kategori": "Berkuah",
+   "purin": "rendah",
+   "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "ig": "tinggi",
+   "alergen": [],
+   "porsi_aman": "bebas",
+   "trik": [
+    "kuah jangan terlalu asin"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "tekwan",
+   "aliases": [
+    "model",
+    "pempek kuah"
+   ],
+   "kategori": "Berkuah",
+   "purin": "sedang",
+   "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "ig": "sedang",
+   "alergen": [
+    "ikan"
+   ],
+   "porsi_aman": "1 mangkuk",
+   "trik": [
+    "kuah sedikit"
+   ],
+   "pemicu": [
+    "ikan"
+   ]
+  },
+  {
+   "name": "soto daging",
+   "aliases": [
+    "soto sapi",
+    "soto madura"
+   ],
+   "kategori": "Berkuah",
+   "purin": "tinggi",
+   "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "ig": "sedang",
+   "alergen": [],
+   "porsi_aman": "1 mangkuk",
+   "trik": [
+    "pilih daging tanpa jeroan",
+    "kuah sisakan setengah"
+   ],
+   "pemicu": [
+    "daging sapi",
+    "jeroan kalau ada"
+   ]
+  },
+  {
+   "name": "gulai ikan",
+   "aliases": [
+    "kari ikan",
+    "gulai kepala ikan"
+   ],
+   "kategori": "Berkuah",
+   "purin": "sedang",
+   "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "ig": null,
+   "alergen": [
+    "ikan"
+   ],
+   "porsi_aman": "1 potong",
+   "trik": [
+    "kuah santan sedikit"
+   ],
+   "pemicu": [
+    "ikan",
+    "santan"
+   ]
+  },
+  {
+   "name": "martabak india",
+   "aliases": [
+    "roti canai",
+    "roti prata"
+   ],
+   "kategori": "Kaki lima",
+   "purin": "sedang",
+   "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "tinggi",
+   "ig": "sedang",
+   "alergen": [
+    "gluten",
+    "telur",
+    "susu"
+   ],
+   "porsi_aman": "1 potong",
+   "trik": [
+    "kuah kari sedikit"
+   ],
+   "pemicu": [
+    "minyak/mentega"
+   ]
+  },
+  {
+   "name": "kupat tahu",
+   "aliases": [
+    "tahu kupat",
+    "kupat tahu magelang"
+   ],
+   "kategori": "Kaki lima",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "karbo": "tinggi",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "ig": "tinggi",
+   "alergen": [
+    "kacang tanah",
+    "kedelai"
+   ],
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "bumbu kacang sedikit"
+   ],
+   "pemicu": [
+    "bumbu kacang",
+    "kecap"
+   ]
+  },
+  {
+   "name": "lumpia basah",
+   "aliases": [
+    "lumpia semarang"
+   ],
+   "kategori": "Kaki lima",
+   "purin": "sedang",
+   "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "ig": "sedang",
+   "alergen": [
+    "gluten",
+    "krustasea",
+    "telur"
+   ],
+   "porsi_aman": "1-2 buah",
+   "trik": [
+    "saus sedikit"
+   ],
+   "pemicu": [
+    "rebung",
+    "udang"
+   ]
+  },
+  {
+   "name": "pisang epe",
+   "aliases": [
+    "pisang bakar",
+    "pisang gapit"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "tinggi",
+   "lemak": "rendah",
+   "ig": "sedang",
+   "alergen": [],
+   "porsi_aman": "1 porsi",
+   "trik": [
+    "gula merah sedikit"
+   ],
+   "pemicu": [
+    "gula"
+   ]
+  },
+  {
+   "name": "kue putu",
+   "aliases": [
+    "putu bambu",
+    "putu mayang"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "ig": "sedang",
+   "alergen": [],
+   "porsi_aman": "3-4 buah",
+   "trik": [
+    "kelapa parut secukupnya"
+   ],
+   "pemicu": [
+    "gula merah",
+    "kelapa"
+   ]
+  },
+  {
+   "name": "getuk",
+   "aliases": [
+    "gethuk",
+    "getuk lindri"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "rendah",
+   "ig": "sedang",
+   "alergen": [],
+   "porsi_aman": "2 potong",
+   "trik": [
+    "jangan sering"
+   ],
+   "pemicu": [
+    "gula"
+   ]
+  },
+  {
+   "name": "lupis",
+   "aliases": [
+    "cenil",
+    "tiwul"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "tinggi",
+   "lemak": "rendah",
+   "ig": "tinggi",
+   "alergen": [],
+   "porsi_aman": "1 porsi kecil",
+   "trik": [
+    "gula merah sedikit"
+   ],
+   "pemicu": [
+    "gula merah"
+   ]
+  },
+  {
+   "name": "bubur sumsum",
+   "aliases": [],
+   "kategori": "Kue & manis",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "tinggi",
+   "lemak": "sedang",
+   "ig": "tinggi",
+   "alergen": [],
+   "porsi_aman": "1 mangkuk kecil",
+   "trik": [
+    "gula merah sedikit"
+   ],
+   "pemicu": [
+    "santan",
+    "gula"
+   ]
+  },
+  {
+   "name": "onde-onde",
+   "aliases": [
+    "onde onde"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "ig": "sedang",
+   "alergen": [
+    "wijen",
+    "gluten"
+   ],
+   "porsi_aman": "1-2 buah",
+   "trik": [
+    "jangan sering"
+   ],
+   "pemicu": [
+    "gorengan",
+    "gula",
+    "wijen"
+   ]
+  },
+  {
+   "name": "bakpia",
+   "aliases": [
+    "bakpia pathok"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "sedang",
+   "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "ig": "sedang",
+   "alergen": [
+    "gluten"
+   ],
+   "porsi_aman": "1-2 buah",
+   "trik": [
+    "jangan sering"
+   ],
+   "pemicu": [
+    "gula"
+   ]
+  },
+  {
+   "name": "lapis legit",
+   "aliases": [
+    "spekuk",
+    "kue lapis legit"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "tinggi",
+   "lemak": "tinggi",
+   "ig": "sedang",
+   "alergen": [
+    "gluten",
+    "telur",
+    "susu"
+   ],
+   "porsi_aman": "1 potong tipis",
+   "trik": [
+    "sangat manis & tinggi mentega"
+   ],
+   "pemicu": [
+    "gula",
+    "mentega"
+   ]
+  },
+  {
+   "name": "dodol",
+   "aliases": [
+    "jenang",
+    "wajik"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "tinggi",
+   "lemak": "sedang",
+   "ig": "tinggi",
+   "alergen": [],
+   "porsi_aman": "1-2 potong kecil",
+   "trik": [
+    "jangan sering"
+   ],
+   "pemicu": [
+    "gula + santan"
+   ]
+  },
+  {
+   "name": "bubur ketan hitam",
+   "aliases": [
+    "ketan hitam"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "tinggi",
+   "gula": "tinggi",
+   "lemak": "sedang",
+   "ig": "tinggi",
+   "alergen": [],
+   "porsi_aman": "1 mangkuk kecil",
+   "trik": [
+    "gula & santan sedikit"
+   ],
+   "pemicu": [
+    "gula",
+    "santan"
+   ]
+  },
+  {
+   "name": "wingko",
+   "aliases": [
+    "wingko babat"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "tinggi",
+   "lemak": "sedang",
+   "ig": "sedang",
+   "alergen": [
+    "telur"
+   ],
+   "porsi_aman": "1 buah",
+   "trik": [
+    "jangan sering"
+   ],
+   "pemicu": [
+    "gula",
+    "kelapa"
+   ]
+  },
+  {
+   "name": "biskuit krim",
+   "aliases": [
+    "crackers krim",
+    "biskuit sandwich"
+   ],
+   "kategori": "Kue & manis",
+   "purin": "rendah",
+   "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "ig": "sedang",
+   "alergen": [
+    "gluten",
+    "susu"
+   ],
+   "porsi_aman": "2-3 keping",
+   "trik": [
+    "bisa mengandung lemak trans"
+   ],
+   "pemicu": [
+    "gula",
+    "lemak trans"
+   ]
+  },
+  {
+   "name": "keripik pisang",
+   "aliases": [],
+   "kategori": "Gorengan & camilan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "ig": "sedang",
+   "alergen": [],
+   "porsi_aman": "segenggam",
+   "trik": [
+    "jangan habiskan sebungkus"
+   ],
+   "pemicu": [
+    "gula",
+    "minyak"
+   ]
+  },
+  {
+   "name": "kuaci",
+   "aliases": [
+    "biji bunga matahari"
+   ],
+   "kategori": "Gorengan & camilan",
+   "purin": "rendah",
+   "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "ig": null,
+   "alergen": [],
+   "porsi_aman": "segenggam kecil",
+   "trik": [
+    "pilih tanpa garam"
+   ],
+   "pemicu": [
+    "garam"
+   ]
+  },
+  {
+   "name": "susu kental manis",
+   "aliases": [
+    "skm",
+    "kental manis"
+   ],
+   "kategori": "Bumbu & tambahan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "tinggi",
+   "lemak": "rendah",
+   "ig": null,
+   "alergen": [
+    "susu"
+   ],
+   "porsi_aman": "1 sdm saja",
+   "trik": [
+    "bukan pengganti susu: sebagian besar isinya gula"
+   ],
+   "pemicu": [
+    "gula tinggi"
+   ]
+  },
+  {
+   "name": "gula pasir",
+   "aliases": [
+    "gula",
+    "gula aren",
+    "gula merah",
+    "gula jawa"
+   ],
+   "kategori": "Bumbu & tambahan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "rendah",
+   "ig": null,
+   "alergen": [],
+   "porsi_aman": "1-2 sdt",
+   "trik": [
+    "batas gula harian 4 sdm (GGL Kemenkes)"
+   ],
+   "pemicu": [
+    "gula"
+   ]
+  },
+  {
+   "name": "madu",
+   "aliases": [
+    "honey"
+   ],
+   "kategori": "Bumbu & tambahan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "rendah",
+   "ig": null,
+   "alergen": [],
+   "porsi_aman": "1 sdt",
+   "trik": [
+    "tetap gula, termasuk untuk diabetes"
+   ],
+   "pemicu": [
+    "gula"
+   ]
+  },
+  {
+   "name": "sirup",
+   "aliases": [
+    "sirup marjan",
+    "sirup cocopandan",
+    "es sirup"
+   ],
+   "kategori": "Minuman",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "tinggi",
+   "lemak": "rendah",
+   "ig": "sedang",
+   "alergen": [],
+   "porsi_aman": "½ gelas encer",
+   "trik": [
+    "encerkan, jangan tiap hari"
+   ],
+   "pemicu": [
+    "minuman berfruktosa tinggi",
+    "gula"
+   ]
+  },
+  {
+   "name": "kecap manis",
+   "aliases": [
+    "kecap",
+    "kecap asin"
+   ],
+   "kategori": "Bumbu & tambahan",
+   "purin": "rendah",
+   "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "rendah",
+   "ig": null,
+   "alergen": [
+    "kedelai",
+    "gluten"
+   ],
+   "porsi_aman": "1 sdm",
+   "trik": [
+    "tinggi garam dan gula"
+   ],
+   "pemicu": [
+    "garam",
+    "gula"
+   ]
+  },
+  {
+   "name": "saus tomat",
+   "aliases": [
+    "saus botol",
+    "saos",
+    "saus"
+   ],
+   "kategori": "Bumbu & tambahan",
+   "purin": "rendah",
+   "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "rendah",
+   "ig": null,
+   "alergen": [],
+   "porsi_aman": "1 sdm",
+   "trik": [
+    "pakai secukupnya"
+   ],
+   "pemicu": [
+    "garam",
+    "gula"
+   ]
+  },
+  {
+   "name": "mayones",
+   "aliases": [
+    "mayo",
+    "mayonnaise"
+   ],
+   "kategori": "Bumbu & tambahan",
+   "purin": "rendah",
+   "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "ig": null,
+   "alergen": [
+    "telur"
+   ],
+   "porsi_aman": "1 sdm",
+   "trik": [
+    "pakai secukupnya"
+   ],
+   "pemicu": [
+    "lemak"
+   ]
+  },
+  {
+   "name": "mentega",
+   "aliases": [
+    "butter",
+    "margarin"
+   ],
+   "kategori": "Bumbu & tambahan",
+   "purin": "rendah",
+   "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "ig": null,
+   "alergen": [
+    "susu"
+   ],
+   "porsi_aman": "1 sdt tipis",
+   "trik": [
+    "margarin bisa mengandung lemak trans"
+   ],
+   "pemicu": [
+    "lemak jenuh",
+    "lemak trans"
+   ]
+  },
+  {
+   "name": "keju",
+   "aliases": [
+    "keju cheddar",
+    "keju slice",
+    "mozzarella"
+   ],
+   "kategori": "Bumbu & tambahan",
+   "purin": "rendah",
+   "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "ig": null,
+   "alergen": [
+    "susu"
+   ],
+   "porsi_aman": "1 lembar",
+   "trik": [
+    "pakai secukupnya"
+   ],
+   "pemicu": [
+    "garam",
+    "lemak jenuh"
+   ]
+  },
+  {
+   "name": "santan",
+   "aliases": [
+    "santan kental"
+   ],
+   "kategori": "Bumbu & tambahan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "tinggi",
+   "ig": null,
+   "alergen": [],
+   "porsi_aman": "sedikit, encerkan",
+   "trik": [
+    "lemak jenuh tinggi"
+   ],
+   "pemicu": [
+    "lemak jenuh"
+   ]
+  },
+  {
+   "name": "minyak goreng",
+   "aliases": [
+    "minyak sawit",
+    "minyak jelantah"
+   ],
+   "kategori": "Bumbu & tambahan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "ig": null,
+   "alergen": [],
+   "porsi_aman": "1 sdm",
+   "trik": [
+    "jangan pakai berulang"
+   ],
+   "pemicu": [
+    "lemak jenuh",
+    "lemak trans bila dipakai berulang"
+   ]
+  },
+  {
+   "name": "selai kacang",
+   "aliases": [
+    "peanut butter"
+   ],
+   "kategori": "Bumbu & tambahan",
+   "purin": "sedang",
+   "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "ig": null,
+   "alergen": [
+    "kacang tanah"
+   ],
+   "porsi_aman": "1 sdm",
+   "trik": [
+    "pilih tanpa gula"
+   ],
+   "pemicu": [
+    "kacang",
+    "gula"
+   ]
+  },
+  {
+   "name": "selai cokelat",
+   "aliases": [
+    "nutella",
+    "meses"
+   ],
+   "kategori": "Bumbu & tambahan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "tinggi",
+   "lemak": "sedang",
+   "ig": null,
+   "alergen": [
+    "susu",
+    "kacang pohon"
+   ],
+   "porsi_aman": "1 sdm",
+   "trik": [
+    "jangan sering"
+   ],
+   "pemicu": [
+    "gula"
+   ]
+  },
+  {
+   "name": "sambal matah",
+   "aliases": [
+    "sambal bawang",
+    "sambal ijo"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "ig": null,
+   "alergen": [],
+   "porsi_aman": "1 sdm",
+   "trik": [
+    "garam sedikit"
+   ],
+   "pemicu": [
+    "garam"
+   ]
+  },
+  {
+   "name": "acar",
+   "aliases": [
+    "acar timun"
+   ],
+   "kategori": "Sayur & lalapan",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "ig": null,
+   "alergen": [],
+   "porsi_aman": "bebas",
+   "trik": [
+    "pilihan aman"
+   ],
+   "pemicu": [
+    "gula cuka"
+   ]
+  },
+  {
+   "name": "teh tarik",
+   "aliases": [
+    "es teh tarik"
+   ],
+   "kategori": "Minuman",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "tinggi",
+   "lemak": "sedang",
+   "ig": "sedang",
+   "alergen": [
+    "susu"
+   ],
+   "porsi_aman": "1 gelas kecil",
+   "trik": [
+    "minta gula sedikit"
+   ],
+   "pemicu": [
+    "kental manis/gula"
+   ]
+  },
+  {
+   "name": "matcha latte",
+   "aliases": [
+    "green tea latte",
+    "taro latte",
+    "red velvet latte"
+   ],
+   "kategori": "Minuman",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "tinggi",
+   "lemak": "sedang",
+   "ig": "sedang",
+   "alergen": [
+    "susu"
+   ],
+   "porsi_aman": "1 gelas kecil, less sugar",
+   "trik": [
+    "minta gula sedikit"
+   ],
+   "pemicu": [
+    "gula",
+    "susu"
+   ]
+  },
+  {
+   "name": "cokelat panas",
+   "aliases": [
+    "milo",
+    "ovaltine",
+    "cokelat susu"
+   ],
+   "kategori": "Minuman",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "tinggi",
+   "lemak": "sedang",
+   "ig": "sedang",
+   "alergen": [
+    "susu"
+   ],
+   "porsi_aman": "1 gelas",
+   "trik": [
+    "pilih tanpa gula tambahan"
+   ],
+   "pemicu": [
+    "gula"
+   ]
+  },
+  {
+   "name": "susu kotak",
+   "aliases": [
+    "susu uht",
+    "susu cokelat kotak",
+    "susu stroberi"
+   ],
+   "kategori": "Minuman",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "rendah",
+   "ig": "rendah",
+   "alergen": [
+    "susu"
+   ],
+   "porsi_aman": "1 kotak kecil",
+   "trik": [
+    "pilih yang tawar"
+   ],
+   "pemicu": [
+    "gula"
+   ]
+  },
+  {
+   "name": "yakult",
+   "aliases": [
+    "minuman probiotik"
+   ],
+   "kategori": "Minuman",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "rendah",
+   "ig": "sedang",
+   "alergen": [
+    "susu"
+   ],
+   "porsi_aman": "1 botol",
+   "trik": [
+    "jangan lebih dari 1"
+   ],
+   "pemicu": [
+    "gula"
+   ]
+  },
+  {
+   "name": "infused water",
+   "aliases": [
+    "air lemon",
+    "air lemon hangat"
+   ],
+   "kategori": "Minuman",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "ig": null,
+   "alergen": [],
+   "porsi_aman": "bebas",
+   "trik": [
+    "pilihan aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "wedang ronde",
+   "aliases": [
+    "ronde"
+   ],
+   "kategori": "Minuman",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "tinggi",
+   "gula": "tinggi",
+   "lemak": "sedang",
+   "ig": "tinggi",
+   "alergen": [
+    "kacang tanah"
+   ],
+   "porsi_aman": "1 mangkuk",
+   "trik": [
+    "gula sedikit"
+   ],
+   "pemicu": [
+    "gula",
+    "kacang"
+   ]
+  },
+  {
+   "name": "stmj",
+   "aliases": [
+    "susu telur madu jahe"
+   ],
+   "kategori": "Minuman",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "ig": "sedang",
+   "alergen": [
+    "susu",
+    "telur"
+   ],
+   "porsi_aman": "1 gelas",
+   "trik": [
+    "madu sedikit"
+   ],
+   "pemicu": [
+    "gula",
+    "telur"
+   ]
+  },
+  {
+   "name": "smoothie",
+   "aliases": [
+    "jus campur",
+    "smoothie bowl"
+   ],
+   "kategori": "Minuman",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "rendah",
+   "ig": "rendah",
+   "alergen": [
+    "susu"
+   ],
+   "porsi_aman": "1 gelas kecil",
+   "trik": [
+    "tanpa tambahan gula/kental manis"
+   ],
+   "pemicu": [
+    "fruktosa"
+   ]
+  },
+  {
+   "name": "fish and chips",
+   "aliases": [
+    "ikan goreng tepung"
+   ],
+   "kategori": "Fast food & western",
+   "purin": "sedang",
+   "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "ig": "sedang",
+   "alergen": [
+    "ikan",
+    "gluten"
+   ],
+   "porsi_aman": "setengah porsi",
+   "trik": [
+    "saus sedikit"
+   ],
+   "pemicu": [
+    "gorengan",
+    "garam"
+   ]
+  },
+  {
+   "name": "kesemek",
+   "aliases": [],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "ig": "rendah",
+   "alergen": [],
+   "porsi_aman": "1 buah",
+   "trik": [
+    "aman"
+   ],
+   "pemicu": []
+  },
+  {
+   "name": "kolang-kaling",
+   "aliases": [
+    "kolang kaling"
+   ],
+   "kategori": "Buah",
+   "purin": "rendah",
+   "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "rendah",
+   "ig": "sedang",
+   "alergen": [],
+   "porsi_aman": "1 mangkuk kecil tanpa sirup",
+   "trik": [
+    "tanpa sirup"
+   ],
+   "pemicu": [
+    "sirup gula"
+   ]
   }
  ]
 }

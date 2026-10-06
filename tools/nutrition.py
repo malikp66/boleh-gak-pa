@@ -10,6 +10,10 @@ Format:  "nama": "KGL alergen,alergen"
 Alergen (daftar wajib label BPOM No. 31/2018 + kacang pohon):
   gl gluten · tl telur · su susu · kt kacang tanah · kd kedelai · ik ikan
   kr krustasea (udang, kepiting, terasi, petis udang, ebi) · mo moluska (cumi, kerang, gurita) · kp kacang pohon (mete, almond)
+  wj wijen
+
+IG (indeks glikemik, hanya untuk makanan dengan karbohidrat sedang/tinggi), kategori Atkinson et al. 2021:
+  r ≤ 55 · s 56–69 · t ≥ 70. Untuk hidangan campuran dipakai komponen karbohidrat utamanya.
 
 Nilai adalah PERKIRAAN untuk porsi khas di Indonesia, disusun dari TKPI Kemenkes,
 satuan penukar Kemenkes, dan tabel indeks glikemik internasional. Lihat docs/SUMBER-GIZI.md.
@@ -89,7 +93,7 @@ N = {
     "hotpot": "sst kr,mo,ik,kd,gl", "mala": "sst kd,gl,kt",
     # ---------------- Jepang & Korea
     "sushi": "tsr ik,kd,gl,kr,mo,tl", "ramen": "trt gl,kd,tl", "udon": "tsr gl,kd,ik", "takoyaki": "sss gl,tl,mo",
-    "beef bowl": "tss kd,gl", "chicken teriyaki": "rss kd,gl", "tempura": "srs gl,tl,kr", "korean bbq": "rst kd,gl",
+    "beef bowl": "tss kd,gl", "chicken teriyaki": "rss kd,gl", "tempura": "srs gl,tl,kr", "korean bbq": "rst kd,gl,wj",
     "tteokbokki": "ttr gl,kd,ik", "kimchi": "rrr ik,kr", "ramyeon": "trt gl,kd", "ayam korea": "sts gl,kd",
     # ---------------- Masakan daerah
     "nasi tutug oncom": "trs kt,ik", "nasi timbel": "trs ik,kd", "gudeg krecek": "ttt tl", "pecak lele": "rrs ik",
@@ -97,4 +101,67 @@ N = {
     "rujak buah": "str kt,kr", "lontong balap": "tss mo,kd,kr", "tahu tek": "sss kd,kt,kr,tl", "pallubasa": "srt ",
     "ikan bakar rica": "rrr ik", "nasi jamblang": "trs kd,tl", "bakso malang": "srs gl,kd,tl", "soto banjar": "srs tl",
     "kerupuk mie": "srs ik,gl",
+    # ---------------- Tambahan Okt 2026
+    "nasi merah": "trr ", "nasi jagung": "trr ", "lontong": "trr ", "nasi goreng kambing": "tst su", "nasi bakar": "trs ",
+    "oatmeal": "srr gl", "sereal": "ssr gl,su", "mie shirataki": "rrr ", "sukun": "srr ",
+    "ayam kecap": "rss kd,gl", "opor ayam": "rrt ", "rendang ayam": "rrt ", "pepes ikan": "rrr ik", "pepes tahu": "rrr kd",
+    "bandeng presto": "rrs ik", "sate bandeng": "rss ik", "gulai tunjang": "rrt ", "tahu bulat": "rrs kd", "keripik tempe": "rrs kd",
+    "ikan goreng": "rrs ik", "tahu bakso": "rss kd", "amplang": "srs ik",
+    "sop kaki sapi": "rrt ", "sayur sop": "srr ", "tekwan": "srr ik", "soto daging": "srs ", "gulai ikan": "rrs ik",
+    "martabak india": "srt gl,tl,su", "kupat tahu": "tss kt,kd", "lumpia basah": "srs gl,kr,tl", "pisang epe": "str ",
+    "kue putu": "sss ", "getuk": "ssr ", "lupis": "str ", "bubur sumsum": "sts ", "onde-onde": "sss wj,gl", "bakpia": "sss gl",
+    "lapis legit": "stt gl,tl,su", "dodol": "sts ", "bubur ketan hitam": "tts ", "wingko": "sts tl", "biskuit krim": "sss gl,su",
+    "keripik pisang": "sss ", "kuaci": "rrr ",
+    "susu kental manis": "rtr su", "gula pasir": "rsr ", "madu": "rsr ", "sirup": "str ", "kecap manis": "rsr kd,gl",
+    "saus tomat": "rsr ", "mayones": "rrs tl", "mentega": "rrs su", "keju": "rrs su", "santan": "rrt ", "minyak goreng": "rrs ",
+    "selai kacang": "rss kt", "selai cokelat": "rts su,kp", "sambal matah": "rrr ", "acar": "rrr ",
+    "teh tarik": "sts su", "matcha latte": "sts su", "cokelat panas": "sts su", "susu kotak": "ssr su", "yakult": "ssr su",
+    "infused water": "rrr ", "wedang ronde": "tts kt", "stmj": "sss su,tl", "smoothie": "ssr su",
+    "fish and chips": "srs ik,gl", "kesemek": "srr ", "kolang-kaling": "ssr ",
 }
+
+# Indeks glikemik untuk makanan berkarbohidrat sedang/tinggi (perkiraan dari komponen karbo utamanya).
+IG = {
+    # nasi & olahan beras (nasi putih rata-rata 73; ketan & lontong tinggi; beras merah 65; basmati ±58)
+    "nasi putih": "t", "nasi goreng": "t", "bubur ayam": "t", "nasi uduk": "t", "nasi kuning": "t", "nasi liwet": "t",
+    "nasi padang rendang": "t", "nasi campur": "t", "nasi kucing": "t", "nasi bebek": "t", "nasi kebuli": "s",
+    "lontong sayur": "t", "ketupat sayur": "t", "lontong": "t", "nasi goreng kambing": "t", "nasi bakar": "t",
+    "nasi merah": "s", "nasi jagung": "s", "nasi hainan": "t", "bubur ayam kanton": "t", "beef bowl": "t", "sushi": "s",
+    "nasi tutug oncom": "t", "nasi timbel": "t", "nasi jamblang": "t", "lontong balap": "t", "kupat tahu": "t",
+    "kerak telor": "t", "klepon": "t", "lupis": "t", "serabi": "t", "lemper": "t", "bubur ketan hitam": "t", "dodol": "t",
+    "tteokbokki": "t", "papeda": "t",
+    # mi & tepung (mi gandum ±45-55; bihun/kwetiau beras ±58-61; roti putih ±75)
+    "mi instan": "r", "mi ayam": "r", "mi goreng": "r", "bihun goreng": "s", "mi aceh": "r", "mi kocok": "r", "pangsit": "r",
+    "bakmi": "r", "kwetiau siram": "s", "udon": "r", "ramen": "r", "ramyeon": "r", "spaghetti": "r", "bakso": "s",
+    "bakso malang": "s", "soto banjar": "s", "soto ayam": "s", "soto betawi": "s", "coto makassar": "t", "rawon": "s",
+    "soto daging": "s", "sup ayam": "t", "sayur sop": "t", "tekwan": "s",
+    "roti bakar": "t", "roti manis": "t", "roti bakar bandung": "t", "sourdough": "r", "croissant": "s", "donat": "t",
+    "bolu": "s", "kue kering": "s", "martabak manis": "t", "martabak telur": "s", "martabak india": "s", "pizza": "s",
+    "burger": "s", "hot dog": "s", "sandwich": "s", "chicken steak": "s", "sup krim": "s", "nugget": "s", "fish and chips": "s",
+    "kue cubit": "s", "biskuit krim": "s", "bakpia": "s", "lapis legit": "s", "wingko": "s", "onde-onde": "s", "kue putu": "s",
+    "cakwe": "s", "risoles": "s", "gorengan": "s", "lumpia basah": "s", "takoyaki": "s", "tempura": "s", "dimsum": "s",
+    "fuyunghai": "s", "ayam asam manis": "s", "bebek peking": "s", "ayam korea": "s", "hotpot": "s", "mala": "s",
+    # tepung tapioka/sagu
+    "cilok": "t", "seblak": "t", "pempek": "t", "otak-otak": "s", "siomay": "s", "batagor": "s", "kerupuk mie": "t",
+    "mi lidi": "t", "keripik": "s", "emping melinjo": "s", "amplang": "s",
+    # umbi & jagung (kentang rebus ±78; ubi ±63; singkong bervariasi; jagung ±52; sukun ±?)
+    "kentang": "t", "kentang goreng": "s", "perkedel": "t", "ubi": "s", "singkong": "s", "jagung": "r", "sukun": "s",
+    "getuk": "s", "jengkol": "r", "kacang merah": "r", "sayur nangka": "s", "gudeg krecek": "s",
+    # sereal
+    "oatmeal": "r", "sereal": "t", "popcorn": "s",
+    # buah (semangka ±76; pepaya ±60; nanas ±59; melon ±65; pisang ±51; apel ±36; jeruk ±43)
+    "buah potong": "s", "durian": "r", "nangka": "s", "pisang": "r", "pepaya": "s", "jeruk": "r", "jeruk bali": "r",
+    "semangka": "t", "melon": "s", "apel": "r", "mangga": "r", "nanas": "s", "anggur": "r", "salak": "s", "rambutan": "s",
+    "duku": "s", "manggis": "s", "jambu biji": "r", "sirsak": "r", "sawo": "s", "kelengkeng": "s", "buah naga": "r",
+    "kiwi": "r", "pir": "r", "srikaya": "s", "kurma": "r", "kesemek": "r", "pisang epe": "s", "pisang goreng keju": "s",
+    "keripik pisang": "s",
+    # manis & minuman (sukrosa ±65; glukosa/maltodekstrin tinggi; susu & yogurt rendah)
+    "kolak": "s", "bubur kacang hijau": "s", "bubur sumsum": "t", "es campur": "s", "es krim": "r", "puding": "s",
+    "es teh manis": "s", "minuman soda": "s", "jus buah": "r", "boba": "t", "cincau": "s", "wedang jahe": "s",
+    "kopi susu": "s", "bir": "t", "minuman energi": "t", "es kelapa muda": "r", "susu kedelai": "r", "jamu": "s",
+    "teh tarik": "s", "matcha latte": "s", "cokelat panas": "s", "susu kotak": "r", "yakult": "s", "wedang ronde": "t",
+    "stmj": "s", "smoothie": "r", "sirup": "s", "kolang-kaling": "s",
+    # hidangan campuran lain
+    "ketoprak": "t", "gado-gado": "s", "lotek": "s", "pecel": "s", "sate ayam": "s", "sate padang": "t", "rujak cingur": "s",
+    "rujak buah": "s", "tahu tek": "s", "pallubasa": "t", }
+
