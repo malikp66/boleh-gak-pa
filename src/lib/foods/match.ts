@@ -143,14 +143,18 @@ export function findFood(text: string, foods: Food[] = FOODS): MatchedFood | nul
 export function combine(foods: MatchedFood[]): CombinedFood | null {
   if (!foods.length) return null;
   if (foods.length === 1) return foods[0];
-  const top = (key: "purin" | "garam"): Level =>
-    foods.map((f) => f[key]).reduce((a, b) => (LEVEL[b] > LEVEL[a] ? b : a));
+  const top = (key: "purin" | "garam" | "karbo" | "gula" | "lemak"): Level =>
+    foods.map((f) => f[key] ?? "rendah").reduce((a, b) => (LEVEL[b] > LEVEL[a] ? b : a));
   return {
     name: foods.map((f) => f.name).join(" + "),
     aliases: [],
     kategori: "Kombinasi",
     purin: top("purin"),
     garam: top("garam"),
+    karbo: top("karbo"),
+    gula: top("gula"),
+    lemak: top("lemak"),
+    alergen: [...new Set(foods.flatMap((f) => f.alergen ?? []))],
     porsi_aman: foods.map((f) => `${f.name}: ${f.porsi_aman}`).join("; "),
     trik: foods.flatMap((f) => f.trik.slice(0, 2)),
     pemicu: foods.flatMap((f) => f.pemicu.slice(0, 2)),

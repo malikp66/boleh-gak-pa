@@ -10,8 +10,11 @@ export const POST = route(async (req) => {
     note: z.string().max(40).default(""),
   }).parse(await req.json());
   const { profile, foods, flare } = await loadProfileContext(supabase, body.profileId);
-  const { count } = await supabase
-    .from("meals").select("id", { count: "exact", head: true })
-    .eq("profile_id", profile.id).eq("garam", "tinggi").neq("portion", "ditolak").gte("at", todayStartISO());
-  return assess(body.food, foods, { profile, flare, saltyMealsToday: count ?? 0, note: body.note }, aiCache(), quota(supabase, "assess"));
+  const { data: todays } = await supabase
+    .from("meals").select("garam, karbo").eq("profile_id", profile.id).neq("portion", "ditolak").gte("at", todayStartISO());
+  const today = {
+    garam: (todays ?? []).filter((m) => m.garam === "tinggi").length,
+    karbo: (todays ?? []).filter((m) => m.karbo === "tinggi").length,
+  };
+  return assess(body.food, foods, { profile, flare, today, note: body.note }, aiCache(), quota(supabase, "assess"));
 });

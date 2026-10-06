@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import App from "@/components/App";
 import { supabaseConfigured } from "@/lib/supabase/env";
 
@@ -12,5 +13,5 @@ export default function Home() {
       </main>
     );
   }
-  return <App />;
+  return <Suspense><App /></Suspense>;
 }

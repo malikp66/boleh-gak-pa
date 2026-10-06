@@ -2,8 +2,22 @@
 import { useCallback, useEffect, useState } from "react";
 import { api, Chips, Meter, resizeImage, speak, useToast } from "./ui";
 import { AssessResult, Profile } from "./types";
+import { ConditionId, conditionInfo, normalizeConditions } from "@/lib/conditions";
 
-const FOOD_CHIPS = ["ketoprak", "sate kambing", "soto betawi", "bakso", "gado-gado", "nasi padang", "seafood", "martabak manis"] as const;
+// contoh makanan yang paling "menguji" tiap kondisi
+const EXAMPLES: Record<ConditionId, string[]> = {
+  diabetes: ["nasi uduk", "es teh manis", "martabak manis", "nasi + mi goreng"],
+  hipertensi: ["bakso", "mi instan", "ikan asin", "indomie ketoprak"],
+  asam_urat: ["sate kambing", "emping", "seafood", "soto betawi"],
+  kolesterol: ["gorengan", "rendang", "martabak telur", "sop buntut"],
+  alergi: ["gado-gado", "siomay", "kerupuk", "pempek"],
+  sehat: ["nasi goreng", "boba", "ayam geprek", "salad"],
+};
+const DIM_LABEL: Record<string, string> = { purin: "Purin", garam: "Garam", karbo: "Karbo", gula: "Gula", lemak: "Lemak jenuh" };
+const DIMS: Record<ConditionId, string[]> = {
+  asam_urat: ["purin"], hipertensi: ["garam"], diabetes: ["karbo", "gula"], kolesterol: ["lemak"], alergi: [], sehat: ["gula", "garam", "lemak"],
+};
+const COND_EMOJI = (c: string) => (c === "umum" ? "⚕️" : conditionInfo(c)?.emoji ?? "•");
 const NOTE_CHIPS = ["Ditraktir teman", "Kondangan", "Di rumah", "Beli sendiri"] as const;
 const VERDICT: Record<string, string> = { hijau: "Aman", kuning: "Boleh, dibatasi", merah: "Sebaiknya jangan" };
 
@@ -12,13 +26,16 @@ interface PhotoInfo {
   corrected: boolean; in_table: boolean; alternatives: string[];
 }
 
-export default function CekTab({ profile, flareJoint, prefill, onSaveUnknown, onLogged }: {
+export default function CekTab({ profile, flareJoint, prefill, welcome, onSaveUnknown }: {
   profile: Profile;
   flareJoint: string | null;
   prefill: { food: string; n: number } | null;
+  welcome: boolean;
   onSaveUnknown: (name: string) => void;
-  onLogged: () => void;
 }) {
+  const conditions = normalizeConditions(profile.kondisi);
+  const chips = [...new Set(conditions.flatMap((c) => EXAMPLES[c]))].slice(0, 8);
+  const dims = [...new Set(conditions.flatMap((c) => DIMS[c]))];
   const toast = useToast();
   const [food, setFood] = useState(prefill?.food ?? "");
   const [note, setNote] = useState<(typeof NOTE_CHIPS)[number]>("Ditraktir teman");
@@ -84,7 +101,6 @@ export default function CekTab({ profile, flareJoint, prefill, onSaveUnknown, on
       setFood("");
       setPreview("");
       setPhoto(null);
-      onLogged();
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (e) {
       toast((e as Error).message);
@@ -94,11 +110,16 @@ export default function CekTab({ profile, flareJoint, prefill, onSaveUnknown, on
   const r = result;
   const multi = (r?.components.length ?? 0) > 1;
   const typo = r?.components.some((c) => c.matched?.includes("(dari"));
-  const salty = r?.components.filter((c) => c.garam === "tinggi") ?? [];
 
   return (
     <>
       {flareJoint && <div className="banner">Asam urat lagi kambuh ({flareJoint}). Saran dibuat lebih ketat.</div>}
+      {welcome && !result && (
+        <div className="secure">
+          <p>🎉 Siap! Coba cek satu makanan dulu.</p>
+          <p className="small" style={{ fontWeight: 500 }}>Ketuk salah satu contoh di bawah, atau ketik makanan yang mau kamu makan hari ini.</p>
+        </div>
+      )}
 
       <div className="card">
         <p className="eyebrow">Langkah 1</p>
@@ -127,7 +148,7 @@ export default function CekTab({ profile, flareJoint, prefill, onSaveUnknown, on
         <form onSubmit={(e) => { e.preventDefault(); check(food); }}>
           <input type="text" value={food} placeholder="mis. ketoprak" autoComplete="off" enterKeyHint="go"
             onChange={(e) => { setFood(e.target.value); clear(); }} />
-          <div className="chips"><Chips items={FOOD_CHIPS} onPick={(f) => { setFood(f); clear(); }} /></div>
+          <div className="chips"><Chips items={chips} onPick={(f) => { setFood(f); clear(); }} /></div>
           <p className="eyebrow">Situasinya</p>
           <div className="chips"><Chips items={NOTE_CHIPS} value={note} onPick={setNote} /></div>
           <button className="btn big primary" type="submit" disabled={Boolean(loading)}>Boleh gak? →</button>
@@ -160,8 +181,17 @@ export default function CekTab({ profile, flareJoint, prefill, onSaveUnknown, on
                 ))}
               </div>
             )}
-            {salty.length >= 2 && <p className="combo-warn">Dobel garam: {salty.map((c) => c.name).join(" + ")}</p>}
-            {r.in_table && <div className="meters"><Meter label="Purin" level={r.purin} /><Meter label="Garam" level={r.garam} /></div>}
+            {r.reasons.length > 0 && (
+              <div className="reasons">
+                {r.reasons.slice(0, 4).map((x, i) => (
+                  <span className="reason" key={i}><i className={`dot ${x.status}`} />{COND_EMOJI(x.condition)} {x.text}</span>
+                ))}
+              </div>
+            )}
+            {r.nutrients && dims.length > 0 && (
+              <div className="meters">{dims.map((d) => <Meter key={d} label={DIM_LABEL[d]} level={(r.nutrients as Record<string, string | null>)[d]} />)}</div>
+            )}
+            {conditions.includes("alergi") && r.alergen.length > 0 && <p className="small" style={{ marginTop: 10 }}><b>Mungkin mengandung:</b> {r.alergen.join(", ")}. Tanyakan ke penjual.</p>}
             {r.flare_active && <span className="flare-tag">Lagi kambuh, lebih ketat</span>}
           </div>
 

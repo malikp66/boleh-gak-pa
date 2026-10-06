@@ -2,6 +2,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { api, speak, useToast } from "./ui";
 import { Me, Profile, Review } from "./types";
+import SecureCard from "./SecureCard";
+import { normalizeConditions } from "@/lib/conditions";
 
 export default function ReviewTab({ profile, me }: { profile: Profile; me: Me }) {
   const toast = useToast();
@@ -18,9 +20,11 @@ export default function ReviewTab({ profile, me }: { profile: Profile; me: Me })
   if (!rv) return <div className="card"><p className="muted">Memuat…</p></div>;
   const { week: w, triggers: t, recovery: rec } = rv;
   const family = me.families.find((f) => f.id === profile.family_id);
+  const conditions = normalizeConditions(profile.kondisi);
 
   return (
     <>
+      {me.user.anonymous && <SecureCard />}
       <div className="card">
         <h2>7 hari terakhir</h2>
         <div className="stat-grid">
@@ -28,10 +32,10 @@ export default function ReviewTab({ profile, me }: { profile: Profile; me: Me })
           <div className="stat kuning"><b>{w.status.kuning ?? 0}</b><span>dibatasi</span></div>
           <div className="stat merah"><b>{w.status.merah ?? 0}</b><span>berisiko</span></div>
         </div>
-        <p><b>{w.garam_tinggi} dari {w.meals}</b> makanan tinggi garam — penting untuk tensi.</p>
+        {conditions.includes("hipertensi") && <p><b>{w.garam_tinggi} dari {w.meals}</b> makanan tinggi garam — penting untuk tensi.</p>}
       </div>
 
-      <div className="card">
+      {conditions.includes("asam_urat") && <div className="card">
         <h2>Tersangka pemicu</h2>
         {t.suspects.length ? (
           <>
@@ -39,14 +43,14 @@ export default function ReviewTab({ profile, me }: { profile: Profile; me: Me })
             {t.suspects.map((s) => <div className="meal" key={s.food}><span className="what"><b>{s.food}</b></span><span className="when">{s.count}×</span></div>)}
           </>
         ) : <p className="muted">Belum cukup data. Catat makan &amp; kambuh, nanti polanya kelihatan.</p>}
-      </div>
+      </div>}
 
-      <div className="card">
+      {conditions.includes("asam_urat") && <div className="card">
         <h2>Lama sembuh</h2>
         <p>{rec.basis === "riwayat"
           ? <>Dari {rec.history_count} kali kambuh, biasanya pulih dalam <b>{rec.typical_days} hari</b> ({rec.range[0]}–{rec.range[1]} hari).</>
           : <>Belum ada riwayat. Kisaran umum serangan asam urat: <b>3–10 hari</b>.</>}</p>
-      </div>
+      </div>}
 
       <div className="card">
         <h2>Kata AI</h2>

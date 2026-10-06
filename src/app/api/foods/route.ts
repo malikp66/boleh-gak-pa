@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ruleStatus } from "@/lib/foods/match";
+import { evalFor } from "@/lib/domain";
 import { loadProfileContext, requireUser, route } from "@/lib/server";
 
 const level = z.enum(["rendah", "sedang", "tinggi"]);
@@ -7,8 +7,11 @@ const level = z.enum(["rendah", "sedang", "tinggi"]);
 export const GET = route(async (req) => {
   const { supabase } = await requireUser();
   const profileId = new URL(req.url).searchParams.get("profileId") ?? "";
-  const { foods, flare } = await loadProfileContext(supabase, profileId);
-  return foods.map((f) => ({ ...f, status: ruleStatus(f, Boolean(flare)) }));
+  const { profile, foods, flare } = await loadProfileContext(supabase, profileId);
+  return foods.map((f) => {
+    const ev = evalFor([f], profile, Boolean(flare));
+    return { ...f, status: ev.status, reason: ev.reasons[0]?.text ?? null };
+  });
 });
 
 export const POST = route(async (req) => {
@@ -21,6 +24,10 @@ export const POST = route(async (req) => {
     bahan: z.string().max(500).default(""),
     purin: level,
     garam: level,
+    karbo: level.default("sedang"),
+    gula: level.default("rendah"),
+    lemak: level.default("rendah"),
+    alergen: z.array(z.string().max(30)).max(9).default([]),
     porsi_aman: z.string().max(200).default(""),
     trik: z.array(z.string().max(120)).max(6).default([]),
     pemicu: z.array(z.string().max(120)).max(6).default([]),

@@ -35,7 +35,12 @@ create table public.profiles (
   nama text not null check (char_length(nama) between 1 and 40),
   panggilan text not null default 'kamu' check (char_length(panggilan) between 1 and 20),
   usia int check (usia between 1 and 120),
+  untuk text not null default 'diri' check (untuk in ('diri', 'orang_tua', 'pasangan', 'anak', 'lainnya')),
+  -- kode kondisi: diabetes | hipertensi | asam_urat | kolesterol | alergi | sehat (lihat src/lib/conditions.ts)
   kondisi text[] not null default '{}',
+  alergen text[] not null default '{}',
+  diabetes_tipe text check (diabetes_tipe in ('pradiabetes', 'tipe_2', 'tipe_1', 'gestasional', 'tidak_tahu')),
+  insulin boolean not null default false,
   catatan_dokter text not null default '' check (char_length(catatan_dokter) <= 500),
   created_at timestamptz not null default now()
 );
@@ -50,6 +55,10 @@ create table public.custom_foods (
   bahan text not null default '',
   purin text not null check (purin in ('rendah', 'sedang', 'tinggi')),
   garam text not null check (garam in ('rendah', 'sedang', 'tinggi')),
+  karbo text not null default 'sedang' check (karbo in ('rendah', 'sedang', 'tinggi')),
+  gula text not null default 'rendah' check (gula in ('rendah', 'sedang', 'tinggi')),
+  lemak text not null default 'rendah' check (lemak in ('rendah', 'sedang', 'tinggi')),
+  alergen text[] not null default '{}',
   porsi_aman text not null default '',
   trik text[] not null default '{}',
   pemicu text[] not null default '{}',
@@ -68,6 +77,9 @@ create table public.meals (
   status text not null check (status in ('hijau', 'kuning', 'merah')),
   purin text,
   garam text,
+  karbo text,
+  gula text,
+  lemak text,
   note text not null default '',
   created_by uuid default auth.uid() references auth.users(id) on delete set null
 );
@@ -93,6 +105,19 @@ create table public.pain_logs (
   at timestamptz not null default now(),
   pain int not null check (pain between 0 and 10)
 );
+
+-- Catatan pemantauan: gula darah (mg/dL) atau tensi (sistolik/diastolik mmHg).
+create table public.health_logs (
+  id uuid primary key default gen_random_uuid(),
+  profile_id uuid not null references public.profiles(id) on delete cascade,
+  kind text not null check (kind in ('gula_darah', 'tensi')),
+  at timestamptz not null default now(),
+  value1 int not null check (value1 between 10 and 700),
+  value2 int check (value2 between 20 and 200),
+  context text not null default '' check (char_length(context) <= 40),
+  note text not null default '' check (char_length(note) <= 200)
+);
+create index health_logs_profile on public.health_logs (profile_id, kind, at desc);
 
 -- ---------------------------------------------------------------- AI: cache & kuota
 -- Ditulis hanya oleh server (service role). Isinya teks saran umum, tanpa data pribadi.
@@ -151,6 +176,10 @@ returns boolean language plpgsql security definer set search_path = public as $$
 declare c int;
 begin
   if auth.uid() is null then return false; end if;
+  -- akun anonim (belum diamankan dengan Google) dapat sepertiga jatah, supaya tidak disalahgunakan
+  if coalesce((auth.jwt() ->> 'is_anonymous')::boolean, false) then
+    p_limit := greatest(1, p_limit / 3);
+  end if;
   insert into ai_usage (user_id, day, kind, count) values (auth.uid(), current_date, p_kind, 1)
   on conflict (user_id, day, kind) do update set count = ai_usage.count + 1
   returning count into c;
@@ -166,6 +195,7 @@ alter table public.custom_foods enable row level security;
 alter table public.meals enable row level security;
 alter table public.flares enable row level security;
 alter table public.pain_logs enable row level security;
+alter table public.health_logs enable row level security;
 alter table public.ai_cache enable row level security;
 alter table public.ai_usage enable row level security;
 
@@ -197,6 +227,9 @@ create policy "kambuh keluarga" on public.flares
 create policy "nyeri keluarga" on public.pain_logs
   for all using (exists (select 1 from flares fl where fl.id = flare_id and is_family_member(profile_family(fl.profile_id))))
   with check (exists (select 1 from flares fl where fl.id = flare_id and is_family_member(profile_family(fl.profile_id))));
+
+create policy "pemantauan keluarga" on public.health_logs
+  for all using (is_family_member(profile_family(profile_id))) with check (is_family_member(profile_family(profile_id)));
 
 -- ai_cache: tidak ada policy → hanya service role (server) yang bisa baca/tulis.
 create policy "lihat kuota sendiri" on public.ai_usage

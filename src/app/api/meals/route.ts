@@ -28,6 +28,9 @@ export const POST = route(async (req) => {
     status: body.status,
     purin: food?.purin ?? null,
     garam: food?.garam ?? null,
+    karbo: food?.karbo ?? null,
+    gula: food?.gula ?? null,
+    lemak: food?.lemak ?? null,
     note: body.note,
   });
   if (error) throw error;

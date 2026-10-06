@@ -1,8 +1,9 @@
 import "server-only";
 import { z } from "zod";
 import { AIUnavailableError, generateJSON } from "./ai";
-import { combine, findFoods, FOODS, ruleStatus } from "./foods/match";
-import { CombinedFood, Food, Status } from "./foods/types";
+import { ConditionId, conditionInfo, evaluate, Evaluation, normalizeConditions } from "./conditions";
+import { combine, findFoods, FOODS } from "./foods/match";
+import { CombinedFood, Food, MatchedFood } from "./foods/types";
 import { resolveVision, VisionGuess } from "./foods/vision";
 
 export interface Profile {
@@ -11,7 +12,11 @@ export interface Profile {
   nama: string;
   panggilan: string;
   usia: number | null;
+  untuk: string;
   kondisi: string[];
+  alergen: string[];
+  diabetes_tipe: string | null;
+  insulin: boolean;
   catatan_dokter: string;
 }
 
@@ -19,6 +24,12 @@ export interface FlareSummary {
   started: string;
   joint: string;
   pain: number;
+}
+
+export const conditionsOf = (p: Profile): ConditionId[] => normalizeConditions(p.kondisi);
+
+export function evalFor(parts: MatchedFood[] | Food[], profile: Profile, flare: boolean): Evaluation {
+  return evaluate(parts, { conditions: conditionsOf(profile), alergen: profile.alergen, flare });
 }
 
 // ---------------------------------------------------------------- cek makanan
@@ -35,62 +46,78 @@ export type AssessAI = z.infer<typeof AssessSchema>;
 export interface AssessContext {
   profile: Profile;
   flare: FlareSummary | null;
-  saltyMealsToday: number;
+  /** jumlah makanan tinggi garam / tinggi karbo yang sudah dimakan hari ini */
+  today: { garam: number; karbo: number };
   note: string;
 }
 
-const pick = (f: Food) => ({ name: f.name, purin: f.purin, garam: f.garam, porsi_aman: f.porsi_aman, trik: f.trik, pemicu: f.pemicu });
+const pick = (f: Food) => ({
+  name: f.name, purin: f.purin, garam: f.garam, karbo: f.karbo, gula: f.gula, lemak: f.lemak,
+  alergen: f.alergen, porsi_aman: f.porsi_aman, trik: f.trik, pemicu: f.pemicu,
+});
 
-function assessPrompt(foodText: string, food: CombinedFood | null, status: Status | null, ctx: AssessContext): string {
+const DIABETES_TIPE: Record<string, string> = {
+  pradiabetes: "pradiabetes", tipe_2: "diabetes tipe 2", tipe_1: "diabetes tipe 1", gestasional: "diabetes kehamilan", tidak_tahu: "diabetes",
+};
+
+function personLine(p: Profile, conds: ConditionId[]) {
+  const labels = conds.map((c) => (c === "diabetes" && p.diabetes_tipe ? DIABETES_TIPE[p.diabetes_tipe] : conditionInfo(c)!.short));
+  const extra = [
+    conds.includes("alergi") && p.alergen.length ? `alergi: ${p.alergen.join(", ")}` : "",
+    conds.includes("diabetes") && p.insulin ? "memakai insulin" : "",
+  ].filter(Boolean);
+  return `Kondisi: ${labels.join(", ")}${extra.length ? ` (${extra.join("; ")})` : ""}. Catatan dokter: ${p.catatan_dokter || "-"}`;
+}
+
+function assessPrompt(foodText: string, food: CombinedFood | null, ev: Evaluation, ctx: AssessContext): string {
   const p = ctx.profile;
+  const conds = conditionsOf(p);
   const lines = [
     `Kamu adalah 'Teman Makan' untuk ${p.nama}${p.usia ? `, ${p.usia} tahun` : ""}.`,
-    `Kondisi: ${p.kondisi.join(", ")}. Catatan dokter: ${p.catatan_dokter || "-"}`,
+    personLine(p, conds),
     `Bahasa: Indonesia santai dan hangat, kalimat pendek, mudah dibaca semua umur. Panggil dia '${p.panggilan}'.`,
-    "Aturan keras: jangan menyarankan obat atau dosis obat; jangan menakut-nakuti; jujur soal risiko; selalu praktis.",
-    "Perhatikan DUA hal: purin (asam urat) DAN garam (darah tinggi). Sering kali garam yang lebih penting.",
+    "Aturan keras: jangan menyarankan obat, dosis obat, atau dosis insulin; jangan menakut-nakuti; jujur soal risiko; selalu praktis.",
+    `Fokus penilaian: ${conds.map((c) => conditionInfo(c)!.focus).join(" | ")}.`,
+    conds.includes("diabetes") ? "Untuk diabetes: sarankan urutan makan sayur → protein → karbohidrat, porsi nasi ±¾ gelas, dan ganti minuman manis dengan air putih/teh tawar (Isi Piringku)." : "",
     "",
     `Makanan yang ditawarkan: ${foodText}`,
-  ];
+  ].filter((l) => l !== "");
   if (ctx.note) lines.push(`Situasi: ${ctx.note}`);
   const parts = food?.components;
   if (parts?.length) {
-    const salty = parts.filter((f) => f.garam === "tinggi").map((f) => f.name);
     lines.push(
-      `INI KOMBINASI ${parts.length} MAKANAN DIMAKAN BERSAMAAN: ${parts.map((f) => f.name).join(", ")}.`,
-      "Nilai sebagai SATU kali makan: risiko purin dan garam BERTAMBAH. Sebut semua makanannya.",
+      `INI KOMBINASI ${parts.length} MAKANAN DIMAKAN BERSAMAAN: ${parts.map((f) => f.name).join(", ")}. Nilai sebagai SATU kali makan; sebut semua makanannya.`,
       "DATA TABEL tiap makanan (sumber utama, jangan bertentangan):",
       ...parts.map((f) => JSON.stringify(pick(f))),
-      `Status lampu gabungan: ${status}.`,
     );
-    if (salty.length >= 2) {
-      lines.push(`PERINGATAN: ${salty.join(" dan ")} sama-sama tinggi garam — dobel garam berbahaya untuk darah tinggi. Sarankan pilih SALAH SATU saja, atau setengah porsi masing-masing.`);
-    }
   } else if (food) {
-    lines.push("DATA TABEL (sumber utama, jangan bertentangan):", JSON.stringify(pick(food)), `Status lampu dari tabel: ${status}.`);
+    lines.push("DATA TABEL (sumber utama, jangan bertentangan):", JSON.stringify(pick(food)));
   } else {
-    lines.push("Makanan ini TIDAK ada di tabel. Nilai hati-hati berdasarkan pengetahuan umum diet rendah purin & rendah garam.");
+    lines.push("Makanan ini TIDAK ada di tabel. Nilai hati-hati berdasarkan pengetahuan gizi umum untuk kondisi di atas.");
   }
+  lines.push(`Lampu dari aturan: ${ev.status}. Alasan: ${ev.reasons.map((r) => r.text).join("; ") || "aman untuk kondisinya"}. Gunakan lampu ini, jangan diubah.`);
   if (ctx.flare) lines.push(`PENTING: asam urat ${p.panggilan} SEDANG KAMBUH sejak ${ctx.flare.started.slice(0, 10)} (nyeri ${ctx.flare.pain}/10 di ${ctx.flare.joint}). Lebih ketat.`);
-  if (ctx.saltyMealsToday >= 2) lines.push(`Hari ini ${p.panggilan} sudah makan ${ctx.saltyMealsToday} makanan tinggi garam.`);
+  if (conds.includes("hipertensi") && ctx.today.garam >= 2) lines.push(`Hari ini ${p.panggilan} sudah makan ${ctx.today.garam} makanan tinggi garam.`);
+  if (conds.includes("diabetes") && ctx.today.karbo >= 2) lines.push(`Hari ini ${p.panggilan} sudah makan ${ctx.today.karbo} makanan tinggi karbohidrat.`);
   lines.push(
     "",
     "Isi JSON:",
     "- headline: satu kalimat jawaban inti (maks 12 kata)",
     "- portion: porsi aman yang konkret",
     "- tips: 3-4 cara meminimalkan dampak saat itu juga, masing-masing maks 12 kata",
-    `- refusals: 3 kalimat yang DIUCAPKAN ${p.nama.toUpperCase()} KEPADA TEMANNYA (orang pertama 'saya'), sopan dan berterima kasih. Urutan: (1) menolak halus, (2) cicip sedikit saja, (3) minta dibungkus.`,
-    "- if_forced: kalau tetap makan satu porsi penuh, apa dampaknya pada asam urat dan tensi, dan apa yang dilakukan setelahnya. Maks 2 kalimat.",
-    "- why: alasan singkat (sebut purin dan/atau garam), maks 2 kalimat.",
+    `- refusals: 3 kalimat yang DIUCAPKAN ${p.nama.toUpperCase()} KEPADA ORANG YANG MENAWARKAN (orang pertama 'saya'), sopan dan berterima kasih. Urutan: (1) menolak halus, (2) cicip sedikit saja, (3) minta dibungkus.`,
+    "- if_forced: kalau tetap makan satu porsi penuh, apa dampaknya untuk kondisinya dan apa yang dilakukan setelahnya. Maks 2 kalimat.",
+    "- why: alasan singkat sesuai kondisinya, maks 2 kalimat.",
   );
   return lines.join("\n");
 }
 
-function fallbackAssess(food: CombinedFood | null): AssessAI {
+function fallbackAssess(food: CombinedFood | null, ev: Evaluation): AssessAI {
+  const why = ev.reasons.map((r) => r.text).join("; ");
   if (!food) {
     return {
       headline: "Belum ada data, makan sedikit dulu ya.", portion: "Setengah porsi",
-      tips: ["Kuah/bumbu sedikit", "Minum 2 gelas air putih"],
+      tips: ["Kuah/bumbu/saus sedikit", "Minum air putih"],
       refusals: ["Makasih banyak, saya lagi jaga makan dari dokter, saya cicip sedikit aja ya."],
       if_forced: "Belum ada data untuk makanan ini.", why: "Makanan tidak ada di daftar.",
     };
@@ -100,25 +127,29 @@ function fallbackAssess(food: CombinedFood | null): AssessAI {
     portion: food.porsi_aman,
     tips: food.trik,
     refusals: [
-      "Makasih banyak ya, saya lagi dijaga dokter soal asam urat sama tensi.",
+      "Makasih banyak ya, saya lagi jaga makan dari dokter.",
       "Saya cicip sedikit aja ya, biar tetap bisa nemenin makan.",
       "Boleh saya bungkus? Nanti saya makan pelan-pelan di rumah.",
     ],
-    if_forced: `Purin ${food.purin}, garam ${food.garam}. Kalau habis satu porsi, minum banyak air dan pantau sendi serta tensi besok.`,
-    why: food.pemicu.join("; ") || "Relatif aman.",
+    if_forced: why ? `Perhatikan: ${why}. Kalau habis satu porsi, kurangi porsi makan berikutnya dan minum air putih.` : "Relatif aman untuk kondisinya.",
+    why: why || "Relatif aman untuk kondisinya.",
   };
 }
 
-/** Kunci cache: hanya hal yang benar-benar mengubah jawaban. */
+/** Kunci cache: hanya hal yang benar-benar mengubah jawaban (tanpa data pribadi). */
 export function assessCacheKey(foodText: string, foods: Food[], ctx: AssessContext): string {
   const found = findFoods(foodText, foods);
+  const conds = [...conditionsOf(ctx.profile)].sort();
   return JSON.stringify({
-    v: 1,
+    v: 2,
     foods: found.length ? found.map((f) => f.name) : [foodText.trim().toLowerCase()],
-    kondisi: [...ctx.profile.kondisi].sort(),
+    conds,
+    alergen: conds.includes("alergi") ? [...ctx.profile.alergen].sort() : [],
+    dm: conds.includes("diabetes") ? [ctx.profile.diabetes_tipe, ctx.profile.insulin] : null,
     panggilan: ctx.profile.panggilan,
     flare: Boolean(ctx.flare),
-    salty: Math.min(ctx.saltyMealsToday, 2),
+    garam: Math.min(ctx.today.garam, 2),
+    karbo: Math.min(ctx.today.karbo, 2),
     note: ctx.note,
   });
 }
@@ -132,7 +163,7 @@ export async function assess(
 ) {
   const found = findFoods(foodText, foods);
   const food = combine(found);
-  const status = ruleStatus(food, Boolean(ctx.flare));
+  const ev = found.length ? evalFor(found, ctx.profile, Boolean(ctx.flare)) : { status: "kuning" as const, reasons: [] };
   const key = assessCacheKey(foodText, foods, ctx);
 
   let text: AssessAI;
@@ -146,7 +177,7 @@ export async function assess(
     try {
       const r = await generateJSON(
         [
-          { role: "system", content: assessPrompt(foodText, food, status, ctx) },
+          { role: "system", content: assessPrompt(foodText, food, ev, ctx) },
           { role: "user", content: `${ctx.profile.panggilan} ditawari ${foodText}. Boleh gak?` },
         ],
         AssessSchema,
@@ -157,23 +188,28 @@ export async function assess(
       await cache.set(key, text, r.model);
     } catch (e) {
       console.warn("assess fallback:", e instanceof Error ? e.message : e);
-      text = fallbackAssess(food);
+      text = fallbackAssess(food, ev);
     }
   } else {
-    text = fallbackAssess(food);
+    text = fallbackAssess(food, ev);
   }
 
   const labels = ["Halus", "Cicip sedikit", "Bungkus"];
+  const flare = Boolean(ctx.flare);
   return {
     ...text,
     refusals: text.refusals.map((t, i) => ({ label: labels[i] ?? "Lain", text: t })),
-    status: status ?? "kuning",
+    status: ev.status,
+    reasons: ev.reasons,
     food: food?.name ?? foodText,
-    purin: food?.purin ?? null,
-    garam: food?.garam ?? null,
+    nutrients: food ? { purin: food.purin, garam: food.garam, karbo: food.karbo ?? null, gula: food.gula ?? null, lemak: food.lemak ?? null } : null,
+    alergen: food ? [...new Set(found.flatMap((f) => f.alergen ?? []))] : [],
     in_table: Boolean(food),
-    flare_active: Boolean(ctx.flare),
-    components: found.map((f) => ({ name: f.name, purin: f.purin, garam: f.garam, status: ruleStatus(f, Boolean(ctx.flare)), matched: f.matched })),
+    flare_active: flare,
+    components: found.map((f) => ({
+      name: f.name, garam: f.garam, karbo: f.karbo ?? null, matched: f.matched,
+      status: evalFor([f], ctx.profile, flare).status,
+    })),
     source,
     model,
   };
@@ -233,6 +269,10 @@ export async function analyzeFood(name: string, bahan: string) {
     kategori: z.enum(kategori),
     purin: z.enum(["rendah", "sedang", "tinggi"]),
     garam: z.enum(["rendah", "sedang", "tinggi"]),
+    karbo: z.enum(["rendah", "sedang", "tinggi"]),
+    gula: z.enum(["rendah", "sedang", "tinggi"]),
+    lemak: z.enum(["rendah", "sedang", "tinggi"]),
+    alergen: z.array(z.enum(["kacang tanah", "kacang pohon", "kedelai", "susu", "telur", "gluten", "ikan", "krustasea", "moluska"])),
     porsi_aman: z.string(),
     trik: z.array(z.string()).max(5),
     pemicu: z.array(z.string()).max(5),
@@ -243,12 +283,15 @@ export async function analyzeFood(name: string, bahan: string) {
       {
         role: "system",
         content: [
-          "Kamu ahli gizi rumahan Indonesia. Nilai makanan untuk penderita asam urat DAN darah tinggi.",
+          "Kamu ahli gizi rumahan Indonesia. Nilai satu porsi khas makanan ini.",
           PURIN_RULES,
+          "Karbohidrat per porsi: rendah < 15 g, sedang 15-40 g, tinggi > 40 g. Gula tambahan: rendah < 5 g, sedang 5-12,5 g, tinggi > 12,5 g. " +
+          "Lemak jenuh: rendah < 3 g, sedang 3-6 g, tinggi > 6 g (santan kental, gorengan, kulit, mentega, keju = tinggi). " +
+          "Alergen: sebut yang mungkin ada (termasuk terasi/ebi/petis = krustasea, kecap/tahu/tempe = kedelai, terigu = gluten).",
           "Nilai berdasarkan bahan yang paling berisiko. Kalau ragu, pilih tingkat yang lebih tinggi.",
           "trik: 2-4 cara praktis, maks 10 kata. pemicu: bahan penyebab risiko. alasan: 1-2 kalimat.",
           "Contoh penilaian dari tabel (kalibrasi):",
-          ...refs.map((f) => JSON.stringify({ name: f.name, purin: f.purin, garam: f.garam, porsi_aman: f.porsi_aman, pemicu: f.pemicu })),
+          ...refs.map((f) => JSON.stringify(pick(f))),
         ].join("\n"),
       },
       { role: "user", content: `Makanan: ${name}\nBahan / cara masak: ${bahan || "(tidak disebutkan)"}` },
@@ -265,7 +308,7 @@ export async function weeklySummary(profile: Profile, data: unknown): Promise<st
       [
         {
           role: "system",
-          content: `Kamu teman makan ${profile.panggilan} (${profile.kondisi.join(", ")}). Tulis ringkasan mingguan maksimal 4 kalimat, hangat, Bahasa Indonesia, berdasarkan data. Puji yang baik, satu saran paling penting untuk minggu depan. Jangan menyarankan obat.`,
+          content: `Kamu teman makan ${profile.panggilan} (${conditionsOf(profile).map((c) => conditionInfo(c)!.short).join(", ")}). Tulis ringkasan mingguan maksimal 4 kalimat, hangat, Bahasa Indonesia, berdasarkan data. Puji yang baik, satu saran paling penting untuk minggu depan. Jangan menyarankan obat.`,
         },
         { role: "user", content: JSON.stringify(data) },
       ],

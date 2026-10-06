@@ -6,8 +6,8 @@ import { assess, Profile } from "@/lib/domain";
 import { FOODS } from "@/lib/foods/match";
 
 const papa: Profile = {
-  id: "p", family_id: "f", nama: "Papa", panggilan: "Pa", usia: 58,
-  kondisi: ["asam urat (gout)", "darah tinggi (hipertensi)"], catatan_dokter: "",
+  id: "p", family_id: "f", nama: "Papa", panggilan: "Pa", usia: 58, untuk: "orang_tua",
+  kondisi: ["asam_urat", "hipertensi"], alergen: [], diabetes_tipe: null, insulin: false, catatan_dokter: "",
 };
 const memCache = () => {
   const m = new Map();
@@ -17,7 +17,7 @@ const memCache = () => {
 describe.runIf(process.env.RUN_AI)("AI adapter (real model)", () => {
   it("writes a valid answer for a combination and caches it", async () => {
     const cache = memCache();
-    const ctx = { profile: papa, flare: null, saltyMealsToday: 0, note: "Ditraktir teman" };
+    const ctx = { profile: papa, flare: null, today: { garam: 0, karbo: 0 }, note: "Ditraktir teman" };
     const r = await assess("indomi ketoprak", FOODS, ctx, cache, async () => true);
     console.log(JSON.stringify({ source: r.source, model: r.model, status: r.status, headline: r.headline, refusals: r.refusals }, null, 1));
     expect(r.source).toBe("ai");

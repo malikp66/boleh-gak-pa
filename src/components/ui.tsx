@@ -8,7 +8,7 @@ export async function api<T = unknown>(path: string, body?: unknown, method?: st
     body: body === undefined ? undefined : JSON.stringify(body),
   });
   const data = await res.json().catch(() => ({}));
-  if (res.status === 401) location.href = "/login";
+  if (res.status === 401) location.href = "/mulai";
   if (!res.ok) throw new Error(data.error || res.statusText);
   return data as T;
 }

@@ -1,16 +1,30 @@
 "use client";
 import { useEffect, useState } from "react";
 import { api, CAT_EMOJI, dayKey, fmtDay, fmtTime, useToast } from "./ui";
-import { FoodItem, Meal, Profile } from "./types";
+import { FoodItem, Me, Meal, Profile } from "./types";
+import SecureCard from "./SecureCard";
+import { normalizeConditions } from "@/lib/conditions";
 
 const PORTION_TAG: Record<string, [string, string, string]> = {
   "sesuai saran": ["✅", "sesuai saran", "hijau"],
   "porsi penuh": ["🍛", "porsi penuh", "merah"],
   ditolak: ["🙅", "berhasil menolak", "biru"],
 };
-const SALT_LIMIT = 2; // patokan sederhana: lebih dari 2 makanan tinggi garam sehari = terlalu banyak
+// Patokan sederhana harian (bukan angka medis): lebih dari 2 porsi "tinggi" sehari = terlalu banyak.
+const DAILY = {
+  garam: { emoji: "🧂", label: "Garam tinggi hari ini", limit: 2,
+    msg: ["Belum ada makanan asin hari ini. Mantap! 👍", "Masih aman. Makan berikutnya pilih yang tidak asin ya.", "Sudah cukup garamnya hari ini. Sisanya pilih yang hijau. 🥬", "Garam sudah lewat batas. Minum air putih dan cek tensi. 💧"] },
+  karbo: { emoji: "🍚", label: "Karbo tinggi hari ini", limit: 2,
+    msg: ["Belum ada porsi karbo besar hari ini. Mantap! 👍", "Masih aman. Makan berikutnya perbanyak sayur & protein.", "Karbo hari ini sudah cukup. Pilih sayur, lauk, atau buah utuh. 🥬", "Karbo sudah banyak. Kalau punya alat, cek gula darah 2 jam setelah makan. 🩸"] },
+} as const;
+type DailyKey = keyof typeof DAILY;
 
-export default function CatatanTab({ profile }: { profile: Profile }) {
+export default function CatatanTab({ profile, me }: { profile: Profile; me: Me }) {
+  const conditions = normalizeConditions(profile.kondisi);
+  const meters: DailyKey[] = [
+    ...(conditions.includes("hipertensi") || conditions.includes("sehat") ? (["garam"] as DailyKey[]) : []),
+    ...(conditions.includes("diabetes") ? (["karbo"] as DailyKey[]) : []),
+  ];
   const toast = useToast();
   const [meals, setMeals] = useState<Meal[] | null>(null);
   const [foods, setFoods] = useState<FoodItem[]>([]);
@@ -27,7 +41,7 @@ export default function CatatanTab({ profile }: { profile: Profile }) {
   const eaten = (arr: Meal[]) => arr.filter((m) => m.portion !== "ditolak");
   const todays = eaten(meals.filter((m) => dayKey(new Date(m.at)) === today));
   const count = (arr: Meal[], s: string) => arr.filter((m) => m.status === s).length;
-  const saltToday = todays.filter((m) => m.garam === "tinggi").length;
+  const high = (arr: Meal[], k: DailyKey) => arr.filter((m) => m[k] === "tinggi").length;
   const refused = meals.filter((m) => m.portion === "ditolak").length;
 
   const redDays = new Set(eaten(meals).filter((m) => m.status === "merah").map((m) => dayKey(new Date(m.at))));
@@ -47,7 +61,7 @@ export default function CatatanTab({ profile }: { profile: Profile }) {
     return {
       key: dayKey(d), label: d.toLocaleDateString("id-ID", { weekday: "short" }), date: d.getDate(), today: k === 6,
       h: count(de, "hijau"), k: count(de, "kuning"), m: count(de, "merah"),
-      g: de.filter((m) => m.garam === "tinggi").length, t: dm.length - de.length,
+      g: high(de, "garam"), c: high(de, "karbo"), t: dm.length - de.length,
     };
   });
 
@@ -56,14 +70,10 @@ export default function CatatanTab({ profile }: { profile: Profile }) {
   const top = [...freq.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5);
   const maxTop = top[0]?.[1] ?? 1;
 
-  const saltMsg = saltToday === 0 ? `Belum ada makanan asin hari ini. Mantap! 👍`
-    : saltToday < SALT_LIMIT ? "Masih aman. Makan berikutnya pilih yang tidak asin ya."
-    : saltToday === SALT_LIMIT ? "Sudah cukup garamnya hari ini. Sisanya pilih yang hijau. 🥬"
-    : "Garam sudah lewat batas. Minum air putih yang banyak dan cek tensi. 💧";
-
   let lastDay = "";
   return (
     <>
+      {me.user.anonymous && meals.length >= 3 && <SecureCard />}
       <div className="sticker-row">
         <div className="sticker yellow"><span className="emo">🔥</span><b>{streak}</b><small>hari tanpa merah</small></div>
         <div className="sticker blue"><span className="emo">🙅</span><b>{refused}</b><small>kali menolak</small></div>
@@ -77,34 +87,39 @@ export default function CatatanTab({ profile }: { profile: Profile }) {
           <div className="stat kuning"><b>{count(todays, "kuning")}</b><span>dibatasi</span></div>
           <div className="stat merah"><b>{count(todays, "merah")}</b><span>berisiko</span></div>
         </div>
-        <div className="salt">
-          <div className="salt-head"><span>🧂 Garam tinggi hari ini</span><b>{saltToday}/{SALT_LIMIT}</b></div>
-          <div className="salt-bar">
-            {Array.from({ length: Math.max(SALT_LIMIT + 1, saltToday) }, (_, i) => (
-              <i key={i} className={i < saltToday ? (i >= SALT_LIMIT ? "over" : "f") : ""} />
-            ))}
-          </div>
-          <p className="small">{saltMsg}</p>
-        </div>
+        {meters.map((k) => {
+          const cfg = DAILY[k];
+          const n = high(todays, k);
+          return (
+            <div className="salt" key={k} style={{ marginTop: 12 }}>
+              <div className="salt-head"><span>{cfg.emoji} {cfg.label}</span><b>{n}/{cfg.limit}</b></div>
+              <div className="salt-bar">
+                {Array.from({ length: Math.max(cfg.limit + 1, n) }, (_, i) => <i key={i} className={i < n ? (i >= cfg.limit ? "over" : "f") : ""} />)}
+              </div>
+              <p className="small">{cfg.msg[n === 0 ? 0 : n < cfg.limit ? 1 : n === cfg.limit ? 2 : 3]}</p>
+            </div>
+          );
+        })}
       </div>
 
       <div className="card">
         <div className="title-row"><span className="emo-box">🗓️</span><h2>7 hari terakhir</h2></div>
         <div className="table-wrap">
           <table className="neo-table">
-            <thead><tr><th>Hari</th><th>🟢</th><th>🟡</th><th>🔴</th><th>🧂</th><th>🙅</th></tr></thead>
+            <thead><tr><th>Hari</th><th>🟢</th><th>🟡</th><th>🔴</th>{meters.map((k) => <th key={k}>{DAILY[k].emoji}</th>)}<th>🙅</th></tr></thead>
             <tbody>
               {days.map((d) => (
                 <tr key={d.key} className={`${d.today ? "today" : ""}${d.m ? " bad" : ""}`}>
                   <td><b>{d.label}</b> {d.date}</td>
                   <td>{d.h || "·"}</td><td>{d.k || "·"}</td><td>{d.m || "·"}</td>
-                  <td className={d.g > SALT_LIMIT ? "warn" : ""}>{d.g || "·"}</td><td>{d.t || "·"}</td>
+                  {meters.map((k) => { const v = k === "garam" ? d.g : d.c; return <td key={k} className={v > DAILY[k].limit ? "warn" : ""}>{v || "·"}</td>; })}
+                  <td>{d.t || "·"}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <p className="small muted">🟢 aman · 🟡 dibatasi · 🔴 berisiko · 🧂 tinggi garam · 🙅 berhasil menolak</p>
+        <p className="small muted">🟢 aman · 🟡 dibatasi · 🔴 berisiko{meters.includes("garam") && " · 🧂 tinggi garam"}{meters.includes("karbo") && " · 🍚 tinggi karbo"} · 🙅 berhasil menolak</p>
       </div>
 
       {top.length > 0 && (

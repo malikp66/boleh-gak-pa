@@ -2,17 +2,28 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { api, Chips, useToast } from "./ui";
 import { FoodItem, Profile } from "./types";
+import { ConditionId, normalizeConditions } from "@/lib/conditions";
 
 const STATUS_FILTER = ["semua", "hijau", "kuning", "merah"] as const;
 const STATUS_LABEL = { semua: "Semua", hijau: "Aman", kuning: "Batasi", merah: "Hindari" };
 const BADGE = { hijau: "rendah", kuning: "sedang", merah: "tinggi" } as const;
 
-interface Analysis { kategori: string; purin: string; garam: string; porsi_aman: string; trik: string[]; pemicu: string[]; alasan: string; refs: string[] }
+interface Analysis {
+  kategori: string; purin: string; garam: string; karbo: string; gula: string; lemak: string; alergen: string[];
+  porsi_aman: string; trik: string[]; pemicu: string[]; alasan: string; refs: string[];
+}
+const LEVELS = ["rendah", "sedang", "tinggi"];
+const DIM_LABEL: Record<string, string> = { purin: "Purin", garam: "Garam", karbo: "Karbo", gula: "Gula", lemak: "Lemak jenuh" };
+const DIMS: Record<ConditionId, string[]> = {
+  asam_urat: ["purin"], hipertensi: ["garam"], diabetes: ["karbo", "gula"], kolesterol: ["lemak"], alergi: [], sehat: ["gula", "garam", "lemak"],
+};
 
 export default function DaftarTab({ profile, addName, onCheck }: {
   profile: Profile; addName: { name: string; n: number } | null; onCheck: (food: string) => void;
 }) {
   const toast = useToast();
+  const conditions = normalizeConditions(profile.kondisi);
+  const dims = [...new Set(conditions.flatMap((c) => DIMS[c]))];
   const [foods, setFoods] = useState<FoodItem[]>([]);
   const [q, setQ] = useState("");
   const [cat, setCat] = useState("Semua");
@@ -51,7 +62,8 @@ export default function DaftarTab({ profile, addName, onCheck }: {
     try {
       await api("/api/foods", {
         profileId: profile.id, name: form.name, bahan: form.bahan, kategori: analysis.kategori,
-        purin: analysis.purin, garam: analysis.garam, porsi_aman: analysis.porsi_aman,
+        purin: analysis.purin, garam: analysis.garam, karbo: analysis.karbo, gula: analysis.gula, lemak: analysis.lemak,
+        alergen: analysis.alergen, porsi_aman: analysis.porsi_aman,
         trik: analysis.trik.filter(Boolean), pemicu: analysis.pemicu, alasan: analysis.alasan,
         aliases: form.alias.split(",").map((s) => s.trim()).filter(Boolean),
       });
@@ -102,13 +114,13 @@ export default function DaftarTab({ profile, addName, onCheck }: {
             <>
               <div className="review-head"><p className="eyebrow">Usulan AI · periksa dulu</p><p className="small">{analysis.alasan}</p></div>
               <div className="grid2">
-                <label className="field">Purin
-                  <select value={analysis.purin} onChange={(e) => setA("purin", e.target.value)}>{["rendah", "sedang", "tinggi"].map((l) => <option key={l}>{l}</option>)}</select>
-                </label>
-                <label className="field">Garam
-                  <select value={analysis.garam} onChange={(e) => setA("garam", e.target.value)}>{["rendah", "sedang", "tinggi"].map((l) => <option key={l}>{l}</option>)}</select>
-                </label>
+                {(["purin", "garam", "karbo", "gula", "lemak"] as const).map((k) => (
+                  <label className="field" key={k}>{DIM_LABEL[k]}
+                    <select value={analysis[k]} onChange={(e) => setA(k, e.target.value)}>{LEVELS.map((l) => <option key={l}>{l}</option>)}</select>
+                  </label>
+                ))}
               </div>
+              {analysis.alergen.length > 0 && <p className="small"><b>Mungkin mengandung:</b> {analysis.alergen.join(", ")}</p>}
               <label className="field">Kategori
                 <select value={analysis.kategori} onChange={(e) => setA("kategori", e.target.value)}>
                   {cats.filter((c) => c !== "Semua" && c !== "Buatan keluarga").map((c) => <option key={c}>{c}</option>)}
@@ -148,10 +160,14 @@ export default function DaftarTab({ profile, addName, onCheck }: {
               {f.aliases.length > 0 && <div className="alias">{f.aliases.slice(0, 4).join(", ")}</div>}
               <div className="badges">
                 <span className={`badge ${BADGE[f.status]}`}>{STATUS_LABEL[f.status]}</span>
-                <span className={`badge ${f.purin}`}>Purin {f.purin}</span>
-                <span className={`badge ${f.garam}`}>Garam {f.garam}</span>
+                {dims.map((d) => {
+                  const v = (f as unknown as Record<string, string | undefined>)[d];
+                  return v ? <span key={d} className={`badge ${v}`}>{DIM_LABEL[d]} {v}</span> : null;
+                })}
+                {conditions.includes("alergi") && (f.alergen ?? []).length > 0 && <span className="badge tinggi">⚠️ {f.alergen!.join(", ")}</span>}
                 {f.custom && <span className="badge keluarga">Buatan keluarga</span>}
               </div>
+              {f.reason && f.status !== "hijau" && <p className="small" style={{ margin: "0 0 4px" }}>{f.reason}</p>}
               <p className="porsi">{f.porsi_aman}</p>
               {f.custom && <button className="btn del" onClick={(e) => { e.stopPropagation(); remove(f); }}>Hapus</button>}
             </div>

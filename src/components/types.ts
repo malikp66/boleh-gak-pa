@@ -6,12 +6,16 @@ export interface Profile {
   nama: string;
   panggilan: string;
   usia: number | null;
+  untuk: string;
   kondisi: string[];
+  alergen: string[];
+  diabetes_tipe: string | null;
+  insulin: boolean;
   catatan_dokter: string;
 }
 
 export interface Me {
-  user: { id: string; email: string; name: string };
+  user: { id: string; email: string | null; name: string | null; anonymous: boolean };
   families: { id: string; name: string; invite_code: string }[];
   profiles: Profile[];
   consented: boolean;
@@ -25,9 +29,14 @@ export interface FoodItem {
   kategori: string;
   purin: string;
   garam: string;
+  karbo?: string;
+  gula?: string;
+  lemak?: string;
+  alergen?: string[];
   porsi_aman: string;
   custom?: boolean;
   status: Status;
+  reason: string | null;
 }
 
 export interface AssessResult {
@@ -38,18 +47,21 @@ export interface AssessResult {
   if_forced: string;
   why: string;
   status: Status;
+  reasons: { condition: string; status: Status; text: string }[];
   food: string;
-  purin: string | null;
-  garam: string | null;
+  nutrients: { purin: string; garam: string; karbo: string | null; gula: string | null; lemak: string | null } | null;
+  alergen: string[];
   in_table: boolean;
   flare_active: boolean;
-  components: { name: string; purin: string; garam: string; status: Status; matched: string }[];
+  components: { name: string; garam: string; karbo: string | null; status: Status; matched: string }[];
   source: "cache" | "ai" | "tabel";
   model: string | null;
   elapsed?: number;
 }
 
-export interface Meal { id: string; at: string; food: string; portion: string; status: Status; purin: string | null; garam: string | null }
+export interface Meal { id: string; at: string; food: string; portion: string; status: Status; purin: string | null; garam: string | null; karbo: string | null; gula: string | null }
+
+export interface HealthLog { id: string; at: string; kind: "gula_darah" | "tensi"; value1: number; value2: number | null; context: string; note: string }
 
 export interface Flare {
   id: string; started: string; ended: string | null; joint: string; pain: number; fever: boolean;

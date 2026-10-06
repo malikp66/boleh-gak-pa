@@ -11,7 +11,7 @@ export const GET = route(async () => {
   ]);
   const ai = aiInfo();
   return {
-    user: { id: user.id, email: user.email, name: user.user_metadata?.full_name ?? user.email },
+    user: { id: user.id, email: user.email ?? null, name: user.user_metadata?.full_name ?? null, anonymous: Boolean(user.is_anonymous) },
     families: families ?? [],
     profiles: profiles ?? [],
     consented: consent?.version === CONSENT_VERSION,
