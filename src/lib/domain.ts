@@ -3,7 +3,9 @@ import { z } from "zod";
 import { AIUnavailableError, generateJSON } from "./ai";
 import { ConditionId, conditionInfo, evaluate, Evaluation, normalizeConditions, spokenAlergen } from "./conditions";
 import { combine, findFoods, FOODS } from "./foods/match";
-import { CombinedFood, Food, MatchedFood } from "./foods/types";
+import { Breakdown, compute, INGREDIENTS, levels, Nutrition } from "./foods/composition";
+import { CombinedFood, Food, Level, MatchedFood } from "./foods/types";
+import { findProduct } from "./openfoodfacts";
 import { resolveVision, VisionGuess } from "./foods/vision";
 import { mapLocally, Personalisasi } from "./personalize";
 import { MEDICATIONS } from "./medications";
@@ -243,6 +245,8 @@ export async function assess(
     alergen: food ? [...new Set(found.flatMap((f) => f.alergen ?? []))] : [],
     in_table: Boolean(food),
     estimated: found.some((f) => f.ai),
+    // dasar perhitungan untuk makanan hasil belajar (angka per porsi & rincian bahan)
+    basis: found.filter((f) => f.basis).map((f) => ({ name: f.name, ...f.basis! })),
     flare_active: flare,
     components: found.map((f) => ({
       name: f.name, garam: f.garam, karbo: f.karbo ?? null, matched: f.matched,
@@ -288,32 +292,32 @@ export async function identify(imageB64: string, foods: Food[]) {
 }
 
 // ---------------------------------------------------------------- analisis makanan baru
-const PURIN_RULES =
-  "Pedoman purin: TINGGI = jeroan, emping/melinjo, teri, sarden, kerang, daging kambing, kaldu tulang pekat, alkohol. " +
-  "SEDANG = daging sapi/ayam/bebek, ikan, udang, cumi, tahu, tempe, kacang, jamur. RENDAH = nasi, telur, susu, sayur, buah, umbi. " +
-  "Pedoman garam: TINGGI = ikan asin, kecap, terasi, bumbu kacang, kerupuk, kuah kaldu, makanan olahan/kalengan, mi instan. " +
-  "Purin nabati risikonya lebih kecil dari purin hewani.";
+/**
+ * Makanan baru: AI HANYA menguraikan resep satu porsi (bahan + gram) dan mengenali produk kemasan.
+ * Angka gizinya dihitung dari data: label kemasan (Open Food Facts) atau tabel bahan dasar
+ * (USDA FoodData Central / Open Food Facts). Tingkat rendah/sedang/tinggi memakai ambang yang sama
+ * dengan tabel utama. Lihat lib/foods/composition.ts.
+ */
+export interface FoodAnalysis {
+  dikenal: boolean; nama: string; kategori: string;
+  purin: Level; garam: Level; karbo: Level; gula: Level; lemak: Level; ig: Level | null;
+  alergen: string[]; porsi_aman: string; trik: string[]; pemicu: string[]; alasan: string;
+  nutrisi: Nutrition; rincian: Breakdown["rincian"]; tidak_dikenal: string[];
+  sumber: "bahan" | "kemasan"; sumber_ref: string; refs: string[]; model: string;
+}
 
-export async function analyzeFood(name: string, bahan: string) {
-  const words = new Set((name + " " + bahan).toLowerCase().match(/[a-z]+/g) ?? []);
-  const refs = FOODS
-    .map((f) => [f, [...words].filter((w) => w.length > 3 && [f.name, ...f.aliases, ...f.pemicu].join(" ").toLowerCase().includes(w)).length] as const)
-    .filter(([, s]) => s > 0)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 4)
-    .map(([f]) => f);
+const ALERGEN_ENUM = ["kacang tanah", "kacang pohon", "kedelai", "susu", "telur", "gluten", "ikan", "krustasea", "moluska", "wijen"] as const;
+
+export async function analyzeFood(name: string, bahan: string): Promise<FoodAnalysis> {
+  const ids = INGREDIENTS.map((i) => i.id);
   const kategori = [...new Set(FOODS.map((f) => f.kategori))] as [string, ...string[]];
   const Schema = z.object({
     dikenal: z.boolean(),
     nama: z.string().max(60),
     kategori: z.enum(kategori),
-    purin: z.enum(["rendah", "sedang", "tinggi"]),
-    garam: z.enum(["rendah", "sedang", "tinggi"]),
-    karbo: z.enum(["rendah", "sedang", "tinggi"]),
-    gula: z.enum(["rendah", "sedang", "tinggi"]),
-    lemak: z.enum(["rendah", "sedang", "tinggi"]),
-    ig: z.enum(["rendah", "sedang", "tinggi"]).nullable(),
-    alergen: z.array(z.enum(["kacang tanah", "kacang pohon", "kedelai", "susu", "telur", "gluten", "ikan", "krustasea", "moluska", "wijen"])),
+    kemasan: z.object({ merek: z.string().max(40), produk: z.string().max(60) }).nullable(),
+    bahan: z.array(z.object({ bahan: z.enum(["lainnya", ...ids] as [string, ...string[]]), nama: z.string().max(40), gram: z.number().min(0).max(1000) })), // tanpa .max(): maxItems + enum besar ditolak Gemini; dipotong di bawah
+    alergen: z.array(z.enum(ALERGEN_ENUM)),
     porsi_aman: z.string(),
     trik: z.array(z.string()).max(5),
     pemicu: z.array(z.string()).max(5),
@@ -324,26 +328,56 @@ export async function analyzeFood(name: string, bahan: string) {
       {
         role: "system",
         content: [
-          "Kamu ahli gizi rumahan Indonesia. Nilai satu porsi khas makanan ini.",
-          "dikenal: true HANYA jika ini makanan/minuman nyata yang kamu kenal (boleh merek atau masakan daerah). " +
-          "false untuk teks acak, bukan makanan, atau yang tidak kamu ketahui isinya — jangan menebak.",
-          "nama: nama baku yang umum dipakai, huruf kecil, tanpa merek kalau tidak perlu (mis. 'seblak ceker').",
-          "ig: indeks glikemik makanan ini (rendah/sedang/tinggi), null kalau hampir tanpa karbohidrat.",
-          PURIN_RULES,
-          "Karbohidrat per porsi: rendah < 15 g, sedang 15-40 g, tinggi > 40 g. Gula tambahan: rendah < 5 g, sedang 5-12,5 g, tinggi > 12,5 g. " +
-          "Lemak jenuh: rendah < 3 g, sedang 3-6 g, tinggi > 6 g (santan kental, gorengan, kulit, mentega, keju = tinggi). " +
-          "Alergen: sebut yang mungkin ada (termasuk terasi/ebi/petis = krustasea, kecap/tahu/tempe = kedelai, terigu = gluten).",
-          "Nilai berdasarkan bahan yang paling berisiko. Kalau ragu, pilih tingkat yang lebih tinggi.",
-          "trik: 2-4 cara praktis, maks 10 kata. pemicu: bahan penyebab risiko. alasan: 1-2 kalimat.",
-          "Contoh penilaian dari tabel (kalibrasi):",
-          ...refs.map((f) => JSON.stringify(pick(f))),
+          "Kamu ahli gizi rumahan Indonesia. Tugasmu MENGURAIKAN RESEP, bukan menilai angka gizi (angka dihitung sistem dari tabel).",
+          "dikenal: true HANYA jika ini makanan/minuman nyata yang kamu kenal. false untuk teks acak atau yang tidak kamu ketahui isinya — jangan menebak.",
+          "nama: nama baku yang umum, huruf kecil (mis. 'seblak ceker').",
+          "kemasan: isi merek & produk HANYA jika ini produk kemasan bermerek (mis. Chitato, Indomie, Teh Pucuk). Selain itu null.",
+          "bahan: uraikan SATU porsi khas yang biasa dibeli/dimakan orang Indonesia, dalam gram (sudah matang kalau labelnya matang).",
+          "Pakai id dari daftar di bawah. Kalau tidak ada yang cocok, tulis 'lainnya' dan isi nama. Isi 'nama' juga untuk bahan biasa (nama singkat).",
+          "WAJIB sertakan yang menentukan gizi walau sedikit: minyak yang terserap saat menggoreng, gula, garam, kecap, santan, kaldu, mentega, saus.",
+          "Air/kuah bening tidak perlu ditulis; garam & kaldu di kuahnya tetap ditulis.",
+          "JANGAN menghitung dua kali: bahan olahan di daftar (keripik, kerupuk, emping, mi instan, kentang goreng, ayam goreng tepung, " +
+          "tahu goreng, lele goreng, nugget, sosis, kornet, roti, croissant, donat, bolu, biskuit, krekers) SUDAH termasuk minyak, garam, " +
+          "dan mentega/gula adonannya. Tambahkan hanya yang ditambahkan di luar itu (mis. bumbu tabur, meses di atas croffle).",
+          "alergen: yang mungkin ada (terasi/ebi/petis = krustasea, kecap/tahu/tempe = kedelai, terigu = gluten).",
+          "porsi_aman: ukuran rumah tangga (mis. '½ porsi', '1 potong kecil'). trik: 2-4 cara praktis, maks 10 kata. pemicu: bahan berisiko. alasan: 1 kalimat tanpa angka.",
+          "Daftar bahan (id: nama):",
+          INGREDIENTS.map((i) => `${i.id}: ${i.label}`).join("\n"),
         ].join("\n"),
       },
       { role: "user", content: `Makanan: ${name}\nBahan / cara masak: ${bahan || "(tidak disebutkan)"}` },
     ],
     Schema,
+    { maxOutputTokens: 1500 },
   );
-  return { ...r.data, refs: refs.map((f) => f.name), model: r.model };
+  const d = { ...r.data, bahan: r.data.bahan.slice(0, 15) };
+  const b = compute(d.bahan);
+  let nutrisi = b.nutrisi;
+  let sumber: FoodAnalysis["sumber"] = "bahan";
+  let sumber_ref = "Tabel bahan dasar (USDA FoodData Central & Open Food Facts)";
+  if (d.kemasan) {
+    const off = await findProduct(d.kemasan.merek, d.kemasan.produk);
+    if (off) {
+      const g = off.serving_g ?? (b.nutrisi.porsi_g || 100);
+      const k = g / 100;
+      nutrisi = {
+        porsi_g: Math.round(g), karbo_g: Math.round(off.per100.karbo * k * 10) / 10, gula_g: Math.round(off.per100.gula * k * 10) / 10,
+        natrium_mg: Math.round(off.per100.natrium * k), lemak_jenuh_g: Math.round(off.per100.lemak_jenuh * k * 10) / 10,
+        ig: b.nutrisi.ig, cakupan: 1,
+      };
+      sumber = "kemasan";
+      sumber_ref = `Label kemasan: ${[off.brands, off.name].filter(Boolean).join(" ")} (Open Food Facts ${off.code})`;
+    }
+  }
+  const lv = levels(nutrisi);
+  return {
+    dikenal: d.dikenal, nama: d.nama, kategori: d.kategori,
+    purin: b.purin, garam: lv.garam, karbo: lv.karbo, gula: lv.gula, lemak: lv.lemak, ig: lv.ig,
+    alergen: [...new Set([...d.alergen, ...b.alergen])],
+    porsi_aman: d.porsi_aman, trik: d.trik, pemicu: d.pemicu, alasan: d.alasan,
+    nutrisi, rincian: sumber === "kemasan" ? [] : b.rincian, tidak_dikenal: b.tidak_dikenal,
+    sumber, sumber_ref, refs: [], model: r.model,
+  };
 }
 
 // ---------------------------------------------------------------- personalisasi isian "Lainnya"

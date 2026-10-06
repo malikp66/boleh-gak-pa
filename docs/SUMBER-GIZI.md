@@ -25,6 +25,23 @@ Semua nilai di tabel makanan adalah **perkiraan per porsi khas di Indonesia**, b
 | Interaksi obat | FDA, [Grapefruit Juice and Some Drugs Don't Mix](https://www.fda.gov/consumers/consumer-updates/grapefruit-juice-and-some-drugs-dont-mix); NIH ODS, [Vitamin K](https://ods.od.nih.gov/factsheets/VitaminK-Consumer/) (warfarin: asupan konsisten); MedlinePlus, [Metformin](https://medlineplus.gov/druginfo/meds/a696005.html) (alkohol) |
 | Darah rendah setelah makan | [Postprandial Hypotension, Cleveland Clinic](https://my.clevelandclinic.org/health/diseases/postprandial-hypotension): porsi kecil, kurangi karbohidrat sekaligus, hindari alkohol |
 
+## Makanan yang belum ada di tabel
+
+Makanan baru **tidak dinilai langsung oleh AI**. Alurnya:
+
+1. **Produk kemasan bermerek** (mis. Chitato, Indomie): angka diambil dari **label kemasan** di [Open Food Facts](https://world.openfoodfacts.org) (ODbL). Merek wajib cocok; kode produk dicatat.
+2. **Masakan/jajanan**: AI hanya **menguraikan resep satu porsi** (bahan + gram). Angka karbohidrat, gula, natrium, dan lemak jenuh **dihitung dari tabel bahan dasar** `src/lib/foods/ingredients.json` (131 bahan, per 100 g):
+   - **USDA FoodData Central, SR Legacy 2018-04** (domain publik), setiap bahan mencatat ID FDC-nya.
+   - Bahan khas Indonesia yang tidak ada di USDA (kecap manis, sambal ulek, kerupuk, emping, mi instan goreng): **median label kemasan** di Open Food Facts, kode produknya dicatat.
+   - Gula yang dihitung = **gula bebas** (WHO): gula total untuk bahan yang gulanya ditambahkan; 0 untuk buah utuh, susu tawar, sayur, dan bahan pokok.
+   - Purin per bahan memakai kelompok ACR 2020 / Choi 2004 (USDA tidak mencatat purin). Satu porsi: bahan tinggi purin ≥ 30 g → tinggi; ≥ 10 g, atau bahan sedang ≥ 50 g → sedang.
+   - IG porsi = rata-rata IG bahan berkarbohidrat, dibobot gram karbohidratnya.
+3. Angka per porsi diubah ke rendah/sedang/tinggi dengan **ambang yang sama** seperti tabel utama (di bawah), lalu lampu ditentukan mesin aturan yang sama.
+4. Hasilnya disimpan (`ai_foods`) beserta rincian bahan & sumbernya, dan ditampilkan di aplikasi ("Dari mana angkanya?").
+
+Tabel bahan dibangun ulang dengan `python3 tools/build_ingredients.py <folder SR Legacy>`.
+Keterbatasan: gram resep tetap perkiraan AI; bahan yang tidak ada di tabel tidak terhitung (aplikasi memberi tahu kalau cakupannya < 80%).
+
 ## Ambang per porsi aman
 
 | Dimensi | Rendah | Sedang | Tinggi | Dasar |

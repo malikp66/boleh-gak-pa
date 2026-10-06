@@ -21,6 +21,15 @@ export interface Food {
   custom?: boolean;
   /** dinilai AI, belum dicek manusia */
   ai?: boolean;
+  /** dasar perhitungan makanan hasil belajar (angka per porsi, rincian bahan, sumber) */
+  basis?: FoodBasis | null;
+}
+
+export interface FoodBasis {
+  sumber: "bahan" | "kemasan";
+  sumber_ref: string;
+  nutrisi: { porsi_g: number; karbo_g: number; gula_g: number; natrium_mg: number; lemak_jenuh_g: number; ig: number | null; cakupan: number };
+  rincian: { label: string; gram: number; karbo: number; gula: number; natrium: number; lemak_jenuh: number; sumber: string }[];
 }
 
 /** Makanan hasil pencocokan teks, dengan kata yang membuatnya cocok. */

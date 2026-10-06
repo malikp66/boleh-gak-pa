@@ -231,7 +231,11 @@ export default function CekTab({ profile, flareJoint, prefill, welcome, onSaveUn
           <div className={`verdict ${r.status}`}>
             <span className="stamp">{VERDICT[r.status]}</span>
             {!r.in_table && <span className="estimate">⚠️ Belum dikenal · tanyakan isinya ke penjual</span>}
-            {r.in_table && r.estimated && <span className="estimate">{r.learned ? "🤖 Makanan baru · dinilai AI & disimpan" : "🤖 Nilai gizi perkiraan AI"}</span>}
+            {r.in_table && r.estimated && (
+              <span className="estimate">
+                {r.basis?.some((b) => b.sumber === "kemasan") ? "🏷️ Dari label kemasan" : "📊 Dihitung dari bahan"}{r.learned ? " · makanan baru, disimpan" : ""}
+              </span>
+            )}
             <div className="food-name">{multi ? `Kombinasi ${r.components.length} makanan` : r.food}</div>
             <div className="headline">{r.headline}</div>
             {(multi || typo) && (
@@ -286,11 +290,12 @@ export default function CekTab({ profile, flareJoint, prefill, welcome, onSaveUn
               </div>
             ))}
             <details><summary>Kalau tetap dimakan semua?</summary><p>{r.if_forced}</p></details>
+            {r.basis && r.basis.length > 0 && <BasisDetails basis={r.basis} />}
             <details>
               <summary>Kenapa?</summary>
               <p>{r.why}</p>
               <p className="muted small">
-                {!r.in_table ? "Tidak dikenal — hati-hati, tanyakan bahannya." : r.estimated ? "Nilai gizi diperkirakan AI dari nama makanannya, lalu lampu ditentukan tabel aturan yang sama." : "Lampu dari tabel makanan."}{" "}
+                {!r.in_table ? "Tidak dikenal — hati-hati, tanyakan bahannya." : r.estimated ? "Angka gizi dihitung dari data (lihat \"Dari mana angkanya?\"), lampu ditentukan tabel aturan yang sama." : "Lampu dari tabel makanan."}{" "}
                 {r.source === "ai" ? `Ditulis ${r.model} dalam ${r.elapsed} detik.` : r.source === "cache" ? "Jawaban tersimpan (tanpa biaya AI)." : "Mode tabel (AI tidak dipakai)."}
               </p>
             </details>
@@ -369,5 +374,38 @@ function PendingChecks({ profileId, exclude }: { profileId: string; exclude?: st
         </div>
       ))}
     </div>
+  );
+}
+
+const fmt = (n: number) => n.toLocaleString("id-ID", { maximumFractionDigits: 1 });
+
+/** "Dari mana angkanya?": angka per porsi, rincian bahan, dan sumber datanya. */
+function BasisDetails({ basis }: { basis: NonNullable<AssessResult["basis"]> }) {
+  return (
+    <details className="basis">
+      <summary>Dari mana angkanya?</summary>
+      {basis.map((b) => (
+        <div key={b.name} className="basis-item">
+          <p><b>{b.name}</b> · 1 porsi ±{b.nutrisi.porsi_g} g</p>
+          <div className="basis-grid">
+            <span>Karbo <b>{fmt(b.nutrisi.karbo_g)} g</b></span>
+            <span>Gula tambahan <b>{fmt(b.nutrisi.gula_g)} g</b></span>
+            <span>Natrium <b>{fmt(b.nutrisi.natrium_mg)} mg</b></span>
+            <span>Lemak jenuh <b>{fmt(b.nutrisi.lemak_jenuh_g)} g</b></span>
+          </div>
+          {b.rincian.length > 0 && (
+            <ul className="basis-list">
+              {b.rincian.map((x) => <li key={x.label}><span>{x.label}</span><small>{x.gram} g</small></li>)}
+            </ul>
+          )}
+          {b.sumber === "bahan" && b.nutrisi.cakupan < 0.8 && (
+            <p className="small muted">Sebagian bahan ({Math.round((1 - b.nutrisi.cakupan) * 100)}% berat) tidak ada di tabel bahan, jadi angkanya bisa lebih rendah dari sebenarnya.</p>
+          )}
+          <p className="small muted">
+            {b.sumber === "kemasan" ? b.sumber_ref : "Resep diuraikan AI; angka per bahan dari USDA FoodData Central & label kemasan (Open Food Facts)."}
+          </p>
+        </div>
+      ))}
+    </details>
   );
 }

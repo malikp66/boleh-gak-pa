@@ -156,7 +156,8 @@ function cleanSchema(s: unknown): unknown {
   if (!s || typeof s !== "object") return s;
   const out: Record<string, unknown> = {};
   for (const [k, v] of Object.entries(s)) {
-    if (["$schema", "pattern", "format", "default", "additionalProperties"].includes(k)) continue;
+    // batas angka (minimum/maximum) ditolak Gemini untuk sebagian skema; tetap divalidasi zod setelah jawaban datang
+    if (["$schema", "pattern", "format", "default", "additionalProperties", "minimum", "maximum", "exclusiveMinimum", "exclusiveMaximum"].includes(k)) continue;
     out[k] = cleanSchema(v);
   }
   return out;

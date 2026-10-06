@@ -39,6 +39,7 @@ export interface Me {
 }
 
 export interface FoodItem {
+  basis?: import("@/lib/foods/types").FoodBasis | null;
   ai?: boolean;
   id?: string;
   name: string;
@@ -63,6 +64,7 @@ export interface AssessResult {
   learned?: boolean;
   /** nilai gizi dari perkiraan AI (belum dicek manusia) */
   estimated?: boolean;
+  basis?: ({ name: string } & import("@/lib/foods/types").FoodBasis)[];
   headline: string;
   portion: string;
   tips: string[];
