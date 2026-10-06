@@ -1,4 +1,5 @@
 "use client";
+import { nameProblem } from "@/lib/validation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { api, Chips, useToast } from "./ui";
 import { FoodItem, Profile } from "./types";
@@ -48,6 +49,8 @@ export default function DaftarTab({ profile, addName, onCheck }: {
 
   async function analyze(e: React.FormEvent) {
     e.preventDefault();
+    const m = nameProblem(form.name, "Nama makanan");
+    if (m) return toast.warning(m, "Belum lengkap");
     setBusy(true);
     try {
       setAnalysis(await api<Analysis>("/api/foods/analyze", { name: form.name, bahan: form.bahan }));
@@ -81,8 +84,13 @@ export default function DaftarTab({ profile, addName, onCheck }: {
 
   async function remove(f: FoodItem) {
     if (!f.id || !confirm(`Hapus "${f.name}" dari daftar?`)) return;
-    await api(`/api/foods/${f.id}`, undefined, "DELETE").catch((e) => toast.error(e.message));
-    load();
+    try {
+      await api(`/api/foods/${f.id}`, undefined, "DELETE");
+      toast.success(`"${f.name}" dihapus dari daftar.`, "Terhapus");
+      load();
+    } catch (e) {
+      toast.error((e as Error).message, "Gagal menghapus");
+    }
   }
 
   const setA = (k: keyof Analysis, v: string | string[]) => setAnalysis((a) => (a ? { ...a, [k]: v } : a));

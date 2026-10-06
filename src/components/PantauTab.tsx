@@ -1,4 +1,5 @@
 "use client";
+import { healthLogProblem } from "@/lib/validation";
 import { useCallback, useEffect, useState } from "react";
 import KambuhTab from "./KambuhTab";
 import { api, Chips, fmtDay, fmtTime, useToast } from "./ui";
@@ -46,11 +47,13 @@ function LogView({ profile, kind }: { profile: Profile; kind: "gula_darah" | "te
 
   async function save(e: React.FormEvent) {
     e.preventDefault();
-    const a = Number(v1), b = v2 ? Number(v2) : null;
-    if (!a || (!isGlucose && !b)) return toast.warning("Isi angkanya dulu ya.");
+    const a = v1.trim() ? Number(v1) : null, b = v2.trim() ? Number(v2) : null;
+    const problem = healthLogProblem(kind, a, isGlucose ? 0 : b);
+    if (problem) { play("error"); return toast.warning(problem, "Cek lagi angkanya"); }
     try {
       await api("/api/health-logs", { profileId: profile.id, kind, value1: a, value2: isGlucose ? null : b, context: isGlucose ? ctx : "" });
-      const reading = read({ value1: a, value2: b, context: ctx });
+      const reading = read({ value1: a!, value2: b, context: ctx });
+      toast.success(isGlucose ? `Gula darah ${a} tercatat.` : `Tensi ${a}/${b} tercatat.`, "Tersimpan");
       setLast(reading);
       play(reading.level === "bahaya" ? "merah" : reading.level === "perhatian" ? "kuning" : "saved");
       setV1("");

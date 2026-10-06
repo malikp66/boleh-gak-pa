@@ -479,3 +479,6 @@ details.situasi .chips { margin-top: 8px; }
 .install-banner p small { font-size: 13px; font-weight: 600; opacity: .7; }
 .install-banner .btn { width: auto; }
 .install-banner .alert-close { position: absolute; top: -12px; right: -10px; }
+input.invalid, textarea.invalid, select.invalid { border-color: var(--merah) !important; box-shadow: 0 0 0 3px rgba(229, 57, 53, .25) !important; }
+.field-error { margin: -6px 0 12px; color: var(--merah); font-weight: 700; font-size: 14px; }
+.field-error::before { content: "⚠️ "; }

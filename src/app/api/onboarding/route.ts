@@ -1,11 +1,12 @@
 import { z } from "zod";
 import { one, tx } from "@/lib/db";
 import { ProfileInput } from "@/lib/schemas";
+import { normalizeInvite } from "@/lib/validation";
 import { HttpError, requireUser, route } from "@/lib/server";
 
 const Body = z.discriminatedUnion("action", [
   z.object({ action: z.literal("create"), familyName: z.string().trim().min(1).max(60), profile: ProfileInput }),
-  z.object({ action: z.literal("join"), code: z.string().trim().min(4).max(16) }),
+  z.object({ action: z.literal("join"), code: z.string().transform(normalizeInvite).pipe(z.string().min(4, "Kode keluarga terlalu pendek.").max(16, "Kode keluarga terlalu panjang.")) }),
 ]);
 
 export const POST = route(async (req) => {
@@ -13,7 +14,7 @@ export const POST = route(async (req) => {
   const body = Body.parse(await req.json());
   if (body.action === "join") {
     const family = await one<{ id: string; name: string }>("select id, name from families where invite_code = upper($1)", [body.code]);
-    if (!family) throw new HttpError(400, "Kode undangan tidak ditemukan");
+    if (!family) throw new HttpError(404, "Kode keluarga tidak ditemukan. Periksa lagi hurufnya, atau minta kode baru ke keluargamu.");
     await one("insert into family_members (family_id, user_id) values ($1, $2) on conflict do nothing", [family.id, user.id]);
     return { family };
   }

@@ -4,6 +4,8 @@ import { Personalisasi, Profile } from "./types";
 import { api, useToast } from "./ui";
 import { ALERGEN_LABEL, ALERGEN_LIST, CONDITIONS, ConditionId, EXCLUSIVE } from "@/lib/conditions";
 import { MEDICATIONS } from "@/lib/medications";
+import { play } from "@/lib/sound";
+import { nameProblem, phoneProblem, profileProblem } from "@/lib/validation";
 
 export type ProfileDraft = Omit<Profile, "id" | "family_id">;
 
@@ -41,6 +43,11 @@ export default function ProfileForm({ initial, submitLabel, onSubmit, onCancel }
   const toast = useToast();
   const [sug, setSug] = useState<Suggestion | null>(null);
   const [thinking, setThinking] = useState(false);
+  const [openMore, setOpenMore] = useState(false);
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const touch = (k: string) => setTouched((t) => ({ ...t, [k]: true }));
+  const nameErr = touched.nama ? nameProblem(d.nama) : null;
+  const phoneErr = touched.telepon ? phoneProblem(d.kontak_telepon) : null;
   const hasOther = Boolean(d.kondisi_lain.trim() || d.obat_lain.trim() || d.alergen_lain.trim());
 
   async function understand() {
@@ -87,8 +94,15 @@ export default function ProfileForm({ initial, submitLabel, onSubmit, onCancel }
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!d.kondisi.length) return setError("Pilih minimal satu kondisi.");
-    if ((d.target_sistolik == null) !== (d.target_diastolik == null)) return setError("Isi target tensi atas dan bawah sekaligus.");
+    const problem = profileProblem({ ...d, alergen: has("alergi") ? d.alergen : [], panggilan: undefined });
+    if (problem) {
+      play("error");
+      setError(problem);
+      toast.warning(problem, "Belum lengkap");
+      // bagian yang bermasalah mungkin ada di "Detail tambahan" yang tertutup
+      if (/telepon|kontak|target|tensi|gula/i.test(problem)) setOpenMore(true);
+      return;
+    }
     setBusy(true);
     setError("");
     try {
@@ -102,7 +116,9 @@ export default function ProfileForm({ initial, submitLabel, onSubmit, onCancel }
         target_gula_2jam: has("diabetes") ? d.target_gula_2jam : null,
       });
     } catch (err) {
+      play("error");
       setError((err as Error).message);
+      toast.error((err as Error).message, "Gagal menyimpan");
     } finally {
       setBusy(false);
     }
@@ -112,7 +128,9 @@ export default function ProfileForm({ initial, submitLabel, onSubmit, onCancel }
 
   return (
     <form onSubmit={submit}>
-      <label className="field">Nama <input type="text" value={d.nama} onChange={(e) => set("nama", e.target.value)} placeholder="mis. Omah" required /></label>
+      <label className="field">Nama <input type="text" value={d.nama} maxLength={40} className={nameErr ? "invalid" : ""} aria-invalid={Boolean(nameErr)}
+        onChange={(e) => set("nama", e.target.value)} onBlur={() => touch("nama")} placeholder="mis. Omah" /></label>
+      {nameErr && <p className="field-error">{nameErr}</p>}
 
       <p className="eyebrow">Kondisi (boleh lebih dari satu)</p>
       <div className="cond-list">
@@ -176,7 +194,7 @@ export default function ProfileForm({ initial, submitLabel, onSubmit, onCancel }
         </div>
       )}
 
-      <details className="more">
+      <details className="more" open={openMore} onToggle={(e) => setOpenMore((e.target as HTMLDetailsElement).open)}>
         <summary>Detail tambahan <small>boleh dilewati, bisa diisi anak/keluarga nanti</small></summary>
         <div className="grid2">
           <label className="field">Dipanggil <input type="text" value={d.panggilan} onChange={(e) => set("panggilan", e.target.value)} placeholder="mis. Mah" /></label>
@@ -233,8 +251,10 @@ export default function ProfileForm({ initial, submitLabel, onSubmit, onCancel }
         <p className="eyebrow">📞 Kontak darurat keluarga</p>
         <div className="grid2">
           <label className="field">Nama <input type="text" value={d.kontak_nama} onChange={(e) => set("kontak_nama", e.target.value)} placeholder="mis. Malik" /></label>
-          <label className="field">Telepon <input type="tel" inputMode="tel" value={d.kontak_telepon} onChange={(e) => set("kontak_telepon", e.target.value)} placeholder="08…" /></label>
+          <label className="field">Telepon <input type="tel" inputMode="tel" maxLength={24} value={d.kontak_telepon} className={phoneErr ? "invalid" : ""} aria-invalid={Boolean(phoneErr)}
+            onChange={(e) => set("kontak_telepon", e.target.value)} onBlur={() => touch("telepon")} placeholder="08…" /></label>
         </div>
+        {phoneErr && <p className="field-error">{phoneErr}</p>}
 
         <label className="field">Catatan dari dokter
           <textarea rows={2} value={d.catatan_dokter} onChange={(e) => set("catatan_dokter", e.target.value)} placeholder="mis. nasi maks ¾ gelas, hindari santan" />

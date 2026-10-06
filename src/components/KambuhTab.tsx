@@ -73,7 +73,23 @@ export default function KambuhTab({ profile, onChanged }: { profile: Profile; on
   const avg = done.length ? (done.reduce((a, f) => a + flareDays(f), 0) / done.length).toFixed(1).replace(".0", "") : "–";
   const emoji = (name: string) => CAT_EMOJI[foods.find((f) => f.name === name)?.kategori ?? ""] ?? "🍽️";
 
+  /** Jalankan aksi, lalu tampilkan alert berhasil/gagal. */
+  async function act(fn: () => Promise<unknown>, ok: string, title?: string) {
+    try {
+      await fn();
+      play("saved");
+      toast.success(ok, title);
+      load();
+      return true;
+    } catch (e) {
+      play("error");
+      toast.error((e as Error).message, "Gagal menyimpan");
+      return false;
+    }
+  }
+
   async function save() {
+    if (!joint) { play("error"); return toast.warning("Pilih sendi yang sakit dulu.", "Belum lengkap"); }
     try {
       await api("/api/flares", { profileId: profile.id, joint, pain, fever });
       play("saved");
@@ -132,8 +148,8 @@ export default function KambuhTab({ profile, onChanged }: { profile: Profile; on
             <PainPicker value={current} onChange={setUpd} min={0} />
             <label className="check"><input type="checkbox" checked={updFever} onChange={(e) => setUpdFever(e.target.checked)} /> 🌡️ Ada demam</label>
             <div className="row">
-              <button className="btn" onClick={async () => { await api(`/api/flares/${active.id}/pain`, { pain: current, fever: updFever }); toast.success("Nyeri hari ini tercatat."); load(); }}>Simpan nyeri</button>
-              <button className="btn good" onClick={async () => { await api(`/api/flares/${active.id}/end`, {}); toast.success("Alhamdulillah, sudah sembuh! 🎉", "Sembuh"); load(); onChanged(); }}>Sudah sembuh 🎉</button>
+              <button className="btn" onClick={() => act(() => api(`/api/flares/${active.id}/pain`, { pain: current, fever: updFever }), "Nyeri hari ini tercatat.")}>Simpan nyeri</button>
+              <button className="btn good" onClick={() => act(() => api(`/api/flares/${active.id}/end`, {}), "Alhamdulillah, sudah sembuh! 🎉", "Sembuh").then((ok) => { if (ok) onChanged(); })}>Sudah sembuh 🎉</button>
             </div>
           </div>
 

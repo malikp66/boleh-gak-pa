@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { healthLogProblem } from "@/lib/validation";
 import { q } from "@/lib/db";
 import { getProfile, requireUser, route } from "@/lib/server";
 
@@ -21,8 +22,10 @@ export const POST = route(async (req) => {
     value2: z.number().int().min(20).max(200).nullable().default(null),
     context: z.string().max(40).default(""),
     note: z.string().max(200).default(""),
-  }).refine((x) => x.kind === "gula_darah" || x.value2 !== null, { message: "Diastolik wajib diisi" })
-    .parse(await req.json());
+  }).superRefine((x, ctx) => {
+    const m = healthLogProblem(x.kind, x.value1, x.kind === "tensi" ? x.value2 : 0);
+    if (m) ctx.addIssue({ code: "custom", message: m });
+  }).parse(await req.json());
   const profile = await getProfile(user.id, b.profileId);
   await q(
     "insert into health_logs (profile_id, kind, value1, value2, context, note) values ($1, $2, $3, $4, $5, $6)",

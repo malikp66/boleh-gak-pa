@@ -17,6 +17,29 @@ export class HttpError extends Error {
 }
 
 /** Bungkus route handler: galat → JSON yang rapi, tanpa membocorkan detail internal. */
+const FIELD: Record<string, string> = {
+  nama: "Nama", panggilan: "Nama panggilan", usia: "Usia", kondisi: "Kondisi", alergen: "Alergi", obat: "Obat",
+  kontak_nama: "Nama kontak darurat", kontak_telepon: "Nomor telepon", catatan_dokter: "Catatan dokter",
+  target_gula_puasa: "Target gula puasa", target_gula_2jam: "Target gula 2 jam", target_sistolik: "Target tensi atas",
+  target_diastolik: "Target tensi bawah", food: "Nama makanan", name: "Nama makanan", value1: "Angka", value2: "Tensi bawah",
+  joint: "Sendi", pain: "Tingkat nyeri", code: "Kode", text: "Teks",
+};
+
+/** Pesan zod → kalimat yang bisa dipahami pengguna. Pesan buatan kita (custom) dipakai apa adanya. */
+function zodMessage(e: ZodError): string {
+  const issue = e.issues[0];
+  if (!issue) return "Isian belum lengkap.";
+  // pesan yang kita tulis sendiri (custom, atau .min(…, "pesan")) dipakai apa adanya; pesan bawaan zod berbahasa Inggris diganti
+  if (issue.code === "custom" || (issue.message && !/^(Too (small|big)|Invalid|Expected|Required)/i.test(issue.message))) return issue.message;
+  const key = [...issue.path].reverse().find((p) => typeof p === "string") as string | undefined;
+  const label = key ? FIELD[key] ?? key : "Isian";
+  if (issue.code === "too_small") return issue.origin === "string" ? `${label} wajib diisi atau terlalu pendek.` : issue.origin === "array" ? `${label}: pilih minimal ${issue.minimum}.` : `${label} terlalu kecil (minimal ${issue.minimum}).`;
+  if (issue.code === "too_big") return issue.origin === "string" ? `${label} terlalu panjang (maksimal ${issue.maximum} huruf).` : `${label} terlalu besar (maksimal ${issue.maximum}).`;
+  if (issue.code === "invalid_type") return `${label} belum diisi dengan benar.`;
+  if (issue.code === "invalid_value") return `${label}: pilihan tidak dikenal.`;
+  return issue.message && !/^Invalid/i.test(issue.message) ? issue.message : `${label} tidak valid.`;
+}
+
 export function route<C>(fn: (req: Request, ctx: C) => Promise<unknown>) {
   return async (req: Request, ctx: C) => {
     try {
@@ -24,7 +47,7 @@ export function route<C>(fn: (req: Request, ctx: C) => Promise<unknown>) {
       return out instanceof Response ? out : NextResponse.json(out);
     } catch (e) {
       if (e instanceof HttpError) return NextResponse.json({ error: e.message }, { status: e.status });
-      if (e instanceof ZodError) return NextResponse.json({ error: "Input tidak valid" }, { status: 400 });
+      if (e instanceof ZodError) return NextResponse.json({ error: zodMessage(e) }, { status: 400 });
       if (e instanceof AIUnavailableError) return NextResponse.json({ error: e.message }, { status: 503 });
       console.error(e);
       return NextResponse.json({ error: "Terjadi kesalahan di server" }, { status: 500 });

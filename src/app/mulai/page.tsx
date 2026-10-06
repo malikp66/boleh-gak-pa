@@ -3,11 +3,13 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import InstallGuide from "@/components/InstallGuide";
-import { api } from "@/components/ui";
+import { api, useToast } from "@/components/ui";
 import { ALERGEN_LABEL, ALERGEN_LIST, CONDITIONS, ConditionId, EXCLUSIVE } from "@/lib/conditions";
 import { ensureDevice, restoreDevice } from "@/lib/device";
 import { installSkipped, isStandalone, skipInstall } from "@/lib/install";
 import { mapLocally } from "@/lib/personalize";
+import { nameProblem, normalizeInvite, profileProblem } from "@/lib/validation";
+import { play } from "@/lib/sound";
 import { enablePush, pushSupport } from "@/lib/push-client";
 import { useClientValue } from "@/lib/use-client-value";
 
@@ -42,6 +44,10 @@ export default function Mulai() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [newProfileId, setNewProfileId] = useState("");
+  const [nameError, setNameError] = useState("");
+  const toast = useToast();
+  /** Tampilkan masalah isian: alert di atas + pesan di bawah tombol. */
+  const warn = (msg: string) => { play("error"); setError(msg); toast.warning(msg, "Belum lengkap"); };
   const standalone = useClientValue<boolean | null>(isStandalone, null);
   const skippedBefore = useClientValue(installSkipped, false);
   const [skipped, setSkipped] = useState(false);
@@ -57,7 +63,19 @@ export default function Mulai() {
 
   const toggle = <T,>(list: T[], v: T) => (list.includes(v) ? list.filter((x) => x !== v) : [...list, v]);
 
+  function nextFromName() {
+    const m = nameProblem(nama, untuk === "diri" ? "Nama kamu" : "Nama panggilan");
+    setNameError(m ?? "");
+    if (m) return warn(m);
+    setError("");
+    setStep("kondisi");
+  }
+
   async function finish() {
+    if (!kondisi.length) return warn("Pilih minimal satu kondisi. Kalau belum ada diagnosis, pilih yang paling bawah.");
+    const problem = profileProblem({ nama, kondisi, alergen: kondisi.includes("alergi") ? alergen : [], kondisi_lain: lain });
+    if (problem) return warn(problem);
+    if (!agree) return warn("Centang \"Saya setuju\" dulu ya.");
     setBusy(true);
     setError("");
     try {
@@ -68,7 +86,7 @@ export default function Mulai() {
       const allKondisi = [...new Set([...kondisi.filter((k) => k !== "sehat" || !m.kondisi.length), ...m.kondisi])];
       const allAlergen = [...new Set([...(kondisi.includes("alergi") ? alergen : []), ...m.alergen])];
       if (allAlergen.length && !allKondisi.includes("alergi")) allKondisi.push("alergi");
-      const name = nama.trim() || (untuk === "diri" ? "Saya" : "Keluargaku");
+      const name = nama.trim();
       const created = await api<{ profile: { id: string } }>("/api/onboarding", {
         action: "create",
         familyName: `Keluarga ${name}`.slice(0, 60),
@@ -79,39 +97,55 @@ export default function Mulai() {
           catatan_dokter: "", obat: m.obat, kondisi_lain: lain.trim(),
         },
       });
+      toast.success(`Profil ${name} siap dipakai.`, "Berhasil");
       if (pushSupport() === "ok") {
         setNewProfileId(created.profile.id);
         setBusy(false);
         setStep("notif");
       } else router.replace("/?welcome=1");
     } catch (e) {
+      play("error");
       setError((e as Error).message);
+      toast.error((e as Error).message, "Gagal menyimpan");
       setBusy(false);
     }
   }
 
   async function join() {
+    const c = normalizeInvite(code);
+    if (c.length < 4) return warn("Ketik kode keluarga dulu. Biasanya 8 huruf/angka.");
+    if (!agree) return warn("Centang \"Saya setuju\" dulu ya.");
     setBusy(true);
     setError("");
     try {
       await ensureDevice();
       await api("/api/consent", {});
-      await api("/api/onboarding", { action: "join", code });
+      const r = await api<{ family: { name: string } }>("/api/onboarding", { action: "join", code: c });
+      play("saved");
+      toast.success(`Kamu sudah bergabung dengan ${r.family.name}.`, "Berhasil bergabung");
       router.replace("/");
     } catch (e) {
+      play("error");
       setError((e as Error).message);
+      toast.error((e as Error).message, "Belum bisa bergabung");
       setBusy(false);
     }
   }
 
   async function pulih() {
+    const clean = recovery.replace(/[^0-9a-z]/gi, "");
+    if (clean.length < 24) return warn(`Kode pemulihan berisi 24 huruf/angka. Yang diketik baru ${clean.length}.`);
     setBusy(true);
     setError("");
     try {
       await restoreDevice(recovery);
+      play("saved");
+      toast.success("Data kamu sudah kembali di HP ini.", "Berhasil dipulihkan");
       router.replace("/");
     } catch (e) {
+      play("error");
       setError((e as Error).message);
+      toast.error((e as Error).message, "Belum bisa dipulihkan");
       setBusy(false);
     }
   }
@@ -120,7 +154,15 @@ export default function Mulai() {
 
   async function turnOnNotif() {
     setBusy(true);
-    try { await enablePush(newProfileId, true, true, true); } catch (e) { setError((e as Error).message); setBusy(false); return; }
+    try {
+      await enablePush(newProfileId, true, true, true);
+      toast.success("Pengingat pagi & malam sudah aktif.", "Notifikasi menyala");
+    } catch (e) {
+      setError((e as Error).message);
+      toast.error(`${(e as Error).message}. Bisa dinyalakan nanti di ⚙️ Profil.`, "Notifikasi belum aktif");
+      setBusy(false);
+      return;
+    }
     router.replace("/?welcome=1");
   }
 
@@ -162,13 +204,13 @@ export default function Mulai() {
             <h2>Gabung keluarga</h2>
             <p className="small">Masukkan kode undangan dari anggota keluargamu (ada di menu ⚙️ Profil mereka).</p>
             <label className="field">Kode undangan
-              <input type="text" value={code} onChange={(e) => setCode(e.target.value.toUpperCase())} placeholder="mis. 8F3A21C9" />
+              <input type="text" value={code} maxLength={20} autoCapitalize="characters" autoComplete="off" onChange={(e) => setCode(e.target.value.toUpperCase())} placeholder="mis. 8F3A21C9" />
             </label>
             <Consent agree={agree} setAgree={setAgree} />
             {error && <div className="error-box">{error}</div>}
             <div className="row">
               <button className="btn" onClick={() => setStep("welcome")}>← Kembali</button>
-              <button className="btn primary" disabled={busy || !agree || code.length < 4} onClick={join}>{busy ? "Bergabung…" : "Gabung"}</button>
+              <button className="btn primary" disabled={busy} onClick={join}>{busy ? "Bergabung…" : "Gabung"}</button>
             </div>
           </>
         )}
@@ -184,7 +226,7 @@ export default function Mulai() {
             {error && <div className="error-box">{error}</div>}
             <div className="row">
               <button className="btn" onClick={() => setStep("welcome")}>← Kembali</button>
-              <button className="btn primary" disabled={busy || recovery.replace(/[^0-9a-z]/gi, "").length < 24} onClick={pulih}>{busy ? "Memulihkan…" : "Pulihkan"}</button>
+              <button className="btn primary" disabled={busy} onClick={pulih}>{busy ? "Memulihkan…" : "Pulihkan"}</button>
             </div>
           </>
         )}
@@ -215,9 +257,12 @@ export default function Mulai() {
               ))}
             </div>
             <label className="field">{untuk === "diri" ? "Nama kamu" : "Dipanggil apa?"}
-              <input type="text" value={nama} maxLength={40} onChange={(e) => setNama(e.target.value)} placeholder={untuk === "diri" ? "mis. Rina" : "mis. Omah, Papa, Om"} />
+              <input type="text" value={nama} maxLength={40} aria-invalid={Boolean(nameError)} className={nameError ? "invalid" : ""}
+                onChange={(e) => { setNama(e.target.value); if (nameError) setNameError(nameProblem(e.target.value) ?? ""); }}
+                placeholder={untuk === "diri" ? "mis. Rina" : "mis. Omah, Papa, Om"} />
             </label>
-            <Nav back={() => setStep("welcome")} next={() => setStep("kondisi")} />
+            {nameError && <p className="field-error">{nameError}</p>}
+            <Nav back={() => setStep("welcome")} next={nextFromName} />
           </>
         )}
 
@@ -251,8 +296,7 @@ export default function Mulai() {
             </label>
             <Consent agree={agree} setAgree={setAgree} />
             {error && <div className="error-box">{error}</div>}
-            <Nav back={() => setStep("siapa")} next={finish} nextLabel={busy ? "Menyiapkan…" : "Selesai ✓"}
-              disabled={busy || !agree || !kondisi.length || (kondisi.includes("alergi") && !alergen.length && !/alergi/i.test(lain))} />
+            <Nav back={() => setStep("siapa")} next={finish} nextLabel={busy ? "Menyiapkan…" : "Selesai ✓"} disabled={busy} />
           </>
         )}
       </div>

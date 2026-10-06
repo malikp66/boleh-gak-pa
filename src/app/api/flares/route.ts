@@ -17,7 +17,7 @@ export const POST = route(async (req) => {
   const user = await requireUser();
   const b = z.object({
     profileId: z.string().uuid(),
-    joint: z.string().max(40),
+    joint: z.string().trim().min(1, "Pilih sendi yang sakit dulu.").max(40),
     pain: z.number().int().min(1).max(10),
     fever: z.boolean().default(false),
   }).parse(await req.json());

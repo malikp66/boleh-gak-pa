@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { nameProblem } from "@/lib/validation";
 import { q } from "@/lib/db";
 import { evalFor } from "@/lib/domain";
 import { getProfile, loadProfileContext, requireUser, route } from "@/lib/server";
@@ -19,7 +20,7 @@ export const POST = route(async (req) => {
   const user = await requireUser();
   const b = z.object({
     profileId: z.string().uuid(),
-    name: z.string().trim().toLowerCase().min(1).max(60),
+    name: z.string().trim().toLowerCase().max(60).superRefine((v, ctx) => { const m = nameProblem(v, "Nama makanan"); if (m) ctx.addIssue({ code: "custom", message: m }); }),
     aliases: z.array(z.string().trim().toLowerCase().max(60)).max(10).default([]),
     kategori: z.string().max(40).default("Buatan keluarga"),
     bahan: z.string().max(500).default(""),
