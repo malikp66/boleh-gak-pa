@@ -5,6 +5,7 @@
 import type { Food, Level, Status } from "./foods/types";
 
 import { medicationReasons } from "./medications";
+import { personalReasons, type Personalisasi } from "./personalize";
 
 export type ConditionId = "asam_urat" | "hipertensi" | "diabetes" | "kolesterol" | "stroke_jantung" | "darah_rendah" | "alergi" | "sehat";
 export type MonitorKind = "kambuh" | "gula_darah" | "tensi";
@@ -78,6 +79,7 @@ export interface NutrientFood {
   karbo?: Level; gula?: Level; lemak?: Level; ig?: Level | null;
   alergen?: string[];
   pemicu: string[];
+  aliases?: string[];
 }
 
 export interface EvalContext {
@@ -86,12 +88,13 @@ export interface EvalContext {
   flare?: boolean; // asam urat sedang kambuh
   diabetesTipe?: string | null;
   obat?: string[];
+  personal?: Personalisasi | null;
 }
 
 /** Kondisi yang tidak boleh dipilih bersamaan. */
 export const EXCLUSIVE: [ConditionId, ConditionId][] = [["hipertensi", "darah_rendah"]];
 
-export interface Reason { condition: ConditionId | "umum" | "obat"; status: Status; text: string }
+export interface Reason { condition: ConditionId | "umum" | "obat" | "pribadi"; status: Status; text: string }
 
 export interface Evaluation { status: Status; reasons: Reason[] }
 
@@ -166,6 +169,14 @@ export function evaluate(parts: NutrientFood[], ctx: EvalContext): Evaluation {
   // peringatan umum di luar kondisi yang dipilih
   for (const f of parts) {
     if (has(f, "ginjal") || has(f, "jengkolat")) reasons.push({ condition: "umum", status: "kuning", text: `${f.name}: hati-hati untuk ginjal` });
+  }
+  // catatan pribadi (kondisi lain yang dipahami AI & disetujui pengguna)
+  if (ctx.personal) {
+    for (const f of parts) {
+      for (const r of personalReasons(f, ctx.personal)) {
+        reasons.push({ condition: "pribadi", status: r.status, text: parts.length > 1 ? `${f.name}: ${r.text}` : r.text });
+      }
+    }
   }
   // interaksi dengan obat yang diminum
   if (ctx.obat?.length) {

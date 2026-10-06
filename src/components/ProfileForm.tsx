@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
-import { Profile } from "./types";
+import { Personalisasi, Profile } from "./types";
+import { api, useToast } from "./ui";
 import { ALERGEN_LABEL, ALERGEN_LIST, CONDITIONS, ConditionId, EXCLUSIVE } from "@/lib/conditions";
 import { MEDICATIONS } from "@/lib/medications";
 
@@ -9,8 +10,17 @@ export type ProfileDraft = Omit<Profile, "id" | "family_id">;
 export const emptyDraft = (): ProfileDraft => ({
   nama: "", panggilan: "", usia: null, untuk: "orang_tua", kondisi: [], alergen: [], diabetes_tipe: null, insulin: false,
   catatan_dokter: "", obat: [], target_gula_puasa: null, target_gula_2jam: null, target_sistolik: null, target_diastolik: null,
-  kontak_nama: "", kontak_telepon: "",
+  kontak_nama: "", kontak_telepon: "", kondisi_lain: "", obat_lain: "", alergen_lain: "", personalisasi: null,
 });
+
+interface Suggestion {
+  local: { kondisi: ConditionId[]; obat: string[]; alergen: string[] };
+  ai: null | {
+    ringkasan: string; fokus: string; hindari: string[]; batasi: string[];
+    kondisi_terkait: ConditionId[]; alergen_terkait: string[]; obat_terkait: string[]; perlu_dokter: boolean; catatan_keamanan: string;
+  };
+  aiError?: string;
+}
 
 const DM_TIPE = [["pradiabetes", "Pradiabetes"], ["tipe_2", "Tipe 2"], ["tipe_1", "Tipe 1"], ["gestasional", "Saat hamil"], ["tidak_tahu", "Tidak tahu"]] as const;
 const UNTUK = [["diri", "Diri sendiri"], ["orang_tua", "Orang tua"], ["pasangan", "Pasangan"], ["anak", "Anak"], ["lainnya", "Lainnya"]] as const;
@@ -28,6 +38,44 @@ export default function ProfileForm({ initial, submitLabel, onSubmit, onCancel }
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const set = <K extends keyof ProfileDraft>(k: K, v: ProfileDraft[K]) => setD((x) => ({ ...x, [k]: v }));
+  const toast = useToast();
+  const [sug, setSug] = useState<Suggestion | null>(null);
+  const [thinking, setThinking] = useState(false);
+  const hasOther = Boolean(d.kondisi_lain.trim() || d.obat_lain.trim() || d.alergen_lain.trim());
+
+  async function understand() {
+    setThinking(true);
+    try {
+      const r = await api<Suggestion>("/api/profiles/personalize", {
+        usia: d.usia, kondisi: d.kondisi, kondisi_lain: d.kondisi_lain, obat_lain: d.obat_lain, alergen_lain: d.alergen_lain,
+      });
+      setSug(r);
+      if (r.aiError) toast.warning(`${r.aiError}. Yang bisa dikenali tanpa AI tetap ditampilkan.`, "AI belum tersedia");
+    } catch (e) {
+      toast.error((e as Error).message);
+    } finally {
+      setThinking(false);
+    }
+  }
+
+  function applySuggestion() {
+    if (!sug) return;
+    const kondisi = [...new Set([...d.kondisi.filter((x) => x !== "sehat"), ...sug.local.kondisi, ...(sug.ai?.kondisi_terkait ?? [])])] as ConditionId[];
+    const alergen = [...new Set([...d.alergen, ...sug.local.alergen, ...(sug.ai?.alergen_terkait ?? [])])];
+    const personalisasi: Personalisasi | null = sug.ai && (sug.ai.hindari.length || sug.ai.batasi.length || sug.ai.fokus) ? {
+      ringkasan: sug.ai.ringkasan, fokus: sug.ai.fokus, hindari: sug.ai.hindari, batasi: sug.ai.batasi, perlu_dokter: sug.ai.perlu_dokter,
+      sumber: [d.kondisi_lain, d.obat_lain, d.alergen_lain].filter(Boolean).join(" | ").slice(0, 800), dibuat: new Date().toISOString(),
+    } : d.personalisasi;
+    setD((x) => ({
+      ...x,
+      kondisi: alergen.length && !kondisi.includes("alergi") ? [...kondisi, "alergi"] : kondisi.length ? kondisi : x.kondisi,
+      obat: [...new Set([...x.obat, ...sug.local.obat, ...(sug.ai?.obat_terkait ?? [])])],
+      alergen,
+      personalisasi,
+    }));
+    setSug(null);
+    toast.success("Jangan lupa tekan Simpan di bawah.", "Usulan diterapkan");
+  }
   const has = (c: ConditionId) => d.kondisi.includes(c);
 
   function pickCondition(c: ConditionId) {
@@ -85,6 +133,10 @@ export default function ProfileForm({ initial, submitLabel, onSubmit, onCancel }
         ))}
       </div>
 
+      <label className="field">➕ Kondisi lain (opsional)
+        <textarea rows={2} value={d.kondisi_lain} onChange={(e) => set("kondisi_lain", e.target.value)} placeholder="mis. maag kronis, ginjal, asma, sedang hamil" />
+      </label>
+
       {has("diabetes") && (
         <>
           <p className="eyebrow">🩸 Jenis diabetes</p>
@@ -99,6 +151,10 @@ export default function ProfileForm({ initial, submitLabel, onSubmit, onCancel }
         </>
       )}
 
+      <label className="field">⚠️ Alergi lain (opsional)
+        <input type="text" value={d.alergen_lain} onChange={(e) => set("alergen_lain", e.target.value)} placeholder="mis. alergi nanas, MSG" />
+      </label>
+
       <p className="eyebrow">💊 Obat yang rutin diminum (opsional)</p>
       <p className="small muted" style={{ margin: "0 0 6px" }}>Untuk peringatan interaksi makanan. Lihat nama di bungkus obat.</p>
       <div className="med-list">
@@ -109,6 +165,51 @@ export default function ProfileForm({ initial, submitLabel, onSubmit, onCancel }
           </label>
         ))}
       </div>
+
+      <label className="field">💊 Obat lain (opsional)
+        <input type="text" value={d.obat_lain} onChange={(e) => set("obat_lain", e.target.value)} placeholder="tulis nama di bungkus obat, mis. captopril, omeprazole" />
+      </label>
+
+      {hasOther && !sug && (
+        <button type="button" className="btn ink" style={{ margin: "6px 0 4px" }} onClick={understand} disabled={thinking}>
+          {thinking ? "AI sedang memahami…" : "🤖 Pahami isian lainnya dengan AI"}
+        </button>
+      )}
+      {d.personalisasi && !sug && (
+        <div className="review-head">
+          <p className="eyebrow">Catatan khusus aktif</p>
+          <p className="small"><b>{d.personalisasi.ringkasan}</b> {d.personalisasi.fokus}</p>
+          {d.personalisasi.hindari.length > 0 && <p className="small">🚫 Hindari: {d.personalisasi.hindari.join(", ")}</p>}
+          {d.personalisasi.batasi.length > 0 && <p className="small">⚖️ Batasi: {d.personalisasi.batasi.join(", ")}</p>}
+          <button type="button" className="btn sm" style={{ marginTop: 6 }} onClick={() => set("personalisasi", null)}>Hapus catatan khusus</button>
+        </div>
+      )}
+      {sug && (
+        <div className="suggest">
+          <p className="eyebrow">🤖 Usulan · periksa dulu sebelum dipakai</p>
+          {(sug.local.kondisi.length > 0 || sug.local.obat.length > 0 || sug.local.alergen.length > 0) && (
+            <p className="small"><b>Dikenali:</b> {[
+              ...sug.local.kondisi.map((c) => CONDITIONS.find((x) => x.id === c)?.label ?? c),
+              ...sug.local.obat.map((m) => MEDICATIONS.find((x) => x.id === m)?.label ?? m),
+              ...sug.local.alergen.map((a) => `alergi ${a}`),
+            ].join(" · ")}</p>
+          )}
+          {sug.ai ? (
+            <>
+              <p className="small"><b>{sug.ai.ringkasan}</b></p>
+              <p className="small">{sug.ai.fokus}</p>
+              {sug.ai.hindari.length > 0 && <div className="chips">{sug.ai.hindari.map((h) => <span key={h} className="chip">🚫 {h}</span>)}</div>}
+              {sug.ai.batasi.length > 0 && <div className="chips">{sug.ai.batasi.map((h) => <span key={h} className="chip">⚖️ {h}</span>)}</div>}
+              {sug.ai.perlu_dokter && <div className="alert perhatian small">Kondisi ini biasanya butuh diet khusus dari dokter/ahli gizi. Aplikasi hanya membantu mengingatkan.</div>}
+              {sug.ai.catatan_keamanan && <p className="small muted">{sug.ai.catatan_keamanan}</p>}
+            </>
+          ) : <p className="small muted">AI belum tersedia. Isian tetap disimpan dan dibaca AI saat menulis saran nanti.</p>}
+          <div className="row" style={{ marginTop: 8 }}>
+            <button type="button" className="btn sm" onClick={() => setSug(null)}>Abaikan</button>
+            <button type="button" className="btn sm good" onClick={applySuggestion}>Pakai usulan ini</button>
+          </div>
+        </div>
+      )}
 
       {(has("diabetes") || tensi) && (
         <>

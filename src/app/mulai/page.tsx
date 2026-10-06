@@ -6,6 +6,7 @@ import { api } from "@/components/ui";
 import { ALERGEN_LABEL, ALERGEN_LIST, CONDITIONS, ConditionId, EXCLUSIVE } from "@/lib/conditions";
 import { MEDICATIONS } from "@/lib/medications";
 import { ensureDevice, restoreDevice } from "@/lib/device";
+import { mapLocally } from "@/lib/personalize";
 
 type Untuk = "diri" | "orang_tua" | "pasangan" | "anak" | "lainnya";
 type Step = "welcome" | "untuk" | "setuju" | "kondisi" | "detail" | "profil" | "kode" | "pulih";
@@ -40,6 +41,7 @@ export default function Mulai() {
   const [insulin, setInsulin] = useState(false);
   const [obat, setObat] = useState<string[]>([]);
   const [kontak, setKontak] = useState({ nama: "", telepon: "" });
+  const [lain, setLain] = useState({ kondisi: "", obat: "" });
   const [profil, setProfil] = useState({ nama: "", panggilan: "kamu", usia: "", catatan: "" });
   const [code, setCode] = useState("");
   const [recovery, setRecovery] = useState("");
@@ -64,15 +66,20 @@ export default function Mulai() {
     try {
       await ensureDevice();
       await api("/api/consent", {});
+      // kata yang dikenali dari isian "lainnya" langsung ikut dipakai (tanpa AI); sisanya dibaca AI saat menulis saran
+      const m = mapLocally(lain.kondisi, lain.obat, "");
+      const allKondisi = [...new Set([...kondisi.filter((k) => k !== "sehat" || !m.kondisi.length), ...m.kondisi])];
+      const allObat = [...new Set([...obat, ...m.obat])];
       const nama = profil.nama.trim() || (untuk === "diri" ? "Saya" : "Keluargaku");
       await api("/api/onboarding", {
         action: "create",
         familyName: `Keluarga ${nama}`.slice(0, 60),
         profile: {
           nama, panggilan: profil.panggilan.trim() || "kamu", usia: profil.usia ? Number(profil.usia) : null, untuk,
-          kondisi, alergen: kondisi.includes("alergi") ? alergen : [],
+          kondisi: EXCLUSIVE.some(([a, b]) => allKondisi.includes(a) && allKondisi.includes(b)) ? kondisi : allKondisi,
+          alergen: kondisi.includes("alergi") ? alergen : [],
           diabetes_tipe: kondisi.includes("diabetes") ? dmTipe : null, insulin: kondisi.includes("diabetes") && insulin,
-          catatan_dokter: profil.catatan, obat, kontak_nama: kontak.nama, kontak_telepon: kontak.telepon,
+          catatan_dokter: profil.catatan, obat: allObat, kondisi_lain: lain.kondisi.trim(), obat_lain: lain.obat.trim(), kontak_nama: kontak.nama, kontak_telepon: kontak.telepon,
         },
       });
       router.replace("/?welcome=1");
@@ -243,6 +250,13 @@ export default function Mulai() {
                 </label>
               ))}
             </div>
+            <label className="field">➕ Kondisi lain (opsional)
+              <input type="text" value={lain.kondisi} maxLength={300} onChange={(e) => setLain({ ...lain, kondisi: e.target.value })} placeholder="mis. maag, ginjal, sedang hamil" />
+            </label>
+            <label className="field">💊 Obat lain (opsional)
+              <input type="text" value={lain.obat} maxLength={300} onChange={(e) => setLain({ ...lain, obat: e.target.value })} placeholder="nama di bungkus obat" />
+            </label>
+            <p className="small muted" style={{ marginTop: 0 }}>Nanti bisa dipahami lebih lengkap oleh AI di halaman Profil ⚙️.</p>
             {kondisi.includes("stroke_jantung") && (
               <>
                 <p className="eyebrow">📞 Kontak darurat keluarga</p>

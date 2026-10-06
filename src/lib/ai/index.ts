@@ -50,7 +50,61 @@ export const PRICES: Record<string, [number, number]> = {
   "gemini-2.5-flash": [0.3, 2.5],
   "gemini-3.8-flash": [0.75, 3.75], // naik jadi 1.50/7.50 mulai 1 Jan 2027
   "gemini-3.7-flash": [0.75, 3.75],
+  // suara: output = token audio (±25 token/detik)
+  "gemini-3.8-flash-lite-tts": [0.5, 6],
+  "gemini-3.8-flash-tts": [1, 9],
 };
+
+const TTS_MODEL = process.env.AI_TTS_MODEL ?? "gemini-3.8-flash-lite-tts";
+export const TTS_VOICES = { Sulafat: "Perempuan, hangat", Achird: "Laki-laki, ramah", Kore: "Perempuan, tegas", Charon: "Laki-laki, tenang" } as const;
+export type TTSVoice = keyof typeof TTS_VOICES;
+
+/** Teks → WAV (24 kHz mono 16-bit) lewat Gemini TTS. Ikut rem anggaran & pencatatan biaya. */
+export async function generateSpeech(text: string, voice: TTSVoice): Promise<Uint8Array> {
+  const key = process.env.GOOGLE_AI_API_KEY;
+  if (provider !== "google" || !key) throw new AIUnavailableError("Suara AI butuh Google AI");
+  await budgetGuard?.();
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${TTS_MODEL}:generateContent`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-goog-api-key": key },
+    body: JSON.stringify({
+      contents: [{ role: "user", parts: [{ text: `Bacakan dalam bahasa Indonesia dengan nada hangat, jelas, dan tidak terburu-buru, seperti anak yang menjelaskan ke orang tuanya:\n${text}` }] }],
+      generationConfig: {
+        responseModalities: ["AUDIO"],
+        speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: voice } } },
+      },
+    }),
+    signal: AbortSignal.timeout(45_000),
+  });
+  if (res.status === 429) throw new AIUnavailableError("Kuota suara AI sedang habis");
+  if (!res.ok) {
+    const t = (await res.text()).slice(0, 300);
+    if (res.status === 402 || res.status === 403 || /credits are depleted|billing/i.test(t)) throw new AIUnavailableError("Saldo Google AI Studio habis");
+    throw new Error(`Google TTS ${res.status}: ${t}`);
+  }
+  const json = await res.json();
+  const part = (json.candidates?.[0]?.content?.parts ?? []).find((p: { inlineData?: { data: string } }) => p.inlineData?.data);
+  if (!part) throw new Error("Google TTS tidak mengembalikan audio");
+  const u = json.usageMetadata ?? {};
+  await spendHook?.(TTS_MODEL, u.promptTokenCount ?? 0, u.candidatesTokenCount ?? 0).catch(() => {});
+  const bytes = Buffer.from(part.inlineData.data, "base64");
+  const mime: string = part.inlineData.mimeType ?? "";
+  if (mime.includes("wav") || bytes.subarray(0, 4).toString() === "RIFF") return bytes; // sudah WAV
+  return wav(bytes, Number(/rate=(\d+)/.exec(mime)?.[1] ?? 24000)); // PCM mentah
+}
+
+/** Bungkus PCM 16-bit mono dengan header WAV supaya bisa diputar browser. */
+export function wav(pcm: Uint8Array, rate = 24000): Uint8Array {
+  const out = new Uint8Array(44 + pcm.length);
+  const v = new DataView(out.buffer);
+  const str = (o: number, s: string) => [...s].forEach((c, i) => v.setUint8(o + i, c.charCodeAt(0)));
+  str(0, "RIFF"); v.setUint32(4, 36 + pcm.length, true); str(8, "WAVE");
+  str(12, "fmt "); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+  v.setUint32(24, rate, true); v.setUint32(28, rate * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true);
+  str(36, "data"); v.setUint32(40, pcm.length, true);
+  out.set(pcm, 44);
+  return out;
+}
 
 export function estimateUSD(model: string, input = 0, output = 0): number {
   const [pi, po] = PRICES[model] ?? [0, 0];

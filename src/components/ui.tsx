@@ -1,5 +1,6 @@
 "use client";
 import type { Toast } from "./Alerts";
+import { getVoiceSettings, speakText } from "@/lib/voice";
 
 export async function api<T = unknown>(path: string, body?: unknown, method?: string, retried = false): Promise<T> {
   const res = await fetch(path, body === undefined && !method ? {} : {
@@ -50,12 +51,10 @@ export function Meter({ label, level }: { label: string; level: string | null })
 }
 
 export function speak(text: string, toast: Toast) {
-  if (!("speechSynthesis" in window)) return toast.warning("HP ini belum bisa membacakan suara.");
-  speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = "id-ID";
-  u.rate = 0.95;
-  speechSynthesis.speak(u);
+  if (getVoiceSettings().mode === "ai") toast({ type: "info", title: "Suara AI", message: "Menyiapkan suara…", duration: 2500 });
+  void speakText(text, (reason) => toast.info(`${reason}. Memakai suara HP.`, "Suara AI belum bisa")).then((ok) => {
+    if (!ok) toast.warning("HP ini belum bisa membacakan suara.");
+  });
 }
 
 export const fmtDay = (iso: string) => new Date(iso).toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "short" });

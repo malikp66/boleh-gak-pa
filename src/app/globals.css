@@ -84,17 +84,12 @@ h3 { margin: 18px 0 8px; font-size: 17px; }
 .stack { display: grid; gap: 14px; }
 
 /* ---------- inputs */
-input[type=text] {
-  width: 100%; font: 700 20px var(--body); padding: 14px; color: #111; background: #fff;
-  border: var(--b) solid #111; border-radius: var(--r); box-shadow: inset 3px 3px 0 rgba(0,0,0,.08);
-}
-input[type=text]:focus { outline: none; background: #fffbe8; box-shadow: 4px 4px 0 var(--yellow), 4px 4px 0 3px #111; }
 input[type=range] { width: 100%; accent-color: #111; height: 34px; }
 .scale { display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
 .or { display: flex; align-items: center; gap: 10px; margin: 16px 0 12px; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
 .or::before, .or::after { content: ""; flex: 1; border-top: var(--b) solid var(--line); }
 .check { display: flex; gap: 12px; align-items: center; margin: 8px 0 18px; font-weight: 700; }
-.check input { width: 26px; height: 26px; accent-color: #111; }
+.check input { width: 24px; height: 24px; accent-color: #111; flex: none; }
 .preview { width: 100%; margin-top: 14px; max-height: 260px; object-fit: cover; border: var(--b) solid var(--line); border-radius: var(--r); }
 
 /* ---------- chips */
@@ -207,11 +202,6 @@ nav.bottom button.active { background: var(--yellow); color: #111; }
 .add-open { margin-bottom: 20px; }
 .field { display: block; margin: 12px 0; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
 .field input, .field textarea, .field select { margin-top: 6px; text-transform: none; letter-spacing: 0; }
-textarea, select {
-  width: 100%; font: 600 18px var(--body); padding: 12px 14px; color: #111; background: #fff;
-  border: var(--b) solid #111; border-radius: var(--r); resize: vertical;
-}
-textarea:focus, select:focus { outline: none; background: #fffbe8; }
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .review-head { background: var(--blue); color: #111; border: var(--b) solid #111; padding: 10px 12px; margin: 16px 0 6px; }
 .review-head .eyebrow { color: #111; margin: 0 0 4px; }
@@ -294,7 +284,7 @@ textarea:focus, select:focus { outline: none; background: #fffbe8; }
 .pc-col small { font-size: 11px; font-weight: 700; white-space: nowrap; }
 .care { display: grid; gap: 8px; }
 .care-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 2px solid #111; border-radius: var(--r); background: #fff; font-weight: 700; cursor: pointer; }
-.care-item input { width: 22px; height: 22px; accent-color: #111; }
+.care-item input { width: 24px; height: 24px; accent-color: #111; flex: none; }
 .care-item .ce { font-size: 20px; }
 .care-item.on { background: var(--hijau); text-decoration: line-through; }
 .doctor { background: #fff; border-color: var(--merah); box-shadow: var(--s) var(--s) 0 var(--merah); }
@@ -308,7 +298,6 @@ textarea:focus, select:focus { outline: none; background: #fffbe8; }
 .lead { font-size: 18px; margin: 0 0 18px; }
 .google-btn { background: #fff; }
 .google-btn svg { width: 22px; height: 22px; stroke: none; }
-.field input[type=number] { width: 100%; font: 700 20px var(--body); padding: 12px 14px; border: var(--b) solid #111; border-radius: var(--r); background: #fff; color: #111; margin-top: 6px; }
 .consent { background: var(--bg); border: var(--b) solid #111; border-radius: var(--r); padding: 12px 14px; font-size: 15px; margin: 14px 0; }
 .consent ul { margin: 6px 0 0; padding-left: 20px; }
 .tabs-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
@@ -422,3 +411,33 @@ a.pill { text-decoration: none; }
 @media (prefers-reduced-motion: reduce) {
   .alert-card, .alert-card.leaving { animation: none; }
 }
+
+/* ---------- satu gaya untuk semua kolom isian */
+input:is([type=text], [type=tel], [type=number], [type=email], [type=search], [type=url], [type=password], :not([type])),
+textarea, select {
+  display: block; width: 100%; font: 700 18px/1.3 var(--body); padding: 13px 14px; color: #111; background: #fff;
+  border: var(--b) solid #111; border-radius: var(--r); box-shadow: inset 3px 3px 0 rgba(0, 0, 0, .08);
+  transition: box-shadow .12s, background .12s; -webkit-appearance: none; appearance: none;
+}
+textarea { resize: vertical; min-height: 64px; font-weight: 600; }
+input::placeholder, textarea::placeholder { color: #8a8a8a; font-weight: 600; opacity: 1; }
+input:is([type=text], [type=tel], [type=number], [type=email], [type=search], [type=url], [type=password], :not([type])):focus,
+textarea:focus, select:focus {
+  outline: none; background: #fffbe8; box-shadow: 4px 4px 0 var(--yellow), 4px 4px 0 3px #111;
+}
+/* angka: tanpa panah naik-turun (mengganggu di HP, mudah tergeser) */
+input[type=number] { -moz-appearance: textfield; }
+input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+/* select: panah sendiri supaya sama di semua HP */
+select {
+  padding-right: 42px; cursor: pointer;
+  background-image: linear-gradient(45deg, transparent 50%, #111 50%), linear-gradient(135deg, #111 50%, transparent 50%);
+  background-position: calc(100% - 22px) 52%, calc(100% - 15px) 52%; background-size: 7px 7px; background-repeat: no-repeat;
+}
+.field input, .field textarea, .field select { margin-top: 6px; }
+.grid2 .field { min-width: 0; }
+input:disabled, textarea:disabled, select:disabled { opacity: .55; cursor: not-allowed; }
+.suggest { margin: 10px 0; padding: 12px; background: #fff; border: var(--b) dashed #111; border-radius: var(--r); }
+.suggest .eyebrow { margin-top: 0; }
+.alert.small { font-size: 14px; padding: 8px 10px; }
+.seg button small { display: block; font-weight: 600; font-size: 12px; opacity: .7; margin-top: 2px; }

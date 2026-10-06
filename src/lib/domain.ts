@@ -5,6 +5,8 @@ import { ConditionId, conditionInfo, evaluate, Evaluation, normalizeConditions }
 import { combine, findFoods, FOODS } from "./foods/match";
 import { CombinedFood, Food, MatchedFood } from "./foods/types";
 import { resolveVision, VisionGuess } from "./foods/vision";
+import { mapLocally, Personalisasi } from "./personalize";
+import { MEDICATIONS } from "./medications";
 
 export interface Profile {
   id: string;
@@ -25,6 +27,10 @@ export interface Profile {
   target_diastolik?: number | null;
   kontak_nama?: string;
   kontak_telepon?: string;
+  kondisi_lain?: string;
+  obat_lain?: string;
+  alergen_lain?: string;
+  personalisasi?: Personalisasi | null;
 }
 
 export interface FlareSummary {
@@ -36,7 +42,7 @@ export interface FlareSummary {
 export const conditionsOf = (p: Profile): ConditionId[] => normalizeConditions(p.kondisi);
 
 export function evalFor(parts: MatchedFood[] | Food[], profile: Profile, flare: boolean): Evaluation {
-  return evaluate(parts, { conditions: conditionsOf(profile), alergen: profile.alergen, flare, diabetesTipe: profile.diabetes_tipe, obat: profile.obat ?? [] });
+  return evaluate(parts, { conditions: conditionsOf(profile), alergen: profile.alergen, flare, diabetesTipe: profile.diabetes_tipe, obat: profile.obat ?? [], personal: profile.personalisasi ?? null });
 }
 
 // ---------------------------------------------------------------- cek makanan
@@ -73,7 +79,13 @@ function personLine(p: Profile, conds: ConditionId[]) {
     conds.includes("alergi") && p.alergen.length ? `alergi: ${p.alergen.join(", ")}` : "",
     conds.includes("diabetes") && p.insulin ? "memakai insulin" : "",
   ].filter(Boolean);
-  return `Kondisi: ${labels.join(", ")}${extra.length ? ` (${extra.join("; ")})` : ""}. Catatan dokter: ${p.catatan_dokter || "-"}`;
+  const lain = [
+    p.kondisi_lain ? `kondisi lain: ${p.kondisi_lain}` : "",
+    p.obat_lain ? `obat lain: ${p.obat_lain}` : "",
+    p.alergen_lain ? `alergi lain: ${p.alergen_lain}` : "",
+    p.personalisasi ? `catatan khusus: ${p.personalisasi.fokus} (hindari: ${p.personalisasi.hindari.join(", ") || "-"}; batasi: ${p.personalisasi.batasi.join(", ") || "-"})` : "",
+  ].filter(Boolean).join(". ");
+  return `Kondisi: ${labels.join(", ")}${extra.length ? ` (${extra.join("; ")})` : ""}. Catatan dokter: ${p.catatan_dokter || "-"}${lain ? `. ${lain}` : ""}`;
 }
 
 function assessPrompt(foodText: string, food: CombinedFood | null, ev: Evaluation, ctx: AssessContext): string {
@@ -154,11 +166,14 @@ export function assessCacheKey(foodText: string, foods: Food[], ctx: AssessConte
   const found = findFoods(foodText, foods);
   const conds = [...conditionsOf(ctx.profile)].sort();
   return JSON.stringify({
-    v: 2,
+    v: 3,
     foods: found.length ? found.map((f) => f.name) : [foodText.trim().toLowerCase()],
     conds,
     alergen: conds.includes("alergi") ? [...ctx.profile.alergen].sort() : [],
     dm: conds.includes("diabetes") ? [ctx.profile.diabetes_tipe, ctx.profile.insulin] : null,
+    obat: [...(ctx.profile.obat ?? [])].sort(),
+    // isian bebas & catatan pribadi mengubah jawaban → ikut kunci (tanpa data identitas)
+    lain: [ctx.profile.kondisi_lain ?? "", ctx.profile.obat_lain ?? "", ctx.profile.alergen_lain ?? "", ctx.profile.personalisasi?.fokus ?? ""].join("|").toLowerCase(),
     panggilan: ctx.profile.panggilan,
     flare: Boolean(ctx.flare),
     garam: Math.min(ctx.today.garam, 2),
@@ -322,6 +337,53 @@ export async function analyzeFood(name: string, bahan: string) {
   );
   return { ...r.data, refs: refs.map((f) => f.name), model: r.model };
 }
+
+// ---------------------------------------------------------------- personalisasi isian "Lainnya"
+const COND_IDS = ["diabetes", "hipertensi", "asam_urat", "kolesterol", "stroke_jantung", "darah_rendah", "alergi", "sehat"] as const;
+const ALG_IDS = ["kacang tanah", "kacang pohon", "kedelai", "susu", "telur", "gluten", "ikan", "krustasea", "moluska", "wijen"] as const;
+
+export async function personalize(input: { usia?: number | null; kondisi: string[]; kondisi_lain: string; obat_lain: string; alergen_lain: string }) {
+  const local = mapLocally(input.kondisi_lain, input.obat_lain, input.alergen_lain);
+  const Schema = z.object({
+    ringkasan: z.string(),
+    fokus: z.string(),
+    hindari: z.array(z.string()).max(15),
+    batasi: z.array(z.string()).max(15),
+    kondisi_terkait: z.array(z.enum(COND_IDS)),
+    alergen_terkait: z.array(z.enum(ALG_IDS)),
+    obat_terkait: z.array(z.enum(MEDICATIONS.map((m) => m.id) as [string, ...string[]])),
+    perlu_dokter: z.boolean(),
+    catatan_keamanan: z.string(),
+  });
+  const r = await generateJSON(
+    [
+      {
+        role: "system",
+        content: [
+          "Kamu ahli gizi klinis Indonesia. Tugasmu memahami isian bebas tentang kondisi kesehatan, obat, dan alergi seseorang,",
+          "lalu menerjemahkannya menjadi panduan makan yang praktis untuk aplikasi pengecek makanan.",
+          `Kondisi yang sudah dipilih: ${input.kondisi.join(", ") || "-"}. Usia: ${input.usia ?? "-"}.`,
+          "Aturan:",
+          "- ringkasan: 1 kalimat yang merangkum kondisi lain tersebut dengan bahasa awam.",
+          "- fokus: 1-2 kalimat panduan makan utama untuk kondisi lain tersebut (berdasarkan pedoman gizi umum).",
+          "- hindari & batasi: kata kunci SINGKAT (1-2 kata, huruf kecil) berupa nama makanan/bahan Indonesia yang bisa dicocokkan dengan nama makanan,",
+          "  mis. 'sambal', 'kopi', 'santan', 'gorengan', 'jeroan', 'pisang', 'kerupuk'. Jangan kalimat.",
+          "- kondisi_terkait/alergen_terkait/obat_terkait: hanya kalau isian jelas menyebut kondisi/alergen/obat yang ada di daftar.",
+          "- perlu_dokter: true jika kondisinya butuh diet khusus dari dokter/ahli gizi (mis. gagal ginjal, kehamilan berisiko, pasca operasi).",
+          "- catatan_keamanan: peringatan singkat bila ada; jangan menyarankan obat atau dosis.",
+          "- Jika isian tidak jelas atau bukan kondisi kesehatan, kosongkan daftar dan jelaskan di ringkasan.",
+        ].join("\n"),
+      },
+      { role: "user", content: `Kondisi lain: ${input.kondisi_lain || "-"}\nObat lain: ${input.obat_lain || "-"}\nAlergi lain: ${input.alergen_lain || "-"}` },
+    ],
+    Schema,
+  );
+  return { local, ai: r.data, model: r.model };
+}
+
+/** Versi tanpa AI (AI mati/kuota habis): hanya pencocokan kata kunci lokal. */
+export const personalizeLocal = (input: { kondisi_lain: string; obat_lain: string; alergen_lain: string }) =>
+  ({ local: mapLocally(input.kondisi_lain, input.obat_lain, input.alergen_lain), ai: null, model: null });
 
 // ---------------------------------------------------------------- ringkasan mingguan
 export async function weeklySummary(profile: Profile, data: unknown): Promise<string | null> {

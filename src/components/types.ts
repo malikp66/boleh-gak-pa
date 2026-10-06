@@ -19,6 +19,14 @@ export interface Profile {
   target_diastolik: number | null;
   kontak_nama: string;
   kontak_telepon: string;
+  kondisi_lain: string;
+  obat_lain: string;
+  alergen_lain: string;
+  personalisasi: Personalisasi | null;
+}
+
+export interface Personalisasi {
+  ringkasan: string; fokus: string; hindari: string[]; batasi: string[]; perlu_dokter: boolean; sumber: string; dibuat: string;
 }
 
 export interface Me {

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import ProfileForm, { emptyDraft, ProfileDraft } from "@/components/ProfileForm";
 import RecoveryCard from "@/components/RecoveryCard";
+import VoiceSettings from "@/components/VoiceSettings";
 import { api, useToast } from "@/components/ui";
 import { Me, Profile } from "@/components/types";
 import { conditionInfo, normalizeConditions } from "@/lib/conditions";
@@ -103,6 +104,8 @@ export default function ProfilPage() {
                 <input type="checkbox" checked={sound} onChange={(e) => { setSound(e.target.checked); setSoundState(e.target.checked); if (e.target.checked) play("hijau"); }} />
                 <span className="ce">🔊</span>Efek suara &amp; getar
               </label>
+
+              <VoiceSettings />
 
               <p className="eyebrow">🔔 Pengingat</p>
               {support === "ios-install" && <p className="small">Di iPhone, notifikasi hanya bisa untuk aplikasi yang sudah ditambahkan ke layar utama: buka menu <b>Bagikan → Tambah ke Layar Utama</b>, lalu buka dari ikon itu.</p>}

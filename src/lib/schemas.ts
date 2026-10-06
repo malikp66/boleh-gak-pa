@@ -20,5 +20,13 @@ export const ProfileInput = z.object({
   target_sistolik: z.number().int().min(80).max(200).nullable().default(null),
   target_diastolik: z.number().int().min(50).max(130).nullable().default(null),
   kontak_nama: z.string().trim().max(40).default(""),
+  kondisi_lain: z.string().trim().max(300).default(""),
+  obat_lain: z.string().trim().max(300).default(""),
+  alergen_lain: z.string().trim().max(200).default(""),
+  personalisasi: z.object({
+    ringkasan: z.string().max(300), fokus: z.string().max(400),
+    hindari: z.array(z.string().max(40)).max(15), batasi: z.array(z.string().max(40)).max(15),
+    perlu_dokter: z.boolean(), sumber: z.string().max(800), dibuat: z.string().max(40),
+  }).nullable().default(null),
   kontak_telepon: z.string().trim().max(20).regex(/^[0-9+\-\s]*$/, "Nomor telepon hanya angka").default(""),
 });

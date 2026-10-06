@@ -6,6 +6,7 @@ import { assertFamily, getProfile, requireUser, route } from "@/lib/server";
 const COLS = [
   "nama", "panggilan", "usia", "untuk", "kondisi", "alergen", "diabetes_tipe", "insulin", "catatan_dokter", "obat",
   "target_gula_puasa", "target_gula_2jam", "target_sistolik", "target_diastolik", "kontak_nama", "kontak_telepon",
+  "kondisi_lain", "obat_lain", "alergen_lain", "personalisasi",
 ] as const;
 
 export const POST = route(async (req) => {

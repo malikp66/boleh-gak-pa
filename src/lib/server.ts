@@ -20,7 +20,8 @@ export class HttpError extends Error {
 export function route<C>(fn: (req: Request, ctx: C) => Promise<unknown>) {
   return async (req: Request, ctx: C) => {
     try {
-      return NextResponse.json(await fn(req, ctx));
+      const out = await fn(req, ctx);
+      return out instanceof Response ? out : NextResponse.json(out);
     } catch (e) {
       if (e instanceof HttpError) return NextResponse.json({ error: e.message }, { status: e.status });
       if (e instanceof ZodError) return NextResponse.json({ error: "Input tidak valid" }, { status: 400 });
@@ -134,6 +135,7 @@ const LIMITS = {
   photo: Number(process.env.AI_LIMIT_PHOTO ?? 8),
   analyze: Number(process.env.AI_LIMIT_ANALYZE ?? 10),
   summary: Number(process.env.AI_LIMIT_SUMMARY ?? 3),
+  tts: Number(process.env.AI_LIMIT_TTS ?? 40),
 };
 type QuotaKind = keyof typeof LIMITS;
 
