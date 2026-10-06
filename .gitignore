@@ -45,3 +45,4 @@ _local/
 # lokal
 .npmrc
 .claude/
+.neon
