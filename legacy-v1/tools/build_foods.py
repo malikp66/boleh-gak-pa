@@ -1,4 +1,4 @@
-"""Sumber tabel makanan. Edit baris di bawah (dan tools/nutrition.py), lalu jalankan: python3 tools/build_foods.py
+"""Sumber tabel makanan. Edit baris di bawah lalu jalankan: python3 tools/build_foods.py
 
 Format: nama | alias;alias | kategori | purin | garam | porsi aman | trik;trik | pemicu;pemicu
 purin/garam: r = rendah, s = sedang, t = tinggi
@@ -28,7 +28,7 @@ telur gulung | | Kaki lima | r | s | 2-3 tusuk | saus sedikit | saus botol asin
 sosis bakar | sosis | Kaki lima | s | t | 1 tusuk | jarang-jarang saja | daging olahan tinggi garam
 bakso bakar | | Kaki lima | s | t | 2 tusuk | saus sedikit | bakso + saus kecap
 # ---------------- Nasi & lauk
-nasi putih | nasi;nasi hangat | Nasi & lauk | r | r | 1 centong (porsi biasa) | aman, batasi kalau ada diabetes | -
+nasi putih | nasi;nasi merah;nasi hangat | Nasi & lauk | r | r | 1 centong (porsi biasa) | aman, batasi kalau ada diabetes | -
 nasi goreng | nasgor | Nasi & lauk | s | t | 1 porsi biasa | pilih telur/ayam;tanpa seafood dan ati;tambah acar timun | kecap, garam, terasi;topping seafood/ati
 bubur ayam | bubur;bubur cirebon;bubur ayam cianjur | Nasi & lauk | s | t | 1 mangkuk | tanpa sate usus/ati;kecap asin sedikit;kerupuk secukupnya | kecap asin, kerupuk;ati ampela / usus
 nasi uduk | nasi lemak | Nasi & lauk | r | s | 1 porsi | lauk telur/tempe | santan;gorengan
@@ -42,7 +42,7 @@ nasi kucing | angkringan | Nasi & lauk | r | t | 2 bungkus | hindari sate usus/a
 nasi bebek | bebek goreng | Nasi & lauk | s | s | 1 potong | buang kulit;sambal secukupnya | daging bebek;kulit berlemak
 nasi kebuli | nasi biryani | Nasi & lauk | t | s | setengah porsi | daging kambing sedikit | daging kambing;kaldu
 lontong sayur | | Nasi & lauk | r | s | 1 porsi | kuah santan secukupnya | santan;sambal goreng ati kalau ada
-ketupat sayur | | Nasi & lauk | s | s | 1 porsi | hindari sambal goreng ati;kuah sedikit | santan;ayam
+ketupat sayur | opor;opor ayam | Nasi & lauk | s | s | 1 porsi | hindari sambal goreng ati;kuah sedikit | santan;ayam
 sambal goreng ati | | Nasi & lauk | t | t | sebaiknya dihindari | ganti telur pindang | ati dan ampela tinggi purin
 semur daging | semur | Nasi & lauk | t | t | 1 potong kecil | kuah kecap sedikit | daging merah;kecap
 empal | empal gentong | Nasi & lauk | t | s | 1 potong kecil | pilih yang tanpa jeroan | daging sapi
@@ -67,7 +67,7 @@ tengkleng | | Berkuah | t | t | sebaiknya dihindari | ganti menu lain | tulang d
 gulai kambing | tongseng | Berkuah | t | t | maksimal 3 potong kecil | jangan minum kuahnya;banyak air putih | daging merah;kuah santan/kecap
 gulai ayam | kari ayam | Berkuah | s | s | 1 potong | kuah sedikit | ayam;santan
 sayur lodeh | lodeh | Berkuah | r | s | 1 mangkuk | aman | santan
-sayur asem | sayur bening | Berkuah | r | s | bebas, kuah jangan terlalu asin | pilihan aman | -
+sayur asem | sayur bening;sop sayur | Berkuah | r | s | bebas, kuah jangan terlalu asin | pilihan aman | -
 sup ayam | sop ayam;sup jagung | Berkuah | s | s | 1 mangkuk | buang kulit ayam | kaldu ayam
 pindang ikan | pindang patin | Berkuah | s | s | 1 potong | kuah secukupnya | ikan
 garang asem | | Berkuah | s | s | 1 porsi | aman | ayam
@@ -120,7 +120,7 @@ martabak telur | martabak;martabak asin;martabak mesir | Gorengan & camilan | s 
 risoles | risol;lumpia;pastel | Gorengan & camilan | s | s | 1-2 buah | aman dalam jumlah kecil | isian daging/ragout
 # ---------------- Kue & manis
 martabak manis | terang bulan;martabak bangka;martabak coklat;martabak keju | Kue & manis | r | r | 1-2 potong | hindari topping super manis | gula tinggi (fruktosa/gula bisa menaikkan asam urat)
-klepon | kue lapis;nagasari;kue basah | Kue & manis | r | r | 1-2 buah | aman dalam jumlah kecil | gula
+klepon | kue lapis;onde-onde;nagasari;kue basah | Kue & manis | r | r | 1-2 buah | aman dalam jumlah kecil | gula
 bubur kacang hijau | burjo;kacang hijau;bubur kacang ijo;kacang ijo;bubur kacang | Kue & manis | s | r | 1 mangkuk kecil | gula sedikit | kacang hijau (purin nabati);gula
 kolak | kolak pisang | Kue & manis | r | r | 1 mangkuk kecil | gula sedikit | gula + santan
 es campur | es teler;es buah | Kue & manis | r | r | 1 gelas kecil | sirup sedikit | gula/sirup tinggi
@@ -198,7 +198,7 @@ ramyeon | samyang;mi korea;jjajangmyeon | Jepang & Korea | r | t | jarang, bumbu
 ayam korea | korean fried chicken;chicken wings;sayap ayam | Jepang & Korea | s | t | 3-4 potong | saus dipisah | saus manis asin;kulit
 # ---------------- Masakan daerah
 nasi tutug oncom | tutug oncom;nasi tutug | Masakan daerah | s | t | 1 porsi kecil | ikan asin sedikit | oncom;ikan asin
-nasi timbel | timbel | Masakan daerah | s | s | 1 porsi | ikan asin dan sambal secukupnya | lauk ikan asin/jeroan kalau ada
+nasi timbel | timbel;nasi bakar | Masakan daerah | s | s | 1 porsi | ikan asin dan sambal secukupnya | lauk ikan asin/jeroan kalau ada
 gudeg krecek | krecek;gudeg komplit | Masakan daerah | s | t | 1 porsi | krecek sedikit;hindari ati ampela | krecek;ati ampela
 pecak lele | pecak ikan | Masakan daerah | s | s | 1 porsi | sambal secukupnya | ikan
 papeda | ikan kuah kuning | Masakan daerah | s | s | 1 porsi | aman | ikan
@@ -302,96 +302,10 @@ kacang merah | sup kacang merah;kacang tolo | Sayur & lalapan | s | r | 1 mangku
 edamame | kedelai rebus | Sayur & lalapan | s | r | segenggam | purin nabati, secukupnya | purin nabati
 cabai | cabe;cabai rawit | Sayur & lalapan | r | r | secukupnya | aman, asal bukan sambal asin | -
 bawang putih | bawang merah;bawang bombay | Sayur & lalapan | r | r | secukupnya | aman | -
-# ---------------- Tambahan Okt 2026: makanan pokok
-nasi merah | beras merah;nasi beras merah | Nasi & lauk | r | r | ¾ gelas | lebih baik dari nasi putih untuk gula darah;tetap jaga porsi | -
-nasi jagung | jagung giling;nasi ampok | Nasi & lauk | r | r | ¾ gelas | serat lebih tinggi | -
-lontong | ketupat;lontong polos | Nasi & lauk | r | r | 2-3 potong | karbo setara nasi, jangan ditambah nasi lagi | -
-nasi goreng kambing | nasgor kambing | Nasi & lauk | t | t | setengah porsi | minta minyak/samin sedikit | daging kambing;minyak samin
-nasi bakar | nasi bakar ayam | Nasi & lauk | s | s | 1 bungkus | pilih isi ayam/tahu | santan;lauk asin
-oatmeal | havermut;oat;bubur oat;overnight oat | Nasi & lauk | r | r | ½ gelas oat kering | serat larut baik untuk kolesterol & gula darah;tanpa gula atau kental manis | -
-sereal | cornflakes;sereal manis;koko krunch;granola | Nasi & lauk | r | s | 1 mangkuk kecil + susu tawar | pilih tanpa gula tambahan | gula tambahan
-mie shirataki | shirataki;konjac | Mi & bakso | r | r | 1 porsi | rendah karbo;bumbu jangan terlalu asin | -
-sukun | sukun goreng;sukun rebus | Sayur & lalapan | r | r | 2 potong | karbo setara nasi, rebus lebih baik | -
-# ---------------- Tambahan: lauk
-ayam kecap | semur ayam | Nasi & lauk | s | t | 1 potong | kecap sedikit;buang kulit | kecap tinggi garam & gula
-opor ayam | opor | Nasi & lauk | s | s | 1 potong, kuah sedikit | kuah santan secukupnya;buang kulit | santan kental
-rendang ayam | | Nasi & lauk | s | s | 1 potong | lebih ringan dari rendang sapi;bumbu sedikit | santan;bumbu
-pepes ikan | pepes;pepes ayam | Nasi & lauk | s | s | 1 bungkus | pilihan baik, dikukus | ikan
-pepes tahu | botok;botok tempe | Nasi & lauk | s | r | 1-2 bungkus | pilihan baik | purin nabati
-bandeng presto | ikan bandeng;bandeng | Seafood | s | s | 1 potong | tulang lunak, sumber kalsium | ikan
-sate bandeng | | Masakan daerah | s | s | 1 potong | jangan habiskan kulitnya | ikan;kelapa
-gulai tunjang | tunjang;kikil gulai;gulai babat | Daging & jeroan | t | t | sebaiknya dihindari | ganti gulai ayam tanpa kulit | jeroan;santan
-tahu bulat | tahu crispy;tahu sumedang | Gorengan & camilan | s | s | 3-5 buah | tiriskan minyak | gorengan
-keripik tempe | tempe kripik | Gorengan & camilan | s | s | segenggam | jangan habiskan sebungkus | gorengan asin
-ikan goreng | ikan nila goreng;ikan kembung goreng;ikan mujair | Seafood | s | s | 1 potong | ikan bakar/kukus lebih baik | ikan goreng
-tahu bakso | | Gorengan & camilan | s | s | 2-3 buah | saus sedikit | daging olahan
-amplang | kerupuk ikan | Gorengan & camilan | s | t | segenggam | jangan habiskan sebungkus | ikan;garam
-# ---------------- Tambahan: berkuah
-sop kaki sapi | sop kaki;sop sumsum | Berkuah | t | t | setengah mangkuk | fokus ke sayur, kuah sedikit | kaldu tulang pekat;lemak sumsum
-sayur sop | sop sayuran | Berkuah | r | s | bebas | kuah jangan terlalu asin | -
-tekwan | model;pempek kuah | Berkuah | s | s | 1 mangkuk | kuah sedikit | ikan
-soto daging | soto sapi;soto madura | Berkuah | t | t | 1 mangkuk | pilih daging tanpa jeroan;kuah sisakan setengah | daging sapi;jeroan kalau ada
-gulai ikan | kari ikan;gulai kepala ikan | Berkuah | s | s | 1 potong | kuah santan sedikit | ikan;santan
-# ---------------- Tambahan: jajanan & kue tradisional
-martabak india | roti canai;roti prata | Kaki lima | s | s | 1 potong | kuah kari sedikit | minyak/mentega
-kupat tahu | tahu kupat;kupat tahu magelang | Kaki lima | s | t | 1 porsi | bumbu kacang sedikit | bumbu kacang;kecap
-lumpia basah | lumpia semarang | Kaki lima | s | s | 1-2 buah | saus sedikit | rebung;udang
-pisang epe | pisang bakar;pisang gapit | Kue & manis | r | r | 1 porsi | gula merah sedikit | gula
-kue putu | putu bambu;putu mayang | Kue & manis | r | r | 3-4 buah | kelapa parut secukupnya | gula merah;kelapa
-getuk | gethuk;getuk lindri | Kue & manis | r | r | 2 potong | jangan sering | gula
-lupis | cenil;tiwul | Kue & manis | r | r | 1 porsi kecil | gula merah sedikit | gula merah
-bubur sumsum | | Kue & manis | r | r | 1 mangkuk kecil | gula merah sedikit | santan;gula
-onde-onde | onde onde | Kue & manis | r | r | 1-2 buah | jangan sering | gorengan;gula;wijen
-bakpia | bakpia pathok | Kue & manis | s | r | 1-2 buah | jangan sering | gula
-lapis legit | spekuk;kue lapis legit | Kue & manis | r | r | 1 potong tipis | sangat manis & tinggi mentega | gula;mentega
-dodol | jenang;wajik | Kue & manis | r | r | 1-2 potong kecil | jangan sering | gula + santan
-bubur ketan hitam | ketan hitam | Kue & manis | r | r | 1 mangkuk kecil | gula & santan sedikit | gula;santan
-wingko | wingko babat | Kue & manis | r | r | 1 buah | jangan sering | gula;kelapa
-biskuit krim | crackers krim;biskuit sandwich | Kue & manis | r | s | 2-3 keping | bisa mengandung lemak trans | gula;lemak trans
-keripik pisang | | Gorengan & camilan | r | r | segenggam | jangan habiskan sebungkus | gula;minyak
-kuaci | biji bunga matahari | Gorengan & camilan | r | s | segenggam kecil | pilih tanpa garam | garam
-# ---------------- Tambahan: bumbu & tambahan (sering lupa dihitung)
-susu kental manis | skm;kental manis | Bumbu & tambahan | r | r | 1 sdm saja | bukan pengganti susu: sebagian besar isinya gula | gula tinggi
-gula pasir | gula;gula aren;gula merah;gula jawa | Bumbu & tambahan | r | r | 1-2 sdt | batas gula harian 4 sdm (GGL Kemenkes) | gula
-madu | honey | Bumbu & tambahan | r | r | 1 sdt | tetap gula, termasuk untuk diabetes | gula
-sirup | sirup marjan;sirup cocopandan;es sirup | Minuman | r | r | ½ gelas encer | encerkan, jangan tiap hari | minuman berfruktosa tinggi;gula
-kecap manis | kecap;kecap asin | Bumbu & tambahan | r | t | 1 sdm | tinggi garam dan gula | garam;gula
-saus tomat | saus botol;saos;saus | Bumbu & tambahan | r | t | 1 sdm | pakai secukupnya | garam;gula
-mayones | mayo;mayonnaise | Bumbu & tambahan | r | s | 1 sdm | pakai secukupnya | lemak
-mentega | butter;margarin | Bumbu & tambahan | r | s | 1 sdt tipis | margarin bisa mengandung lemak trans | lemak jenuh;lemak trans
-keju | keju cheddar;keju slice;mozzarella | Bumbu & tambahan | r | t | 1 lembar | pakai secukupnya | garam;lemak jenuh
-santan | santan kental | Bumbu & tambahan | r | r | sedikit, encerkan | lemak jenuh tinggi | lemak jenuh
-minyak goreng | minyak sawit;minyak jelantah | Bumbu & tambahan | r | r | 1 sdm | jangan pakai berulang | lemak jenuh;lemak trans bila dipakai berulang
-selai kacang | peanut butter | Bumbu & tambahan | s | s | 1 sdm | pilih tanpa gula | kacang;gula
-selai cokelat | nutella;meses | Bumbu & tambahan | r | r | 1 sdm | jangan sering | gula
-sambal matah | sambal bawang;sambal ijo | Sayur & lalapan | r | s | 1 sdm | garam sedikit | garam
-acar | acar timun | Sayur & lalapan | r | r | bebas | pilihan aman | gula cuka
-# ---------------- Tambahan: minuman
-teh tarik | es teh tarik | Minuman | r | r | 1 gelas kecil | minta gula sedikit | kental manis/gula
-matcha latte | green tea latte;taro latte;red velvet latte | Minuman | r | r | 1 gelas kecil, less sugar | minta gula sedikit | gula;susu
-cokelat panas | milo;ovaltine;cokelat susu | Minuman | r | r | 1 gelas | pilih tanpa gula tambahan | gula
-susu kotak | susu uht;susu cokelat kotak;susu stroberi | Minuman | r | r | 1 kotak kecil | pilih yang tawar | gula
-yakult | minuman probiotik | Minuman | r | r | 1 botol | jangan lebih dari 1 | gula
-infused water | air lemon;air lemon hangat | Minuman | r | r | bebas | pilihan aman | -
-wedang ronde | ronde | Minuman | r | r | 1 mangkuk | gula sedikit | gula;kacang
-stmj | susu telur madu jahe | Minuman | r | r | 1 gelas | madu sedikit | gula;telur
-smoothie | jus campur;smoothie bowl | Minuman | r | r | 1 gelas kecil | tanpa tambahan gula/kental manis | fruktosa
-# ---------------- Tambahan: lainnya
-fish and chips | ikan goreng tepung | Fast food & western | s | t | setengah porsi | saus sedikit | gorengan;garam
-kesemek | | Buah | r | r | 1 buah | aman | -
-kolang-kaling | kolang kaling | Buah | r | r | 1 mangkuk kecil tanpa sirup | tanpa sirup | sirup gula
 """
 
 
-ALERGEN = {"gl": "gluten", "tl": "telur", "su": "susu", "kt": "kacang tanah", "kd": "kedelai",
-           "ik": "ikan", "kr": "krustasea", "mo": "moluska", "kp": "kacang pohon", "wj": "wijen"}
-
-
 def build():
-    import sys
-    sys.path.insert(0, os.path.dirname(__file__))
-    from nutrition import IG, N
-
     foods = []
     for line in ROWS.strip().splitlines():
         if not line.strip() or line.startswith("#"):
@@ -399,29 +313,12 @@ def build():
         parts = [p.strip() for p in line.split("|")]
         name, aliases, kat, purin, garam, porsi, trik, pemicu = parts
         split = lambda s: [x.strip() for x in s.split(";") if x.strip() and x.strip() != "-"]
-        if name not in N:
-            raise SystemExit(f"data gizi belum ada untuk: {name}")
-        kgl, _, alg = N[name].partition(" ")
-        if len(kgl) != 3 or any(c not in L for c in kgl):
-            raise SystemExit(f"format KGL salah untuk {name}: {kgl!r}")
-        codes = [a for a in alg.split(",") if a]
-        bad = [a for a in codes if a not in ALERGEN]
-        if bad:
-            raise SystemExit(f"kode alergen tidak dikenal untuk {name}: {bad}")
-        if kgl[0] in "st" and name not in IG:
-            raise SystemExit(f"indeks glikemik belum ada untuk makanan berkarbohidrat: {name}")
-        ig = L[IG[name]] if kgl[0] in "st" else None
         foods.append({"name": name, "aliases": split(aliases), "kategori": kat,
-                      "purin": L[purin], "garam": L[garam],
-                      "karbo": L[kgl[0]], "gula": L[kgl[1]], "lemak": L[kgl[2]], "ig": ig,
-                      "alergen": [ALERGEN[a] for a in codes],
-                      "porsi_aman": porsi, "trik": split(trik), "pemicu": split(pemicu)})
-    extra = (set(N) | set(IG)) - {f["name"] for f in foods}
-    if extra:
-        raise SystemExit(f"data gizi untuk makanan yang tidak ada: {sorted(extra)}")
-    out = os.path.join(os.path.dirname(__file__), "..", "src", "lib", "foods", "foods.json")
+                      "purin": L[purin], "garam": L[garam], "porsi_aman": porsi,
+                      "trik": split(trik), "pemicu": split(pemicu)})
+    out = os.path.join(os.path.dirname(__file__), "..", "data", "foods.json")
     with open(out, "w", encoding="utf-8") as f:
-        json.dump({"_note": "Dibuat oleh tools/build_foods.py + tools/nutrition.py. Perkiraan per porsi khas; sumber & ambang di docs/SUMBER-GIZI.md. Bukan data laboratorium.",
+        json.dump({"_note": "Dibuat oleh tools/build_foods.py. Ringkasan panduan umum diet rendah purin & rendah garam; bukan data laboratorium. Selalu ikuti saran dokter.",
                    "foods": foods}, f, ensure_ascii=False, indent=1)
     names = [n for f in foods for n in [f["name"]] + f["aliases"]]
     dup = {n for n in names if names.count(n) > 1}

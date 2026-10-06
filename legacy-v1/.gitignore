@@ -1,0 +1,5 @@
+data/papa.db
+__pycache__/
+.DS_Store
+POST_DEV.md
+.claude/

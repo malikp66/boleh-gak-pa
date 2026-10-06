@@ -1,65 +1,57 @@
-# Boleh Gak, Pa? 🍽️
+# Boleh Gak, Ya?
 
-*"Is this okay, Dad?"*: a pocket food buddy for my dad, who has **gout and high blood pressure**.
+Teman makan untuk yang sedang menjaga kesehatan: **diabetes**, **darah tinggi**, **asam urat**, **kolesterol tinggi**, **pasca stroke/jantung**, **darah rendah**, **alergi makanan**, atau sekadar ingin makan lebih sehat. Bisa ditanya pakai suara 🎤, memperingatkan interaksi makanan dengan obat, punya tombol darurat stroke (SeGeRa Ke RS, 119), dan pengingat harian. Ketik atau foto makanannya, lalu dapat lampu 🟢🟡🔴, porsi aman, tips di warung, dan kalimat untuk menolak dengan sopan. Ada juga catatan makan, pemantauan (gula darah, tensi, kambuh asam urat) dengan tanda bahaya, dan ringkasan mingguan. Bisa langsung dipakai tanpa daftar.
 
-A friend hands him a plate of *ketoprak*. He doesn't want to be rude, he doesn't know how much is safe, and nobody tracks what happens next. This PWA answers in one screen:
+> Awalnya bernama *Boleh Gak, Pa?*, dibuat untuk ayah saya. v1 (HTML + Python + Gemma lokal) adalah versi yang disubmit ke DEV Hacktoberfest Weekend Challenge, 5 Okt 2026.
+> Kodenya ada di [`legacy-v1/`](legacy-v1) dan di tag `hf26-submission`. **Semua commit setelah deadline challenge ada di branch `v2`.**
 
-- 🚦 **Traffic light**: decided by a curated table of Indonesian street food (purine + salt), not by the model
-- 🍽️ **Safe portion** and on-the-spot tricks ("ask for the peanut sauce on the side")
-- 🙏 **Polite ways to say no** that he can read out loud or copy (one in Sundanese)
-- ⚠️ **What happens if he eats it all anyway**: honest, not scary
-- ➕ **Family food list**: add a dish (e.g. *nasi tutug oncom*) with its ingredients, Gemma proposes purine/salt/portion calibrated against similar rows in the table, a human reviews and saves it
-- 📒 **Meal log**, 🦶 **flare log** (joint, pain 1–10, fever), and 📈 **weekly review** with suspected triggers and a recovery estimate based on *his own* history
+## Arsitektur
 
-Everything runs on our laptop: **Gemma 3 via Ollama**, a stdlib-only Python server, and SQLite. No cloud, no account, no subscription.
+```
+HP (PWA) ──► Vercel: Next.js 16 (UI + API routes) ──┬──► Neon Postgres (Singapura)
+                                                    └──► Gemini lewat Google AI Studio (atau Gemma lokal via Ollama)
+```
 
-## Run it
+- **Tabel dulu, AI belakangan.** Lampu ditentukan [tabel 342 makanan](src/lib/foods/foods.json) (purin, garam, karbo, gula, lemak jenuh, indeks glikemik, alergen) + aturan per kondisi di [`conditions.ts`](src/lib/conditions.ts), termasuk aturan kombinasi (dobel garam, dobel karbohidrat). AI hanya menulis kalimatnya. Semua sumber & ambang: [docs/SUMBER-GIZI.md](docs/SUMBER-GIZI.md).
+- **Tanpa daftar.** Saat pertama dibuka, server membuat kunci acak 120-bit untuk perangkat itu (cookie httpOnly + cadangan di browser). Database hanya menyimpan hash-nya. Kunci yang sama ditampilkan sebagai **kode pemulihan** (`XXXX-XXXX-…`) untuk membuka data lagi setelah data browser dihapus atau ganti HP. Lihat [`server.ts`](src/lib/server.ts) dan [`device-key.ts`](src/lib/device-key.ts).
+- **Hemat biaya AI.** Teks memakai `gemini-3.1-flash-lite` (thinking minimal), foto memakai `gemini-3.8-flash` (dibatasi 8/hari/orang). Setiap panggilan dicatat di `ai_spend`, dan kalau perkiraan biaya bulan ini melewati `AI_MONTHLY_BUDGET_USD` (default $5), aplikasi otomatis kembali ke mode tabel. Jawaban disimpan di `ai_cache` dan dipakai ulang semua keluarga (saran umum, tanpa data pribadi). Ada batas harian per pengguna (tabel `ai_usage`) dan batas perangkat baru per IP, dan kalau AI gagal atau kuota habis, jawaban otomatis jatuh ke tabel.
+- **Privasi.** Setiap query data keluarga di server menyertakan syarat keanggotaan keluarga. Foto tidak disimpan. Ada layar persetujuan (UU PDP) dan [halaman privasi](src/app/privasi/page.tsx).
 
+## Setup
+
+### 1. Neon
+Project sudah dibuat dan ditautkan (`neon link`, lihat [`neon.ts`](neon.ts)). Di mesin baru:
 ```bash
-# 1. Local model (open weights)
-ollama pull gemma3:4b      # sees photos; or gemma3:1b for text-only on slow machines
+npx neon@latest login
+npx neon@latest link --project-id holy-hall-49215672 --branch production -y   # mengisi .env
+npm run migrate                                                                   # menjalankan db/migrations/*.sql
+```
+Uji migrasi baru di branch Neon terpisah dulu sebelum menjalankannya di `production`.
 
-# 2. App (Python 3.9+, no pip install needed)
-python3 server.py
-# → http://localhost:8787  (install it as a PWA from the browser menu)
+### 2. Google AI Studio
+[aistudio.google.com](https://aistudio.google.com) → *Get API key*. Pasang **batas pengeluaran / kuota** di Google Cloud sejak awal.
+
+### 3. Jalankan lokal
+```bash
+npm install                  # .env sudah diisi `neon link`; tambahkan GOOGLE_AI_API_KEY sendiri
+npm run dev
 ```
 
-To use it from a phone on the same Wi-Fi, open `http://<laptop-ip>:8787`. Installing it as a PWA on a phone needs HTTPS, e.g. through a tunnel such as `cloudflared tunnel --url http://localhost:8787`.
+### 4. Deploy ke Vercel
+Import repo di [vercel.com](https://vercel.com) → pilih branch `v2` → isi semua variabel dari `.env.example` di *Environment Variables* → Deploy.
 
-The server picks the best installed model automatically (`MODELS=gemma3:4b,gemma3:1b`). If no model is available, it falls back to answers from the table alone, so the app still works.
+## Perintah
 
-## How it works
-
-```
-photo ──► Gemma 3 4B (vision) ──► "ketoprak?" ──► Papa confirms
-                                                   │
-foods.json (purine, salt, tricks) ──► rule ──► 🟡 traffic light (source of truth)
-                                                   │
-profile + table row + active flare + today's meals ─► Gemma ─► JSON (portion, tips,
-                                                                refusals, if_forced, why)
-```
-
-- **Table decides, model writes.** The traffic light comes from `data/foods.json` so it is consistent and auditable. Gemma turns it into warm, short Bahasa Indonesia that a 60-year-old can read.
-- **Structured output.** Ollama's JSON-schema `format` keeps a small model on the rails.
-- **Context-aware.** If a flare is active, the rules get stricter, and today's meals are passed in, so a second salty meal gets flagged.
-- **Recovery estimate.** The estimate uses the median of Papa's past flare durations, falling back to a general 3–10 day range. Red flags (more than 7 days, pain of 8+, fever, worsening) always say "see a doctor".
-- **Trigger analysis.** Foods eaten in the 48 hours before each flare are counted as suspects.
-
-## Files
-
-| Path | What |
+| Perintah | Fungsi |
 |---|---|
-| `server.py` | HTTP server, Ollama calls, rules, logs, review |
-| `data/foods.json` | 271 foods & drinks (823 names/aliases, 16 categories: street food, fruit, vegetables, pizza, ramen…) with purine & salt levels — generated from `tools/build_foods.py` |
-| `data/profile.json` | Papa's profile (edit for your own family member) |
-| `public/` | PWA: `index.html`, `app.js`, `style.css`, `sw.js`, manifest, icons |
+| `npm run dev` | Server pengembangan |
+| `npm test` | Tes logika pencocokan makanan, foto, dan estimasi sembuh |
+| `RUN_AI=1 AI_PROVIDER=ollama npx vitest run test/ai.integration.test.ts` | Tes adapter AI dengan model sungguhan |
+| `npm run build` | Build produksi |
 
-> ⚕️ Not medical advice. The food table is a simplified summary of common low-purine / low-salt guidance. Always follow your doctor.
+## Mengubah data makanan
+Sumbernya ada di [`legacy-v1/tools/build_foods.py`](legacy-v1/tools/build_foods.py), satu baris per makanan. Jalankan `python3 legacy-v1/tools/build_foods.py`, lalu salin `legacy-v1/data/foods.json` ke `src/lib/foods/foods.json` dan jalankan `npm test`.
 
-## Credits
+> ⚕️ Bukan saran medis. Tabel makanan adalah ringkasan panduan umum diet rendah purin & rendah garam. Sebelum disebar luas, minta ahli gizi atau dokter meninjaunya.
 
-Gemma 3 (Google DeepMind, open weights) · Ollama (MIT) · Archivo Black & Space Grotesk (SIL OFL).
-
-Built from scratch for the DEV Hacktoberfest Weekend Challenge: Build for a Friend (Oct 2–5, 2026). Any commits after the submission deadline will be listed here.
-
-License: MIT
+Credits: Gemma 3 (Google DeepMind, open weights) · Ollama · Neon · Next.js · Archivo Black & Space Grotesk (SIL OFL). License: MIT
