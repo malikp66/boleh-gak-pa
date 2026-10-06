@@ -57,6 +57,7 @@ export interface FoodItem {
 }
 
 export interface AssessResult {
+  checkId?: string;
   headline: string;
   portion: string;
   tips: string[];
@@ -97,3 +98,5 @@ export interface Review {
   recovery: Recovery;
   summary: string | null;
 }
+
+export interface PendingCheck { id: string; food: string; status: Status; note: string; created_at: string }

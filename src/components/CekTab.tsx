@@ -1,7 +1,7 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api, Chips, Meter, resizeImage, speak, useToast } from "./ui";
-import { AssessResult, Profile } from "./types";
+import { AssessResult, PendingCheck, Profile } from "./types";
 import { ConditionId, conditionInfo, normalizeConditions, spokenAlergen } from "@/lib/conditions";
 import { play } from "@/lib/sound";
 import { cleanSpoken, useSpeech } from "@/lib/speech";
@@ -114,19 +114,45 @@ export default function CekTab({ profile, flareJoint, prefill, welcome, onSaveUn
     }
   }
 
-  async function log(portion: "sesuai saran" | "porsi penuh" | "ditolak") {
-    if (!result) return;
+  const [logging, setLogging] = useState(false);
+  // bilah "Jadinya?" menempel di bawah layar selama tombol utamanya tidak terlihat
+  const choicesRef = useRef<HTMLDivElement>(null);
+  const [choicesVisible, setChoicesVisible] = useState(true);
+  useEffect(() => {
+    const el = choicesRef.current;
+    if (!el || !result) return;
+    const io = new IntersectionObserver(([e]) => setChoicesVisible(e.isIntersecting), { rootMargin: "0px 0px -80px 0px" });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [result]);
+
+  function reset() {
+    setResult(null);
+    setFood("");
+    setPreview("");
+    setPhoto(null);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  async function skip() {
+    if (result?.checkId) await api("/api/checks", { id: result.checkId, resolution: "batal" }).catch(() => {});
+    reset();
+  }
+
+  async function log(portion: Portion) {
+    if (!result || logging) return;
+    setLogging(true);
     try {
-      await api("/api/meals", { profileId: profile.id, food: result.food, portion, status: portion === "ditolak" ? "hijau" : result.status, note });
+      if (result.checkId) await api("/api/checks", { id: result.checkId, resolution: portion });
+      else await api("/api/meals", { profileId: profile.id, food: result.food, portion, status: portion === "ditolak" ? "hijau" : result.status, note });
       play("saved");
       toast.success(portion === "ditolak" ? "Berhasil menolak, tercatat. Mantap! 💪" : "Masuk ke catatan makan.", portion === "ditolak" ? "Hebat" : "Tercatat");
-      setResult(null);
-      setFood("");
-      setPreview("");
-      setPhoto(null);
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      reset();
     } catch (e) {
-      toast.error((e as Error).message);
+      play("error");
+      toast.error((e as Error).message, "Gagal mencatat");
+    } finally {
+      setLogging(false);
     }
   }
 
@@ -137,6 +163,7 @@ export default function CekTab({ profile, flareJoint, prefill, welcome, onSaveUn
   return (
     <>
       {flareJoint && <div className="banner">Asam urat lagi kambuh ({flareJoint}). Saran dibuat lebih ketat.</div>}
+      {!result && !loading && <PendingChecks profileId={profile.id} />}
       {welcome && !result && (
         <div className="secure">
           <p>🎉 Siap! Coba cek satu makanan dulu.</p>
@@ -231,6 +258,11 @@ export default function CekTab({ profile, flareJoint, prefill, welcome, onSaveUn
             {conditions.includes("alergi") && r.alergen.length > 0 && <p className="small" style={{ marginTop: 10 }}><b>Mungkin mengandung:</b> {spokenAlergen(r.alergen)}. Tanyakan ke penjual.</p>}
             {r.flare_active && <span className="flare-tag">Lagi kambuh, lebih ketat</span>}
           </div>
+          <div className="card log-card" ref={choicesRef}>
+            <h2>Jadinya gimana?</h2>
+            <LogChoices onPick={log} busy={logging} />
+            <button className="linklike" onClick={skip}>Cuma tanya, tidak dimakan</button>
+          </div>
           <button className="btn big listen" onClick={() => speak(`${r.food}. ${VERDICT[r.status]}. ${r.headline} Porsinya: ${r.portion}.`, toast)}>🔊 Dengarkan jawabannya</button>
 
           <div className="card">
@@ -263,17 +295,78 @@ export default function CekTab({ profile, flareJoint, prefill, welcome, onSaveUn
             </details>
           </div>
 
-          <div className="card">
-            <h2>Jadinya gimana?</h2>
-            <div className="stack">
-              <button className="btn big good" onClick={() => log("sesuai saran")}>Makan sesuai saran</button>
-              <button className="btn big" onClick={() => log("porsi penuh")}>Makan 1 porsi penuh</button>
-              <button className="btn big primary" onClick={() => log("ditolak")}>Berhasil menolak!</button>
+          <div style={{ height: 140 }} aria-hidden="true" />
+          {!choicesVisible && (
+            <div className="log-bar" role="region" aria-label="Jadinya gimana">
+              <p>Jadinya <b>{r.food}</b>?</p>
+              <LogChoices compact onPick={log} busy={logging} />
             </div>
-          </div>
+          )}
           {!r.in_table && <button className="btn big ink" onClick={() => onSaveUnknown(r.food)}>+ Simpan &quot;{r.food}&quot; ke daftar</button>}
         </div>
       )}
     </>
+  );
+}
+
+type Portion = "sesuai saran" | "porsi penuh" | "ditolak";
+const CHOICES: [Portion, string, string, string][] = [
+  ["sesuai saran", "✅", "Makan sesuai saran", "good"],
+  ["porsi penuh", "🍛", "Makan 1 porsi penuh", ""],
+  ["ditolak", "🙅", "Tidak jadi / menolak", "primary"],
+];
+
+/** Tiga tombol besar "jadinya gimana". compact = versi bilah bawah. */
+function LogChoices({ onPick, compact = false, busy = false }: { onPick: (p: Portion) => void; compact?: boolean; busy?: boolean }) {
+  return (
+    <div className={`log-choices${compact ? " compact" : ""}`}>
+      {CHOICES.map(([p, emo, label, cls]) => (
+        <button key={p} type="button" className={`btn ${cls}`} disabled={busy} onClick={() => onPick(p)}>
+          <span aria-hidden="true">{emo}</span>{label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+const jam = (iso: string) => new Date(iso).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
+const hariIni = (iso: string) => new Date(iso).toDateString() === new Date().toDateString();
+
+/** Pertanyaan sebelumnya yang belum dijawab: "Tadi tanya soto ayam, jadinya?" */
+function PendingChecks({ profileId, exclude }: { profileId: string; exclude?: string }) {
+  const toast = useToast();
+  const [items, setItems] = useState<PendingCheck[]>([]);
+  const [busy, setBusy] = useState("");
+  useEffect(() => { api<PendingCheck[]>(`/api/checks?profileId=${profileId}`).then(setItems).catch(() => {}); }, [profileId]);
+
+  async function answer(c: PendingCheck, resolution: Portion | "batal") {
+    setBusy(c.id);
+    try {
+      await api("/api/checks", { id: c.id, resolution });
+      play(resolution === "batal" ? "tap" : "saved");
+      if (resolution !== "batal") toast.success(`"${c.food}" masuk catatan jam ${jam(c.created_at)}.`, resolution === "ditolak" ? "Hebat, berhasil menolak" : "Tercatat");
+      setItems((list) => list.filter((x) => x.id !== c.id));
+    } catch (e) {
+      play("error");
+      toast.error((e as Error).message, "Gagal mencatat");
+      setItems((list) => list.filter((x) => x.id !== c.id));
+    } finally {
+      setBusy("");
+    }
+  }
+
+  const list = items.filter((c) => c.id !== exclude);
+  if (!list.length) return null;
+  return (
+    <div className="card pending">
+      <p className="eyebrow">⏰ Belum dijawab</p>
+      {list.map((c) => (
+        <div key={c.id} className="pending-item">
+          <p>{hariIni(c.created_at) ? "Tadi" : "Kemarin"} jam {jam(c.created_at)} tanya <b>{c.food}</b> {{ hijau: "🟢", kuning: "🟡", merah: "🔴" }[c.status]}. Jadinya?</p>
+          <LogChoices compact busy={busy === c.id} onPick={(p) => answer(c, p)} />
+          <button className="linklike" disabled={busy === c.id} onClick={() => answer(c, "batal")}>Cuma tanya, tidak dimakan</button>
+        </div>
+      ))}
+    </div>
   );
 }
