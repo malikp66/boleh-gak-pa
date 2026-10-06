@@ -1,8 +1,10 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { api, Chips, Meter, resizeImage, speak, useToast } from "./ui";
 import { AssessResult, Profile } from "./types";
 import { ConditionId, conditionInfo, normalizeConditions } from "@/lib/conditions";
+import { play } from "@/lib/sound";
+import { cleanSpoken, useSpeech } from "@/lib/speech";
 
 // contoh makanan yang paling "menguji" tiap kondisi
 const EXAMPLES: Record<ConditionId, string[]> = {
@@ -10,14 +12,17 @@ const EXAMPLES: Record<ConditionId, string[]> = {
   hipertensi: ["bakso", "mi instan", "ikan asin", "indomie ketoprak"],
   asam_urat: ["sate kambing", "emping", "seafood", "soto betawi"],
   kolesterol: ["gorengan", "rendang", "martabak telur", "sop buntut"],
+  stroke_jantung: ["soto betawi", "ikan asin", "gulai kambing", "pepes ikan"],
+  darah_rendah: ["nasi padang", "teh manis", "bir", "sayur sop"],
   alergi: ["gado-gado", "siomay", "kerupuk", "pempek"],
   sehat: ["nasi goreng", "boba", "ayam geprek", "salad"],
 };
 const DIM_LABEL: Record<string, string> = { purin: "Purin", garam: "Garam", karbo: "Karbo", gula: "Gula", lemak: "Lemak jenuh", ig: "Indeks glikemik" };
 const DIMS: Record<ConditionId, string[]> = {
-  asam_urat: ["purin"], hipertensi: ["garam"], diabetes: ["karbo", "gula", "ig"], kolesterol: ["lemak"], alergi: [], sehat: ["gula", "garam", "lemak"],
+  asam_urat: ["purin"], hipertensi: ["garam"], diabetes: ["karbo", "gula", "ig"], kolesterol: ["lemak"],
+  stroke_jantung: ["garam", "lemak"], darah_rendah: ["karbo"], alergi: [], sehat: ["gula", "garam", "lemak"],
 };
-const COND_EMOJI = (c: string) => (c === "umum" ? "⚕️" : conditionInfo(c)?.emoji ?? "•");
+const COND_EMOJI = (c: string) => (c === "umum" ? "⚕️" : c === "obat" ? "💊" : conditionInfo(c)?.emoji ?? "•");
 const NOTE_CHIPS = ["Ditraktir teman", "Kondangan", "Di rumah", "Beli sendiri"] as const;
 const VERDICT: Record<string, string> = { hijau: "Aman", kuning: "Boleh, dibatasi", merah: "Sebaiknya jangan" };
 
@@ -46,24 +51,41 @@ export default function CekTab({ profile, flareJoint, prefill, welcome, onSaveUn
 
   const clear = () => setResult(null);
 
+  // pertanyaan lewat suara → jawabannya dibacakan otomatis
+  const speakNext = useRef(false);
+
   // Tidak mengubah state secara langsung: aman dipanggil dari effect maupun handler.
   const runAssess = useCallback((text: string) => {
     const t0 = performance.now();
     return api<AssessResult>("/api/assess", { profileId: profile.id, food: text, note })
       .then((r) => {
         setResult({ ...r, elapsed: Math.round((performance.now() - t0) / 1000) });
+        play(r.status);
+        if (speakNext.current) {
+          speakNext.current = false;
+          const label = { hijau: "Aman.", kuning: "Boleh, tapi dibatasi.", merah: "Sebaiknya jangan." }[r.status];
+          speak(`${r.food}. ${label} ${r.headline} Porsinya: ${r.portion}.`, toast);
+        }
         setTimeout(() => document.getElementById("result")?.scrollIntoView({ behavior: "smooth" }), 50);
       })
-      .catch((e: Error) => toast("Gagal: " + e.message))
+      .catch((e: Error) => { play("error"); toast("Gagal: " + e.message); })
       .finally(() => setLoading(""));
   }, [profile.id, note, toast]);
 
   function check(text: string) {
-    if (!text.trim()) return toast("Ketik atau foto makanannya dulu ya");
+    if (!text.trim()) return toast("Ketik, foto, atau ucapkan makanannya dulu ya");
     clear();
     setLoading("Lagi mikir…");
     runAssess(text);
   }
+
+  const mic = useSpeech((heard) => {
+    play("micOff");
+    const text = cleanSpoken(heard) || heard;
+    setFood(text);
+    speakNext.current = true;
+    check(text);
+  });
 
   // dari tab Daftar: komponen dipasang ulang (key) dengan makanan terisi → langsung cek
   const [autoFood] = useState(prefill?.food);
@@ -96,6 +118,7 @@ export default function CekTab({ profile, flareJoint, prefill, welcome, onSaveUn
     if (!result) return;
     try {
       await api("/api/meals", { profileId: profile.id, food: result.food, portion, status: portion === "ditolak" ? "hijau" : result.status, note });
+      play("saved");
       toast(portion === "ditolak" ? "Mantap! Tercatat." : "Tercatat di catatan makan");
       setResult(null);
       setFood("");
@@ -117,13 +140,25 @@ export default function CekTab({ profile, flareJoint, prefill, welcome, onSaveUn
       {welcome && !result && (
         <div className="secure">
           <p>🎉 Siap! Coba cek satu makanan dulu.</p>
-          <p className="small" style={{ fontWeight: 500 }}>Ketuk salah satu contoh di bawah, atau ketik makanan yang mau kamu makan hari ini.</p>
+          <p className="small" style={{ fontWeight: 500 }}>Tekan tombol 🎤 dan tanya, misalnya &quot;boleh gak makan martabak?&quot;, atau ketuk salah satu contoh di bawah.</p>
         </div>
       )}
 
       <div className="card">
         <p className="eyebrow">Langkah 1</p>
         <h2>Lagi ditawari apa?</h2>
+        {mic.supported && (
+          <>
+            <button type="button" className={`btn big mic${mic.listening ? " on" : ""}`}
+              onClick={() => { if (mic.listening) mic.stop(); else { play("micOn"); clear(); mic.start(); } }}>
+              <span className="mic-dot" aria-hidden="true">🎤</span>
+              {mic.listening ? "Mendengarkan… ketuk untuk selesai" : "Tanya pakai suara"}
+            </button>
+            {mic.listening && <p className="mic-live">{mic.interim || "Contoh: \"boleh gak makan sate kambing?\""}</p>}
+            {mic.error && <p className="small" style={{ color: "var(--merah)", fontWeight: 700 }}>{mic.error}</p>}
+            <div style={{ height: 12 }} />
+          </>
+        )}
         <label className="btn big ink">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg>
           Foto makanannya

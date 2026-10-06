@@ -361,3 +361,26 @@ a.btn { text-decoration: none; }
 .reading .what { flex: 1; }
 .alert { padding: 12px; margin: 12px 0; border: var(--b) solid #111; border-radius: var(--r); font-weight: 700; color: #111; }
 .alert.aman { background: var(--hijau); } .alert.perhatian { background: var(--kuning); } .alert.bahaya { background: var(--merah); }
+
+/* ---------- mic */
+.btn.mic { background: var(--pink); font-family: var(--head); font-weight: 400; font-size: 20px; }
+.btn.mic.on { background: var(--merah); animation: pulse 1.2s ease-in-out infinite; }
+.mic-dot { font-size: 24px; }
+@keyframes pulse { 0%, 100% { box-shadow: 4px 4px 0 #111; } 50% { box-shadow: 4px 4px 0 #111, 0 0 0 8px rgba(255, 107, 107, .35); } }
+.mic-live { margin: 10px 0 0; padding: 10px 12px; border: 2px dashed #111; background: #fff; font-weight: 700; min-height: 44px; }
+@media (prefers-reduced-motion: reduce) { .btn.mic.on { animation: none; } }
+
+/* ---------- header actions, darurat, profil */
+.top-actions { display: flex; align-items: center; gap: 8px; }
+.gear, .sos-btn { width: 42px; height: 42px; display: grid; place-items: center; font-size: 20px; text-decoration: none; background: #fff; border: 2px solid #111; border-radius: var(--r); box-shadow: 3px 3px 0 #111; cursor: pointer; padding: 0; }
+.sos-btn { background: var(--merah); animation: pulse 2s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .sos-btn { animation: none; } }
+.sheet-backdrop { position: fixed; inset: 0; z-index: 20; background: rgba(0, 0, 0, .55); display: flex; align-items: flex-end; justify-content: center; }
+.sheet { width: 100%; max-width: 560px; max-height: 92dvh; overflow-y: auto; background: var(--card); border: var(--b) solid #111; border-bottom: 0; border-radius: 14px 14px 0 0; padding: 20px 16px calc(20px + env(safe-area-inset-bottom)); }
+.sheet .btn { text-decoration: none; }
+.signs { display: grid; gap: 8px; margin: 14px 0; }
+.sign { display: flex; gap: 12px; align-items: center; padding: 8px 10px; border: 2px solid #111; background: #fff; }
+.sign-k { width: 40px; height: 40px; flex: none; display: grid; place-items: center; font: 400 16px var(--head); background: var(--merah); border: 2px solid #111; }
+.med-list { display: grid; gap: 8px; margin-bottom: 8px; }
+.care-item.on-plain { background: var(--blue); }
+a.pill { text-decoration: none; }

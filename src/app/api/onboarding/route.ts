@@ -22,9 +22,9 @@ export const POST = route(async (req) => {
     const family = (await c.query("insert into families (name, created_by) values ($1, $2) returning id, name, invite_code", [body.familyName, user.id])).rows[0];
     await c.query("insert into family_members (family_id, user_id, role) values ($1, $2, 'admin')", [family.id, user.id]);
     const profile = (await c.query(
-      `insert into profiles (family_id, nama, panggilan, usia, untuk, kondisi, alergen, diabetes_tipe, insulin, catatan_dokter)
-       values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) returning *`,
-      [family.id, p.nama, p.panggilan, p.usia, p.untuk, p.kondisi, p.alergen, p.diabetes_tipe, p.insulin, p.catatan_dokter],
+      `insert into profiles (family_id, nama, panggilan, usia, untuk, kondisi, alergen, diabetes_tipe, insulin, catatan_dokter, obat, kontak_nama, kontak_telepon)
+       values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) returning *`,
+      [family.id, p.nama, p.panggilan, p.usia, p.untuk, p.kondisi, p.alergen, p.diabetes_tipe, p.insulin, p.catatan_dokter, p.obat, p.kontak_nama, p.kontak_telepon],
     )).rows[0];
     return { family, profile };
   });

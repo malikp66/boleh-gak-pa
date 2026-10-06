@@ -3,7 +3,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { api } from "@/components/ui";
-import { ALERGEN_LABEL, ALERGEN_LIST, CONDITIONS, ConditionId } from "@/lib/conditions";
+import { ALERGEN_LABEL, ALERGEN_LIST, CONDITIONS, ConditionId, EXCLUSIVE } from "@/lib/conditions";
+import { MEDICATIONS } from "@/lib/medications";
 import { ensureDevice, restoreDevice } from "@/lib/device";
 
 type Untuk = "diri" | "orang_tua" | "pasangan" | "anak" | "lainnya";
@@ -37,6 +38,8 @@ export default function Mulai() {
   const [alergen, setAlergen] = useState<string[]>([]);
   const [dmTipe, setDmTipe] = useState<string>("tipe_2");
   const [insulin, setInsulin] = useState(false);
+  const [obat, setObat] = useState<string[]>([]);
+  const [kontak, setKontak] = useState({ nama: "", telepon: "" });
   const [profil, setProfil] = useState({ nama: "", panggilan: "kamu", usia: "", catatan: "" });
   const [code, setCode] = useState("");
   const [recovery, setRecovery] = useState("");
@@ -52,7 +55,7 @@ export default function Mulai() {
       .catch((e: Error) => setError(e.message));
   }, [router]);
 
-  const needsDetail = kondisi.includes("diabetes") || kondisi.includes("alergi");
+  const needsDetail = true; // obat & kontak darurat selalu ditawarkan (opsional)
   const toggle = <T,>(list: T[], v: T) => (list.includes(v) ? list.filter((x) => x !== v) : [...list, v]);
 
   async function finish() {
@@ -69,7 +72,7 @@ export default function Mulai() {
           nama, panggilan: profil.panggilan.trim() || "kamu", usia: profil.usia ? Number(profil.usia) : null, untuk,
           kondisi, alergen: kondisi.includes("alergi") ? alergen : [],
           diabetes_tipe: kondisi.includes("diabetes") ? dmTipe : null, insulin: kondisi.includes("diabetes") && insulin,
-          catatan_dokter: profil.catatan,
+          catatan_dokter: profil.catatan, obat, kontak_nama: kontak.nama, kontak_telepon: kontak.telepon,
         },
       });
       router.replace("/?welcome=1");
@@ -195,7 +198,11 @@ export default function Mulai() {
             <div className="cond-list">
               {CONDITIONS.map((c) => (
                 <button key={c.id} className={`cond${kondisi.includes(c.id) ? " on" : ""}`}
-                  onClick={() => setKondisi((k) => (c.id === "sehat" ? ["sehat"] : toggle(k.filter((x) => x !== "sehat"), c.id)))}>
+                  onClick={() => setKondisi((k) => {
+                    let next = c.id === "sehat" ? (["sehat"] as ConditionId[]) : toggle(k.filter((x) => x !== "sehat"), c.id);
+                    for (const [a, b] of EXCLUSIVE) if (c.id === a) next = next.filter((x) => x !== b); else if (c.id === b) next = next.filter((x) => x !== a);
+                    return next;
+                  })}>
                   <span className="cond-emo">{c.emoji}</span>
                   <span className="cond-text"><b>{c.label}</b><small>{c.desc}</small></span>
                   {c.status === "beta" && <span className="beta">Beta</span>}
@@ -223,6 +230,25 @@ export default function Mulai() {
                 <p className="eyebrow">⚠️ Alergi terhadap</p>
                 <div className="chips">
                   {ALERGEN_LIST.map((a) => <button key={a} className={`chip${alergen.includes(a) ? " on" : ""}`} onClick={() => setAlergen((x) => toggle(x, a))}>{ALERGEN_LABEL[a]}</button>)}
+                </div>
+              </>
+            )}
+            <p className="eyebrow">💊 Obat yang rutin diminum (opsional)</p>
+            <p className="small muted" style={{ margin: "0 0 6px" }}>Supaya aplikasi bisa memperingatkan makanan yang berinteraksi dengan obat.</p>
+            <div className="med-list">
+              {MEDICATIONS.map((m) => (
+                <label key={m.id} className={`care-item${obat.includes(m.id) ? " on-plain" : ""}`}>
+                  <input type="checkbox" checked={obat.includes(m.id)} onChange={() => setObat((o) => toggle(o, m.id))} />
+                  <span><b>{m.label}</b><br /><small className="muted">{m.contoh}</small></span>
+                </label>
+              ))}
+            </div>
+            {kondisi.includes("stroke_jantung") && (
+              <>
+                <p className="eyebrow">📞 Kontak darurat keluarga</p>
+                <div className="grid2">
+                  <label className="field">Nama <input type="text" value={kontak.nama} onChange={(e) => setKontak({ ...kontak, nama: e.target.value })} placeholder="mis. Malik" /></label>
+                  <label className="field">Telepon <input type="tel" inputMode="tel" value={kontak.telepon} onChange={(e) => setKontak({ ...kontak, telepon: e.target.value })} placeholder="08…" /></label>
                 </div>
               </>
             )}

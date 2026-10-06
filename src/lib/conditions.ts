@@ -4,7 +4,9 @@
  */
 import type { Food, Level, Status } from "./foods/types";
 
-export type ConditionId = "asam_urat" | "hipertensi" | "diabetes" | "kolesterol" | "alergi" | "sehat";
+import { medicationReasons } from "./medications";
+
+export type ConditionId = "asam_urat" | "hipertensi" | "diabetes" | "kolesterol" | "stroke_jantung" | "darah_rendah" | "alergi" | "sehat";
 export type MonitorKind = "kambuh" | "gula_darah" | "tensi";
 
 export interface ConditionInfo {
@@ -26,6 +28,10 @@ export const CONDITIONS: ConditionInfo[] = [
     desc: "Garam, kecap, kuah, makanan olahan", focus: "garam/natrium (kecap, kuah, kerupuk, makanan olahan)" },
   { id: "asam_urat", label: "Asam urat (gout)", short: "asam urat", emoji: "🦶", status: "tersedia", monitor: "kambuh",
     desc: "Purin: jeroan, seafood, daging merah, alkohol", focus: "purin (jeroan, seafood tertentu, daging merah, alkohol) & minuman manis berfruktosa" },
+  { id: "stroke_jantung", label: "Pernah stroke / sakit jantung", short: "pasca stroke/jantung", emoji: "🧠", status: "beta", monitor: "tensi",
+    desc: "Garam & lemak jenuh ketat, tombol darurat stroke", focus: "garam/natrium sangat dibatasi dan lemak jenuh (santan, gorengan, jeroan, daging berlemak); cara masak kukus/rebus/bakar" },
+  { id: "darah_rendah", label: "Darah rendah (hipotensi)", short: "darah rendah", emoji: "🩶", status: "beta", monitor: "tensi",
+    desc: "Porsi kecil, cukup cairan, hindari alkohol", focus: "cukup minum air, makan porsi kecil tapi sering, hindari porsi karbohidrat besar sekaligus dan alkohol (bisa menurunkan tensi setelah makan)" },
   { id: "kolesterol", label: "Kolesterol tinggi", short: "kolesterol", emoji: "🫀", status: "beta",
     desc: "Lemak jenuh: gorengan, santan, jeroan", focus: "lemak jenuh (santan kental, gorengan, kulit, jeroan, daging berlemak, mentega, keju)" },
   { id: "alergi", label: "Alergi makanan", short: "alergi", emoji: "⚠️", status: "beta",
@@ -79,9 +85,14 @@ export interface EvalContext {
   alergen?: string[];
   flare?: boolean; // asam urat sedang kambuh
   diabetesTipe?: string | null;
+  obat?: string[];
 }
 
-export interface Reason { condition: ConditionId | "umum"; status: Status; text: string }
+/** Kondisi yang tidak boleh dipilih bersamaan. */
+export const EXCLUSIVE: [ConditionId, ConditionId][] = [["hipertensi", "darah_rendah"]];
+
+export interface Reason { condition: ConditionId | "umum" | "obat"; status: Status; text: string }
+
 export interface Evaluation { status: Status; reasons: Reason[] }
 
 const N: Record<Level, number> = { rendah: 0, sedang: 1, tinggi: 2 };
@@ -121,6 +132,18 @@ function single(f: NutrientFood, c: ConditionId, ctx: EvalContext): Reason | nul
       if (has(f, "jeroan") || HIGH_DIETARY_CHOLESTEROL.has(f.name)) return { condition: c, status: "kuning", text: "kolesterol makanan tinggi" };
       if (l === 1) return { condition: c, status: "kuning", text: "lemak jenuh sedang" };
       return null;
+    case "stroke_jantung":
+      if (f.name === "bir") return { condition: c, status: "merah", text: "alkohol menaikkan tensi & risiko stroke" };
+      if (g === 2) return { condition: c, status: "merah", text: "garam tinggi" };
+      if (l === 2) return { condition: c, status: "merah", text: "lemak jenuh tinggi" };
+      if (has(f, "lemak trans")) return { condition: c, status: "kuning", text: "bisa mengandung lemak trans" };
+      if (g === 1) return { condition: c, status: "kuning", text: "garam sedang" };
+      if (l === 1) return { condition: c, status: "kuning", text: "lemak jenuh sedang" };
+      return null;
+    case "darah_rendah":
+      if (f.name === "bir") return { condition: c, status: "kuning", text: "alkohol bisa menurunkan tensi lebih jauh" };
+      if (k === 2) return { condition: c, status: "kuning", text: "porsi karbohidrat besar bisa menurunkan tensi setelah makan — makan porsi kecil, pelan-pelan" };
+      return null;
     case "alergi": {
       const hit = (f.alergen ?? []).filter((a) => ctx.alergen?.includes(a));
       if (hit.length) return { condition: c, status: "merah", text: `biasanya mengandung ${hit.join(", ")}` };
@@ -144,6 +167,14 @@ export function evaluate(parts: NutrientFood[], ctx: EvalContext): Evaluation {
   for (const f of parts) {
     if (has(f, "ginjal") || has(f, "jengkolat")) reasons.push({ condition: "umum", status: "kuning", text: `${f.name}: hati-hati untuk ginjal` });
   }
+  // interaksi dengan obat yang diminum
+  if (ctx.obat?.length) {
+    for (const f of parts) {
+      for (const m of medicationReasons(f, ctx.obat)) {
+        reasons.push({ condition: "obat", status: m.status, text: parts.length > 1 ? `${f.name}: ${m.text}` : m.text });
+      }
+    }
+  }
 
   for (const c of conds) {
     const perPart = parts.map((f) => [f, single(f, c, ctx)] as const).filter(([, r]) => r) as [NutrientFood, Reason][];
@@ -151,11 +182,11 @@ export function evaluate(parts: NutrientFood[], ctx: EvalContext): Evaluation {
     for (const [f, r] of perPart) reasons.push({ ...r, text: multi ? `${f.name}: ${r.text}` : r.text });
 
     // aturan kombinasi
-    if (multi && c === "hipertensi") {
+    if (multi && (c === "hipertensi" || c === "stroke_jantung")) {
       const salty = parts.filter((f) => f.garam === "tinggi");
       if (salty.length >= 2) reasons.push({ condition: c, status: "merah", text: `dobel garam: ${salty.map((f) => f.name).join(" + ")}` });
     }
-    if (multi && c === "kolesterol") {
+    if (multi && (c === "kolesterol" || c === "stroke_jantung")) {
       const fatty = parts.filter((f) => N[f.lemak ?? "rendah"] >= 1);
       if (fatty.length >= 2) reasons.push({ condition: c, status: "merah", text: `dobel lemak jenuh: ${fatty.map((f) => f.name).join(" + ")}` });
     }

@@ -4,6 +4,7 @@ import KambuhTab from "./KambuhTab";
 import { api, Chips, fmtDay, fmtTime, useToast } from "./ui";
 import { HealthLog, Profile } from "./types";
 import type { MonitorKind } from "@/lib/conditions";
+import { play } from "@/lib/sound";
 import { bloodPressure, glucose, GLUCOSE_CONTEXTS, Reading } from "@/lib/monitor";
 
 const LABEL: Record<MonitorKind, string> = { kambuh: "🦶 Kambuh", gula_darah: "🩸 Gula darah", tensi: "💓 Tensi" };
@@ -28,6 +29,10 @@ function LogView({ profile, kind }: { profile: Profile; kind: "gula_darah" | "te
   const [ctx, setCtx] = useState<(typeof GLUCOSE_CONTEXTS)[number]>("puasa");
   const [last, setLast] = useState<Reading | null>(null);
   const isGlucose = kind === "gula_darah";
+  const targets = {
+    gulaPuasa: profile.target_gula_puasa, gula2jam: profile.target_gula_2jam,
+    sistolik: profile.target_sistolik, diastolik: profile.target_diastolik,
+  };
 
   const load = useCallback(() =>
     api<HealthLog[]>(`/api/health-logs?profileId=${profile.id}&kind=${kind}`).then(setLogs).catch((e: Error) => toast(e.message)),
@@ -35,7 +40,9 @@ function LogView({ profile, kind }: { profile: Profile; kind: "gula_darah" | "te
   useEffect(() => { void load(); }, [load]);
 
   const read = (l: { value1: number; value2: number | null; context: string }) =>
-    isGlucose ? glucose(l.value1, l.context, profile.diabetes_tipe) : bloodPressure(l.value1, l.value2 ?? 0);
+    isGlucose
+      ? glucose(l.value1, l.context, profile.diabetes_tipe, targets)
+      : bloodPressure(l.value1, l.value2 ?? 0, targets, profile.kondisi.includes("darah_rendah"));
 
   async function save(e: React.FormEvent) {
     e.preventDefault();
@@ -43,7 +50,9 @@ function LogView({ profile, kind }: { profile: Profile; kind: "gula_darah" | "te
     if (!a || (!isGlucose && !b)) return toast("Isi angkanya dulu ya");
     try {
       await api("/api/health-logs", { profileId: profile.id, kind, value1: a, value2: isGlucose ? null : b, context: isGlucose ? ctx : "" });
-      setLast(read({ value1: a, value2: b, context: ctx }));
+      const reading = read({ value1: a, value2: b, context: ctx });
+      setLast(reading);
+      play(reading.level === "bahaya" ? "merah" : reading.level === "perhatian" ? "kuning" : "saved");
       setV1("");
       setV2("");
       load();
@@ -72,7 +81,12 @@ function LogView({ profile, kind }: { profile: Profile; kind: "gula_darah" | "te
             <label className="field">Bawah (diastolik) <input type="number" inputMode="numeric" min={20} max={200} value={v2} onChange={(e) => setV2(e.target.value)} placeholder="mis. 85" /></label>
           </div>
         )}
-        {last && <div className={`alert ${last.level}`}>{last.level === "bahaya" ? "🚨 " : ""}{last.label}. {last.advice}</div>}
+        {last && (
+          <div className={`alert ${last.level}`}>
+            {last.level === "bahaya" ? "🚨 " : ""}{last.label}. {last.advice}
+            {last.level === "bahaya" && <a className="btn sm danger" href="tel:119" style={{ marginTop: 8 }}>📞 Telepon 119</a>}
+          </div>
+        )}
         <button className="btn big primary">Simpan</button>
       </form>
 

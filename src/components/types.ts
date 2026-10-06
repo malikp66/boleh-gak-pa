@@ -12,6 +12,13 @@ export interface Profile {
   diabetes_tipe: string | null;
   insulin: boolean;
   catatan_dokter: string;
+  obat: string[];
+  target_gula_puasa: number | null;
+  target_gula_2jam: number | null;
+  target_sistolik: number | null;
+  target_diastolik: number | null;
+  kontak_nama: string;
+  kontak_telepon: string;
 }
 
 export interface Me {

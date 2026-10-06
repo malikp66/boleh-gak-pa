@@ -1,6 +1,7 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 import { api, CAT_EMOJI, Chips, fmtShort, painFace, useToast } from "./ui";
+import { play } from "@/lib/sound";
 import { Flare, FoodItem, Profile, Recovery, Review } from "./types";
 
 const JOINTS = ["jempol kaki", "pergelangan kaki", "lutut", "tangan / jari", "siku"] as const;
@@ -75,6 +76,7 @@ export default function KambuhTab({ profile, onChanged }: { profile: Profile; on
   async function save() {
     try {
       await api("/api/flares", { profileId: profile.id, joint, pain, fever });
+      play("saved");
       toast("Tercatat. Semoga cepat reda.");
       load();
       onChanged();

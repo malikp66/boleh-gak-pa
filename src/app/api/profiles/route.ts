@@ -3,7 +3,10 @@ import { one } from "@/lib/db";
 import { ProfileInput } from "@/lib/schemas";
 import { assertFamily, getProfile, requireUser, route } from "@/lib/server";
 
-const COLS = ["nama", "panggilan", "usia", "untuk", "kondisi", "alergen", "diabetes_tipe", "insulin", "catatan_dokter"] as const;
+const COLS = [
+  "nama", "panggilan", "usia", "untuk", "kondisi", "alergen", "diabetes_tipe", "insulin", "catatan_dokter", "obat",
+  "target_gula_puasa", "target_gula_2jam", "target_sistolik", "target_diastolik", "kontak_nama", "kontak_telepon",
+] as const;
 
 export const POST = route(async (req) => {
   const user = await requireUser();
@@ -17,9 +20,11 @@ export const POST = route(async (req) => {
 
 export const PATCH = route(async (req) => {
   const user = await requireUser();
-  const b = ProfileInput.partial().extend({ id: z.string().uuid() }).parse(await req.json());
+  const raw = await req.json();
+  const b = ProfileInput.partial().extend({ id: z.string().uuid() }).parse(raw);
   await getProfile(user.id, b.id);
-  const cols = COLS.filter((c) => b[c] !== undefined);
+  // hanya kolom yang benar-benar dikirim (zod mengisi default untuk field yang tidak dikirim)
+  const cols = COLS.filter((c) => c in raw && b[c] !== undefined);
   if (!cols.length) return getProfile(user.id, b.id);
   return one(
     `update profiles set ${cols.map((c, i) => `${c} = $${i + 2}`).join(", ")} where id = $1 returning *`,

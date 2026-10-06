@@ -21,6 +21,10 @@ Semua nilai di tabel makanan adalah **perkiraan per porsi khas di Indonesia**, b
 | Tekanan darah & tanda bahaya | **AHA**, [Understanding Blood Pressure Readings](https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings): ≥ 180/120 = krisis hipertensi |
 | Alergen | Daftar ditambah **wijen** (alergen umum yang wajib dilabel di banyak negara). **Peraturan BPOM No. 31 Tahun 2018** tentang Label Pangan Olahan ([PDF](https://tabel-gizi.pom.go.id/regulasi/6_PerBPOM_Nomor_31_Tahun_2018_tentang_Label_Pangan_Olahan.pdf)): gluten, telur, ikan, krustasea, moluska, kacang tanah, kedelai, susu, sulfit |
 
+| Stroke | Kemenkes, [Kenali Gejala Stroke dengan SeGeRa Ke RS](https://ayosehat.kemkes.go.id/kenali-gejala-stroke-dengan-segera-ke-rs); nomor darurat medis nasional **119** ([Kemenkes PSC 119](https://kemkes.go.id/eng/%20kejadian-gawat-darurat-medik-laporkan-ke-119)) |
+| Interaksi obat | FDA, [Grapefruit Juice and Some Drugs Don't Mix](https://www.fda.gov/consumers/consumer-updates/grapefruit-juice-and-some-drugs-dont-mix); NIH ODS, [Vitamin K](https://ods.od.nih.gov/factsheets/VitaminK-Consumer/) (warfarin: asupan konsisten); MedlinePlus, [Metformin](https://medlineplus.gov/druginfo/meds/a696005.html) (alkohol) |
+| Darah rendah setelah makan | [Postprandial Hypotension, Cleveland Clinic](https://my.clevelandclinic.org/health/diseases/postprandial-hypotension): porsi kecil, kurangi karbohidrat sekaligus, hindari alkohol |
+
 ## Ambang per porsi aman
 
 | Dimensi | Rendah | Sedang | Tinggi | Dasar |
@@ -43,10 +47,29 @@ Gula alami di **buah utuh** dan **laktosa susu** tidak dihitung sebagai gula beb
 | Asam urat | purin tinggi; saat kambuh: purin sedang + garam tinggi | purin sedang; minuman manis berfruktosa |
 | Kolesterol | lemak jenuh tinggi; **dobel lemak jenuh** (≥ 2 komponen berlemak jenuh sedang/tinggi) | lemak jenuh sedang; kemungkinan lemak trans (margarin, biskuit krim, minyak dipakai berulang); kolesterol makanan tinggi (jeroan, udang, cumi, kerang, kepiting) |
 | Alergi | biasanya mengandung alergen yang dimiliki (resep umum) | risiko kontaminasi silang menurut kategori (mis. minyak gorengan dipakai bersama udang, bumbu kacang di kaki lima); makanan yang tidak ada di daftar |
+| Pasca stroke / jantung | garam tinggi; lemak jenuh tinggi; alkohol; dobel garam / dobel lemak jenuh | garam sedang; lemak jenuh sedang; kemungkinan lemak trans |
+| Darah rendah | — | porsi karbohidrat besar (tensi bisa turun setelah makan); alkohol. Garam **tidak** dinilai negatif |
 | Makan sehat | — | gula, garam, atau lemak jenuh tinggi |
 | Semua | — | belimbing & jengkol (hati-hati untuk ginjal) |
 
 Kalau seseorang punya beberapa kondisi, **lampu yang ditampilkan adalah yang paling berat**, dan semua alasannya ikut ditampilkan.
+
+## Interaksi makanan × obat
+
+| Obat | Makanan | Lampu | Pesan |
+|---|---|---|---|
+| Statin (simvastatin, atorvastatin) | jeruk bali | 🔴 | bisa menaikkan kadar obat; risiko nyeri/kerusakan otot |
+| CCB (amlodipin, nifedipin, felodipin) | jeruk bali | 🟡 | bisa menaikkan kadar obat (terutama felodipin/nifedipin) |
+| Warfarin | sayuran hijau tinggi vitamin K | 🟡 | boleh, tapi jumlahnya harus **konsisten** setiap hari |
+| Warfarin, antiplatelet | alkohol | 🔴 | risiko perdarahan |
+| Metformin | alkohol | 🔴 | asidosis laktat & gula darah rendah |
+| Sulfonilurea, insulin | alkohol | 🔴 | gula darah sangat rendah |
+| Allopurinol | alkohol | 🟡 | melawan kerja obat asam urat |
+
+Setiap peringatan obat menyarankan konfirmasi ke dokter. Aplikasi tidak pernah mengubah atau menyarankan dosis.
+
+## Target dari dokter
+Kalau profil berisi target dokter (gula puasa, gula 2 jam, tensi), target itu **menggantikan** target umum ADA/AHA. Tanda bahaya (gula < 70 atau > 250, tensi ≥ 180/120 atau < 80) tetap berlaku apa pun targetnya.
 
 ## Tanda bahaya pada catatan pemantauan
 
@@ -56,6 +79,7 @@ Kalau seseorang punya beberapa kondisi, **lampu yang ditampilkan adalah yang pal
 | Gula darah | < 70 mg/dL | Hipoglikemia: segera makan/minum 15 g gula cepat (mis. ½ gelas jus/teh manis), cek ulang 15 menit (aturan 15-15 ADA) |
 | Gula darah | < 54 mg/dL | Hipoglikemia berat: minta bantuan, hubungi dokter/IGD |
 | Gula darah | > 250 mg/dL | Sangat tinggi: hubungi dokter, terutama jika sakit, mual, atau muntah |
+| Tensi | < 80 sistolik | Sangat rendah: berbaring, kaki ditinggikan, minum; kalau pingsan/bingung/nyeri dada hubungi 119 |
 | Tensi | ≥ 180/120 mmHg | Ukur ulang 5 menit lagi. Jika tetap setinggi itu, **atau** ada nyeri dada, sesak, lemah/kesemutan, bicara pelo, atau gangguan penglihatan: ke IGD |
 | Asam urat | kambuh > 7 hari, nyeri ≥ 8/10, demam | Periksa ke dokter |
 

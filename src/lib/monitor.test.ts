@@ -38,3 +38,20 @@ describe("bloodPressure", () => {
     expect(bloodPressure(s, d).level).toBe(level);
   });
 });
+
+describe("doctor targets override general targets", () => {
+  it("glucose", () => {
+    expect(glucose(120, "puasa").level).toBe("aman");
+    expect(glucose(120, "puasa", null, { gulaPuasa: 110 }).level).toBe("perhatian");
+    expect(glucose(60, "puasa", null, { gulaPuasa: 110 }).level).toBe("bahaya"); // bahaya tetap bahaya
+  });
+  it("blood pressure", () => {
+    expect(bloodPressure(135, 85, { sistolik: 140, diastolik: 90 }).level).toBe("aman");
+    expect(bloodPressure(135, 85, { sistolik: 130, diastolik: 80 }).level).toBe("perhatian");
+    expect(bloodPressure(185, 95, { sistolik: 140, diastolik: 90 }).level).toBe("bahaya");
+  });
+  it("very low blood pressure is dangerous", () => {
+    expect(bloodPressure(75, 50).level).toBe("bahaya");
+    expect(bloodPressure(88, 58, {}, true).level).toBe("perhatian");
+  });
+});

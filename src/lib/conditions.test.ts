@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { ConditionId, evaluate, normalizeConditions } from "./conditions";
 import { findFoods } from "./foods/match";
 
-const ev = (text: string, conditions: ConditionId[], extra: { alergen?: string[]; flare?: boolean; diabetesTipe?: string } = {}) =>
+const ev = (text: string, conditions: ConditionId[], extra: { alergen?: string[]; flare?: boolean; diabetesTipe?: string; obat?: string[] } = {}) =>
   evaluate(findFoods(text), { conditions, ...extra });
 
 describe("evaluate per condition", () => {
@@ -81,6 +81,29 @@ describe("evaluate per condition", () => {
     expect(cross.status).toBe("kuning");
     expect(cross.reasons[0].text).toContain("tanya penjual");
     expect(ev("apel", ["alergi"], { alergen: ["krustasea"] }).status).toBe("hijau");
+  });
+
+  it("post-stroke/heart is strict on salt and saturated fat", () => {
+    expect(ev("ikan asin", ["stroke_jantung"]).status).toBe("merah");
+    expect(ev("rendang", ["stroke_jantung"]).status).toBe("merah");
+    expect(ev("soto ayam", ["stroke_jantung"]).status).toBe("merah"); // garam tinggi
+    expect(ev("pepes ikan", ["stroke_jantung"]).status).toBe("kuning"); // garam sedang
+    expect(ev("oatmeal", ["stroke_jantung"]).status).toBe("hijau");
+    expect(ev("bir", ["stroke_jantung"]).status).toBe("merah");
+  });
+
+  it("low blood pressure: salt is not penalized, big carb meals and alcohol are", () => {
+    expect(ev("ikan asin", ["darah_rendah"]).status).toBe("hijau");
+    expect(ev("nasi padang", ["darah_rendah"]).status).toBe("kuning");
+    expect(ev("bir", ["darah_rendah"]).status).toBe("kuning");
+  });
+
+  it("warns about food-drug interactions", () => {
+    expect(ev("jeruk bali", ["kolesterol"], { obat: ["statin"] })).toMatchObject({ status: "merah", reasons: [{ condition: "obat" }] });
+    expect(ev("jeruk bali", ["kolesterol"]).status).toBe("hijau");
+    expect(ev("bayam", ["stroke_jantung"], { obat: ["warfarin"] }).reasons[0].text).toContain("konsisten");
+    expect(ev("bir", ["diabetes"], { obat: ["metformin"] }).reasons.some((r) => r.condition === "obat")).toBe(true);
+    expect(ev("apel", ["diabetes"], { obat: ["warfarin", "statin"] }).status).toBe("hijau");
   });
 
   it("reads v1 condition labels", () => {

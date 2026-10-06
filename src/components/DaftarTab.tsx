@@ -15,7 +15,8 @@ interface Analysis {
 const LEVELS = ["rendah", "sedang", "tinggi"];
 const DIM_LABEL: Record<string, string> = { purin: "Purin", garam: "Garam", karbo: "Karbo", gula: "Gula", lemak: "Lemak jenuh", ig: "IG" };
 const DIMS: Record<ConditionId, string[]> = {
-  asam_urat: ["purin"], hipertensi: ["garam"], diabetes: ["karbo", "gula", "ig"], kolesterol: ["lemak"], alergi: [], sehat: ["gula", "garam", "lemak"],
+  asam_urat: ["purin"], hipertensi: ["garam"], diabetes: ["karbo", "gula", "ig"], kolesterol: ["lemak"],
+  stroke_jantung: ["garam", "lemak"], darah_rendah: ["karbo"], alergi: [], sehat: ["gula", "garam", "lemak"],
 };
 
 export default function DaftarTab({ profile, addName, onCheck }: {

@@ -1,6 +1,6 @@
 # Boleh Gak, Ya?
 
-Teman makan untuk yang sedang menjaga kesehatan: **diabetes**, **darah tinggi**, **asam urat**, **kolesterol tinggi**, **alergi makanan**, atau sekadar ingin makan lebih sehat. Ketik atau foto makanannya, lalu dapat lampu 🟢🟡🔴, porsi aman, tips di warung, dan kalimat untuk menolak dengan sopan. Ada juga catatan makan, pemantauan (gula darah, tensi, kambuh asam urat) dengan tanda bahaya, dan ringkasan mingguan. Bisa langsung dipakai tanpa daftar.
+Teman makan untuk yang sedang menjaga kesehatan: **diabetes**, **darah tinggi**, **asam urat**, **kolesterol tinggi**, **pasca stroke/jantung**, **darah rendah**, **alergi makanan**, atau sekadar ingin makan lebih sehat. Bisa ditanya pakai suara 🎤, memperingatkan interaksi makanan dengan obat, punya tombol darurat stroke (SeGeRa Ke RS, 119), dan pengingat harian. Ketik atau foto makanannya, lalu dapat lampu 🟢🟡🔴, porsi aman, tips di warung, dan kalimat untuk menolak dengan sopan. Ada juga catatan makan, pemantauan (gula darah, tensi, kambuh asam urat) dengan tanda bahaya, dan ringkasan mingguan. Bisa langsung dipakai tanpa daftar.
 
 > Awalnya bernama *Boleh Gak, Pa?*, dibuat untuk ayah saya. v1 (HTML + Python + Gemma lokal) adalah versi yang disubmit ke DEV Hacktoberfest Weekend Challenge, 5 Okt 2026.
 > Kodenya ada di [`legacy-v1/`](legacy-v1) dan di tag `hf26-submission`. **Semua commit setelah deadline challenge ada di branch `v2`.**

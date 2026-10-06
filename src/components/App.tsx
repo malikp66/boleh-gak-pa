@@ -10,6 +10,9 @@ import { api, ToastProvider } from "./ui";
 import { Flare, Me } from "./types";
 import { conditionInfo, MonitorKind, normalizeConditions } from "@/lib/conditions";
 import { ensureDevice } from "@/lib/device";
+import { play } from "@/lib/sound";
+import Link from "next/link";
+import { EmergencyButton, EmergencySheet } from "./Emergency";
 
 type Tab = "cek" | "daftar" | "catatan" | "pantau" | "review";
 const PROFILE_KEY = "active-profile";
@@ -20,7 +23,11 @@ export default function App() {
   const [me, setMe] = useState<Me | null>(null);
   const [error, setError] = useState("");
   const [profileId, setProfileId] = useState("");
-  const [tab, setTab] = useState<Tab>("cek");
+  const [tab, setTab] = useState<Tab>(() => {
+    const t = params.get("tab");
+    return t === "daftar" || t === "catatan" || t === "pantau" || t === "review" ? t : "cek";
+  });
+  const [sos, setSos] = useState(false);
   const [flareJoint, setFlareJoint] = useState<string | null>(null);
   const [prefill, setPrefill] = useState<{ food: string; n: number } | null>(null);
   const [addName, setAddName] = useState<{ name: string; n: number } | null>(null);
@@ -58,6 +65,7 @@ export default function App() {
   }, [profileId, hasGout, reload]);
 
   const go = (t: Tab) => {
+    play("tap");
     setTab(t);
     window.scrollTo(0, 0);
   };
@@ -72,16 +80,19 @@ export default function App() {
           <h1>Boleh Gak, Ya?</h1>
           <p className="sub">{profile.nama} · {conditions.map((c) => conditionInfo(c)!.short).join(" · ")}</p>
         </div>
-        {me.profiles.length > 1 ? (
-          <select className="profile-switch" value={profileId} onChange={(e) => {
-            setProfileId(e.target.value);
-            try { localStorage.setItem(PROFILE_KEY, e.target.value); } catch {}
-          }}>
-            {me.profiles.map((p) => <option key={p.id} value={p.id}>{p.nama}</option>)}
-          </select>
-        ) : (
-          <span className={`pill${me.ai.ready ? " on" : ""}`} title={me.ai.model}>{me.ai.ready ? "AI aktif" : "Mode tabel"}</span>
-        )}
+        <div className="top-actions">
+          {conditions.includes("stroke_jantung") && <EmergencyButton onOpen={() => setSos(true)} />}
+          {me.profiles.length > 1 && (
+            <select className="profile-switch" value={profileId} onChange={(e) => {
+              play("tap");
+              setProfileId(e.target.value);
+              try { localStorage.setItem(PROFILE_KEY, e.target.value); } catch {}
+            }}>
+              {me.profiles.map((p) => <option key={p.id} value={p.id}>{p.nama}</option>)}
+            </select>
+          )}
+          <Link className="gear" href="/profil" aria-label="Profil & pengaturan">⚙️</Link>
+        </div>
       </header>
 
       <main key={`${profileId}-${reload}`}>
@@ -100,6 +111,7 @@ export default function App() {
         </p>
       </main>
 
+      {sos && <EmergencySheet profile={profile} onClose={() => setSos(false)} />}
       <nav className="bottom" style={{ gridTemplateColumns: `repeat(${tabs.length}, 1fr)` }}>
         {tabs.map((t) => <button key={t} className={tab === t ? "active" : ""} onClick={() => go(t)}>{t}</button>)}
       </nav>

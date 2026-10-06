@@ -18,6 +18,13 @@ export interface Profile {
   diabetes_tipe: string | null;
   insulin: boolean;
   catatan_dokter: string;
+  obat?: string[];
+  target_gula_puasa?: number | null;
+  target_gula_2jam?: number | null;
+  target_sistolik?: number | null;
+  target_diastolik?: number | null;
+  kontak_nama?: string;
+  kontak_telepon?: string;
 }
 
 export interface FlareSummary {
@@ -29,7 +36,7 @@ export interface FlareSummary {
 export const conditionsOf = (p: Profile): ConditionId[] => normalizeConditions(p.kondisi);
 
 export function evalFor(parts: MatchedFood[] | Food[], profile: Profile, flare: boolean): Evaluation {
-  return evaluate(parts, { conditions: conditionsOf(profile), alergen: profile.alergen, flare, diabetesTipe: profile.diabetes_tipe });
+  return evaluate(parts, { conditions: conditionsOf(profile), alergen: profile.alergen, flare, diabetesTipe: profile.diabetes_tipe, obat: profile.obat ?? [] });
 }
 
 // ---------------------------------------------------------------- cek makanan
@@ -79,6 +86,9 @@ function assessPrompt(foodText: string, food: CombinedFood | null, ev: Evaluatio
     "Aturan keras: jangan menyarankan obat, dosis obat, atau dosis insulin; jangan menakut-nakuti; jujur soal risiko; selalu praktis.",
     `Fokus penilaian: ${conds.map((c) => conditionInfo(c)!.focus).join(" | ")}.`,
     conds.includes("diabetes") ? "Untuk diabetes: sarankan urutan makan sayur → protein → karbohidrat, porsi nasi ±¾ gelas, ganti nasi putih dengan nasi merah bila ada, dan ganti minuman manis dengan air putih/teh tawar (Isi Piringku). Perhatikan indeks glikemik (ig) di data tabel." : "",
+    (ctx.profile.obat ?? []).length ? `Obat yang diminum: ${(ctx.profile.obat ?? []).join(", ")}. Kalau ada interaksi di alasan lampu, jelaskan singkat dan sarankan konfirmasi ke dokter.` : "",
+    conds.includes("stroke_jantung") ? "Untuk pasca stroke/jantung: garam dan lemak jenuh sangat dibatasi; sarankan dikukus/direbus/dibakar dan tanpa kuah asin." : "",
+    conds.includes("darah_rendah") ? "Untuk darah rendah: sarankan cukup minum air, porsi kecil, makan pelan-pelan, dan duduk sebentar setelah makan sebelum berdiri." : "",
     conds.includes("diabetes") && ctx.profile.insulin ? "Orang ini memakai insulin: ingatkan jangan melewatkan makan setelah suntik dan kenali tanda gula darah rendah (gemetar, keringat dingin); jangan pernah menyarankan dosis." : "",
     conds.includes("kolesterol") ? "Untuk kolesterol: sarankan cara masak dikukus/dibakar/direbus, ganti santan kental dengan santan encer, perbanyak serat (sayur, oat, kacang merah)." : "",
     conds.includes("alergi") ? "Untuk alergi: data alergen adalah perkiraan resep umum. JANGAN pernah menyatakan pasti aman; selalu sarankan menanyakan bahan & alat masak ke penjual, dan waspadai kontaminasi silang." : "",
