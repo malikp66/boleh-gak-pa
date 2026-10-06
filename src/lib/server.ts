@@ -105,10 +105,18 @@ export async function recoveryCode(): Promise<string> {
  * selain itu buat akun baru. Kunci baru dikembalikan supaya browser bisa menyimpan cadangan.
  */
 export async function ensureDevice(backup?: string): Promise<{ status: "ok" | "restored" | "created"; key?: string }> {
-  if (await currentUser()) return { status: "ok" };
+  const jar = await cookies();
+  const current = jar.get(COOKIE)?.value;
+  if (current && (await userByKey(current))) {
+    // perpanjang umur cookie setiap kali aplikasi dibuka (kalau tidak, habis tepat 400 hari setelah dibuat),
+    // dan kirim kuncinya supaya cadangan di HP ikut disegarkan kalau sempat terhapus
+    const key = normalizeKey(current);
+    await setKeyCookie(key);
+    return { status: "ok", key };
+  }
   if (backup && (await userByKey(backup))) {
     await setKeyCookie(normalizeKey(backup));
-    return { status: "restored" };
+    return { status: "restored", key: normalizeKey(backup) };
   }
   const ip = (await headers()).get("x-forwarded-for")?.split(",")[0].trim() ?? "local";
   const ipHash = createHash("sha256").update(`ip:${ip}`).digest("hex");
