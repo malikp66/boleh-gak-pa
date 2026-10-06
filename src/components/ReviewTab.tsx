@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { api, speak, useToast } from "./ui";
 import { Me, Profile, Review } from "./types";
-import SecureCard from "./SecureCard";
+import RecoveryCard from "./RecoveryCard";
 import { normalizeConditions } from "@/lib/conditions";
 
 export default function ReviewTab({ profile, me }: { profile: Profile; me: Me }) {
@@ -24,7 +24,7 @@ export default function ReviewTab({ profile, me }: { profile: Profile; me: Me })
 
   return (
     <>
-      {me.user.anonymous && <SecureCard />}
+      <RecoveryCard />
       <div className="card">
         <h2>7 hari terakhir</h2>
         <div className="stat-grid">

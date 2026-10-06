@@ -1,13 +1,14 @@
 import { z } from "zod";
+import { q } from "@/lib/db";
 import { evalFor } from "@/lib/domain";
-import { loadProfileContext, requireUser, route } from "@/lib/server";
+import { getProfile, loadProfileContext, requireUser, route } from "@/lib/server";
 
 const level = z.enum(["rendah", "sedang", "tinggi"]);
 
 export const GET = route(async (req) => {
-  const { supabase } = await requireUser();
+  const user = await requireUser();
   const profileId = new URL(req.url).searchParams.get("profileId") ?? "";
-  const { profile, foods, flare } = await loadProfileContext(supabase, profileId);
+  const { profile, foods, flare } = await loadProfileContext(user.id, profileId);
   return foods.map((f) => {
     const ev = evalFor([f], profile, Boolean(flare));
     return { ...f, status: ev.status, reason: ev.reasons[0]?.text ?? null };
@@ -15,8 +16,8 @@ export const GET = route(async (req) => {
 });
 
 export const POST = route(async (req) => {
-  const { supabase } = await requireUser();
-  const body = z.object({
+  const user = await requireUser();
+  const b = z.object({
     profileId: z.string().uuid(),
     name: z.string().trim().toLowerCase().min(1).max(60),
     aliases: z.array(z.string().trim().toLowerCase().max(60)).max(10).default([]),
@@ -33,12 +34,15 @@ export const POST = route(async (req) => {
     pemicu: z.array(z.string().max(120)).max(6).default([]),
     alasan: z.string().max(400).default(""),
   }).parse(await req.json());
-  const { profile } = await loadProfileContext(supabase, body.profileId);
-  const { profileId, ...food } = body;
-  void profileId;
-  const { error } = await supabase
-    .from("custom_foods")
-    .upsert({ ...food, aliases: food.aliases.filter(Boolean), family_id: profile.family_id }, { onConflict: "family_id,name" });
-  if (error) throw error;
+  const profile = await getProfile(user.id, b.profileId);
+  await q(
+    `insert into custom_foods (family_id, name, aliases, kategori, bahan, purin, garam, karbo, gula, lemak, alergen, porsi_aman, trik, pemicu, alasan, created_by)
+     values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
+     on conflict (family_id, name) do update set aliases = excluded.aliases, kategori = excluded.kategori, bahan = excluded.bahan,
+       purin = excluded.purin, garam = excluded.garam, karbo = excluded.karbo, gula = excluded.gula, lemak = excluded.lemak,
+       alergen = excluded.alergen, porsi_aman = excluded.porsi_aman, trik = excluded.trik, pemicu = excluded.pemicu, alasan = excluded.alasan`,
+    [profile.family_id, b.name, b.aliases.filter(Boolean), b.kategori, b.bahan, b.purin, b.garam, b.karbo, b.gula, b.lemak,
+      b.alergen, b.porsi_aman, b.trik.filter(Boolean), b.pemicu, b.alasan, user.id],
+  );
   return { ok: true };
 });

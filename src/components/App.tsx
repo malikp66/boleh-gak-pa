@@ -9,15 +9,10 @@ import ReviewTab from "./ReviewTab";
 import { api, ToastProvider } from "./ui";
 import { Flare, Me } from "./types";
 import { conditionInfo, MonitorKind, normalizeConditions } from "@/lib/conditions";
-import { ensureSession } from "@/lib/session";
-import { createClient } from "@/lib/supabase/client";
+import { ensureDevice } from "@/lib/device";
 
 type Tab = "cek" | "daftar" | "catatan" | "pantau" | "review";
 const PROFILE_KEY = "active-profile";
-
-const AUTH_ERRORS: Record<string, string> = {
-  identity_already_exists: "Akun Google ini sudah dipakai di perangkat lain. Data di HP ini belum diamankan. Pakai akun Google lain, atau buka \"Sudah punya akun\" untuk masuk ke akun itu (data di HP ini tidak ikut pindah).",
-};
 
 export default function App() {
   const router = useRouter();
@@ -30,11 +25,10 @@ export default function App() {
   const [prefill, setPrefill] = useState<{ food: string; n: number } | null>(null);
   const [addName, setAddName] = useState<{ name: string; n: number } | null>(null);
   const [reload, setReload] = useState(0);
-  const authError = params.get("auth_error");
   const welcome = params.get("welcome") === "1";
 
   const loadMe = useCallback(() =>
-    ensureSession()
+    ensureDevice()
       .then(() => api<Me>("/api/me"))
       .then((m) => {
         if (!m.consented || !m.profiles.length) return router.replace("/mulai");
@@ -91,7 +85,6 @@ export default function App() {
       </header>
 
       <main key={`${profileId}-${reload}`}>
-        {authError && <div className="error-box">{AUTH_ERRORS[authError] ?? "Gagal menghubungkan akun Google. Coba lagi."}</div>}
         {tab === "cek" && (
           <CekTab key={prefill?.n ?? 0} profile={profile} flareJoint={flareJoint} prefill={prefill} welcome={welcome && !prefill}
             onSaveUnknown={(name) => { setAddName({ name, n: Date.now() }); go("daftar"); }} />
@@ -103,8 +96,7 @@ export default function App() {
 
         <p className="disclaimer">
           Bukan pengganti dokter. Lampu dari tabel gizi &amp; pedoman resmi, kata-katanya ditulis AI.<br />
-          {me.user.anonymous ? "Akun di perangkat ini" : me.user.email} · <a href="/privasi">Privasi</a>
-          {!me.user.anonymous && <> · <a href="#" onClick={async (e) => { e.preventDefault(); await createClient().auth.signOut(); location.href = "/mulai"; }}>Keluar</a></>}
+          <a href="/privasi">Privasi</a>
         </p>
       </main>
 

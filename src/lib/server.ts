@@ -1,12 +1,14 @@
 import "server-only";
+import { cookies, headers } from "next/headers";
 import { NextResponse } from "next/server";
+import { createHash } from "node:crypto";
 import { ZodError, z } from "zod";
 import { AIUnavailableError } from "./ai";
+import { one, q } from "./db";
+import { formatKey, generateKey, hashKey, isValidKey, normalizeKey } from "./device-key";
 import { AssessAI, FlareSummary, Profile } from "./domain";
 import { FOODS } from "./foods/match";
 import { Food } from "./foods/types";
-import { supabaseConfigured } from "./supabase/env";
-import { createAdminClient, createClient } from "./supabase/server";
 
 export class HttpError extends Error {
   constructor(public status: number, message: string) {
@@ -29,75 +31,145 @@ export function route<C>(fn: (req: Request, ctx: C) => Promise<unknown>) {
   };
 }
 
-export async function requireUser() {
-  if (!supabaseConfigured) throw new HttpError(503, "Supabase belum dikonfigurasi (lihat .env.example)");
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data.user) throw new HttpError(401, "Silakan login dulu");
-  return { supabase, user: data.user };
+// ---------------------------------------------------------------- identitas perangkat
+const COOKIE = "bgy_key";
+const COOKIE_MAX_AGE = 400 * 24 * 3600; // batas maksimum cookie di browser modern
+const DEVICES_PER_IP_PER_DAY = Number(process.env.DEVICES_PER_IP_PER_DAY ?? 20);
+
+export interface User { id: string }
+
+async function setKeyCookie(key: string) {
+  (await cookies()).set(COOKIE, key, {
+    httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax", path: "/", maxAge: COOKIE_MAX_AGE,
+  });
 }
 
-type Supa = Awaited<ReturnType<typeof createClient>>;
+async function userByKey(key: string | undefined): Promise<User | null> {
+  if (!key) return null;
+  const k = normalizeKey(key);
+  if (!isValidKey(k)) return null;
+  return one<User>("update users set last_seen = now() where device_key_hash = $1 returning id", [hashKey(k)]);
+}
 
-/** Profil + makanan (tabel + buatan keluarga) + kambuh aktif. RLS menolak profil keluarga lain. */
-export async function loadProfileContext(supabase: Supa, profileId: string) {
+export async function currentUser(): Promise<User | null> {
+  return userByKey((await cookies()).get(COOKIE)?.value);
+}
+
+export async function requireUser(): Promise<User> {
+  const user = await currentUser();
+  if (!user) throw new HttpError(401, "Perangkat belum terdaftar");
+  return user;
+}
+
+/** Kode pemulihan untuk perangkat ini (dibaca dari cookie, tidak pernah disimpan polos di database). */
+export async function recoveryCode(): Promise<string> {
+  const key = (await cookies()).get(COOKIE)?.value;
+  if (!key || !(await userByKey(key))) throw new HttpError(401, "Perangkat belum terdaftar");
+  return formatKey(normalizeKey(key));
+}
+
+/**
+ * Pastikan perangkat punya akun: cookie yang valid → pakai; cadangan dari browser yang valid → pulihkan;
+ * selain itu buat akun baru. Kunci baru dikembalikan supaya browser bisa menyimpan cadangan.
+ */
+export async function ensureDevice(backup?: string): Promise<{ status: "ok" | "restored" | "created"; key?: string }> {
+  if (await currentUser()) return { status: "ok" };
+  if (backup && (await userByKey(backup))) {
+    await setKeyCookie(normalizeKey(backup));
+    return { status: "restored" };
+  }
+  const ip = (await headers()).get("x-forwarded-for")?.split(",")[0].trim() ?? "local";
+  const ipHash = createHash("sha256").update(`ip:${ip}`).digest("hex");
+  const row = await one<{ count: number }>(
+    `insert into device_creations (ip_hash, day, count) values ($1, current_date, 1)
+     on conflict (ip_hash, day) do update set count = device_creations.count + 1 returning count`,
+    [ipHash],
+  );
+  if ((row?.count ?? 0) > DEVICES_PER_IP_PER_DAY) throw new HttpError(429, "Terlalu banyak perangkat baru dari jaringan ini hari ini. Coba lagi besok.");
+  const key = generateKey();
+  await q("insert into users (device_key_hash) values ($1)", [hashKey(key)]);
+  await setKeyCookie(key);
+  return { status: "created", key };
+}
+
+/** Pindah ke akun lain memakai kode pemulihan. */
+export async function restoreWithCode(code: string) {
+  const k = normalizeKey(code);
+  if (!isValidKey(k) || !(await userByKey(k))) throw new HttpError(404, "Kode pemulihan tidak ditemukan. Periksa lagi ketikannya.");
+  await setKeyCookie(k);
+}
+
+// ---------------------------------------------------------------- hak akses keluarga
+export async function assertFamily(userId: string, familyId: string) {
+  z.string().uuid().parse(familyId);
+  const ok = await one("select 1 from family_members where family_id = $1 and user_id = $2", [familyId, userId]);
+  if (!ok) throw new HttpError(404, "Keluarga tidak ditemukan");
+}
+
+/** Profil yang boleh diakses pengguna ini (anggota keluarganya), atau 404. */
+export async function getProfile(userId: string, profileId: string): Promise<Profile> {
   z.string().uuid().parse(profileId);
-  const { data: profile } = await supabase.from("profiles").select("*").eq("id", profileId).maybeSingle();
-  if (!profile) throw new HttpError(404, "Profil tidak ditemukan");
-
-  const [{ data: custom }, { data: flare }] = await Promise.all([
-    supabase.from("custom_foods").select("*").eq("family_id", profile.family_id).order("created_at", { ascending: false }),
-    supabase.from("flares").select("*").eq("profile_id", profileId).is("ended", null).maybeSingle(),
-  ]);
-  const foods: Food[] = [...(custom ?? []).map((c) => ({ ...c, custom: true }) as Food), ...FOODS];
-  return { profile: profile as Profile, foods, flare: flare as (FlareSummary & { id: string; fever: boolean }) | null };
+  const p = await one<Profile>(
+    `select p.* from profiles p join family_members m on m.family_id = p.family_id and m.user_id = $2 where p.id = $1`,
+    [profileId, userId],
+  );
+  if (!p) throw new HttpError(404, "Profil tidak ditemukan");
+  return p;
 }
 
-const LIMITS: Record<string, number> = {
+/** Profil + makanan (tabel + buatan keluarga) + kambuh aktif. */
+export async function loadProfileContext(userId: string, profileId: string) {
+  const profile = await getProfile(userId, profileId);
+  const [custom, flare] = await Promise.all([
+    q<Food>("select * from custom_foods where family_id = $1 order by created_at desc", [profile.family_id]),
+    one<FlareSummary & { id: string; fever: boolean }>("select * from flares where profile_id = $1 and ended is null", [profile.id]),
+  ]);
+  const foods: Food[] = [...custom.map((c) => ({ ...c, custom: true })), ...FOODS];
+  return { profile, foods, flare };
+}
+
+// ---------------------------------------------------------------- kuota & cache AI
+const LIMITS = {
   assess: Number(process.env.AI_LIMIT_ASSESS ?? 30),
   photo: Number(process.env.AI_LIMIT_PHOTO ?? 8),
   analyze: Number(process.env.AI_LIMIT_ANALYZE ?? 10),
   summary: Number(process.env.AI_LIMIT_SUMMARY ?? 3),
 };
+type QuotaKind = keyof typeof LIMITS;
 
-/** Kuota AI harian per pengguna. Dipanggil hanya saat benar-benar akan memanggil model. */
-export function quota(supabase: Supa, kind: keyof typeof LIMITS) {
+/** Pakai satu jatah AI harian (hari menurut WIB). Dipanggil hanya saat benar-benar memanggil model. */
+export function quota(userId: string, kind: QuotaKind) {
   return async () => {
-    const { data, error } = await supabase.rpc("consume_ai_quota", { p_kind: kind, p_limit: LIMITS[kind] });
-    if (error) {
-      console.error("quota:", error.message);
-      return false;
-    }
-    return Boolean(data);
+    const row = await one<{ count: number }>(
+      `insert into ai_usage (user_id, day, kind, count) values ($1, (now() at time zone 'Asia/Jakarta')::date, $2, 1)
+       on conflict (user_id, day, kind) do update set count = ai_usage.count + 1 returning count`,
+      [userId, kind],
+    );
+    return (row?.count ?? Infinity) <= LIMITS[kind];
   };
 }
 
-export async function requireQuota(supabase: Supa, kind: keyof typeof LIMITS) {
-  if (!(await quota(supabase, kind)())) {
+export async function requireQuota(userId: string, kind: QuotaKind) {
+  if (!(await quota(userId, kind)())) {
     throw new HttpError(429, "Jatah AI hari ini sudah habis. Coba lagi besok, atau ketik nama makanannya.");
   }
 }
 
-/** Cache jawaban AI (teks saran umum, tanpa data pribadi) — ditulis lewat service role. */
+/** Cache jawaban AI (teks saran umum, tanpa data pribadi). */
 export function aiCache() {
-  const admin = createAdminClient();
   return {
     async get(key: string): Promise<AssessAI | null> {
-      if (!admin) return null;
-      const { data } = await admin.from("ai_cache").select("response").eq("key", key).maybeSingle();
-      return (data?.response as AssessAI) ?? null;
+      return (await one<{ response: AssessAI }>("select response from ai_cache where key = $1", [key]))?.response ?? null;
     },
     async set(key: string, response: AssessAI, model: string) {
-      if (!admin) return;
-      await admin.from("ai_cache").upsert({ key, response, model });
+      await q("insert into ai_cache (key, response, model) values ($1, $2, $3) on conflict (key) do nothing", [key, response, model]);
     },
   };
 }
 
 export const todayStartISO = () => {
-  // awal hari menurut WIB, supaya "hari ini" sesuai jam keluarga di Indonesia
-  const now = new Date();
-  const wib = new Date(now.getTime() + 7 * 3600_000);
+  // awal hari menurut WIB, supaya "hari ini" sesuai jam pengguna di Indonesia
+  const wib = new Date(Date.now() + 7 * 3600_000);
   wib.setUTCHours(0, 0, 0, 0);
   return new Date(wib.getTime() - 7 * 3600_000).toISOString();
 };

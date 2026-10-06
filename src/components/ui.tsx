@@ -1,14 +1,19 @@
 "use client";
 import { createContext, useCallback, useContext, useRef, useState } from "react";
 
-export async function api<T = unknown>(path: string, body?: unknown, method?: string): Promise<T> {
+export async function api<T = unknown>(path: string, body?: unknown, method?: string, retried = false): Promise<T> {
   const res = await fetch(path, body === undefined && !method ? {} : {
     method: method ?? "POST",
     headers: { "Content-Type": "application/json" },
     body: body === undefined ? undefined : JSON.stringify(body),
   });
   const data = await res.json().catch(() => ({}));
-  if (res.status === 401) location.href = "/mulai";
+  // cookie perangkat hilang: pulihkan dari cadangan browser lalu ulangi sekali
+  if (res.status === 401 && !retried) {
+    const { ensureDevice } = await import("@/lib/device");
+    await ensureDevice();
+    return api<T>(path, body, method, true);
+  }
   if (!res.ok) throw new Error(data.error || res.statusText);
   return data as T;
 }

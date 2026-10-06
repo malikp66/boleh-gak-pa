@@ -15,7 +15,7 @@ export interface Profile {
 }
 
 export interface Me {
-  user: { id: string; email: string | null; name: string | null; anonymous: boolean };
+  user: { id: string };
   families: { id: string; name: string; invite_code: string }[];
   profiles: Profile[];
   consented: boolean;

@@ -1,14 +1,16 @@
 import { Suspense } from "react";
 import App from "@/components/App";
-import { supabaseConfigured } from "@/lib/supabase/env";
+import { dbConfigured } from "@/lib/db";
+
+export const dynamic = "force-dynamic";
 
 export default function Home() {
-  if (!supabaseConfigured) {
+  if (!dbConfigured) {
     return (
       <main className="center-page">
         <div className="card">
           <h1 className="hero-title">Belum tersambung</h1>
-          <p>Isi <code>NEXT_PUBLIC_SUPABASE_URL</code> dan <code>NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY</code> di <code>.env.local</code> (lihat <code>.env.example</code>), lalu jalankan ulang.</p>
+          <p>Isi <code>DATABASE_URL</code> di <code>.env</code> (jalankan <code>neon env pull</code>), lalu jalankan ulang.</p>
         </div>
       </main>
     );

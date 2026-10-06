@@ -8,34 +8,32 @@ Teman makan untuk yang sedang menjaga kesehatan: **diabetes**, **darah tinggi**,
 ## Arsitektur
 
 ```
-HP (PWA) ──► Vercel: Next.js 16 (UI + API routes) ──┬──► Supabase: Postgres + Auth (Google) + RLS
+HP (PWA) ──► Vercel: Next.js 16 (UI + API routes) ──┬──► Neon Postgres (Singapura)
                                                     └──► Gemma 3 lewat Google AI Studio (atau Ollama lokal)
 ```
 
 - **Tabel dulu, AI belakangan.** Lampu ditentukan [tabel 271 makanan](src/lib/foods/foods.json) (purin, garam, karbo, gula, lemak jenuh, alergen) + aturan per kondisi di [`conditions.ts`](src/lib/conditions.ts), termasuk aturan kombinasi (dobel garam, dobel karbohidrat). AI hanya menulis kalimatnya. Semua sumber & ambang: [docs/SUMBER-GIZI.md](docs/SUMBER-GIZI.md).
-- **Tanpa daftar.** Saat pertama dibuka, perangkat mendapat akun anonim (Supabase Anonymous Sign-In) dan datanya disimpan di cloud. "Amankan data" menautkan akun Google ke akun yang sama (`linkIdentity`), jadi user ID tetap dan tidak perlu merge.
-- **Hemat biaya AI.** Jawaban disimpan di `ai_cache` dan dipakai ulang semua keluarga (saran umum, tanpa data pribadi). Ada batas harian per pengguna (`consume_ai_quota`), dan kalau AI gagal atau kuota habis, jawaban otomatis jatuh ke tabel.
-- **Privasi.** Row Level Security memastikan setiap keluarga hanya melihat datanya sendiri. Foto tidak disimpan. Ada layar persetujuan (UU PDP) dan [halaman privasi](src/app/privasi/page.tsx).
+- **Tanpa daftar.** Saat pertama dibuka, server membuat kunci acak 120-bit untuk perangkat itu (cookie httpOnly + cadangan di browser). Database hanya menyimpan hash-nya. Kunci yang sama ditampilkan sebagai **kode pemulihan** (`XXXX-XXXX-…`) untuk membuka data lagi setelah data browser dihapus atau ganti HP. Lihat [`server.ts`](src/lib/server.ts) dan [`device-key.ts`](src/lib/device-key.ts).
+- **Hemat biaya AI.** Jawaban disimpan di `ai_cache` dan dipakai ulang semua keluarga (saran umum, tanpa data pribadi). Ada batas harian per pengguna (tabel `ai_usage`) dan batas perangkat baru per IP, dan kalau AI gagal atau kuota habis, jawaban otomatis jatuh ke tabel.
+- **Privasi.** Setiap query data keluarga di server menyertakan syarat keanggotaan keluarga. Foto tidak disimpan. Ada layar persetujuan (UU PDP) dan [halaman privasi](src/app/privasi/page.tsx).
 
 ## Setup
 
-### 1. Supabase
-1. Buat project di [supabase.com](https://supabase.com), region **Southeast Asia (Singapore)**.
-2. **SQL Editor** → tempel isi [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql) → Run.
-3. **Authentication → Sign In / Providers**:
-   - aktifkan **Allow anonymous sign-ins**
-   - aktifkan **Allow manual linking** (supaya "Amankan data" bisa menautkan Google ke akun anonim)
-   - sangat disarankan: **Attack Protection → CAPTCHA** (Cloudflare Turnstile) untuk mencegah pembuatan akun anonim massal
-4. **Google** (di halaman Providers yang sama): aktifkan dan isi Client ID & Secret dari Google Cloud Console (OAuth client, tipe *Web application*). Redirect URI di Google: `https://<project>.supabase.co/auth/v1/callback`.
-5. **Authentication → URL Configuration**: Site URL = domain Vercel-mu. Tambahkan `http://localhost:3000/**` dan `https://<domain>/**` ke Redirect URLs.
+### 1. Neon
+Project sudah dibuat dan ditautkan (`neon link`, lihat [`neon.ts`](neon.ts)). Di mesin baru:
+```bash
+npx neon@latest login
+npx neon@latest link --project-id holy-hall-49215672 --branch production -y   # mengisi .env
+npm run migrate                                                                   # menjalankan db/migrations/*.sql
+```
+Uji migrasi baru di branch Neon terpisah dulu sebelum menjalankannya di `production`.
 
 ### 2. Google AI Studio
 [aistudio.google.com](https://aistudio.google.com) → *Get API key*. Pasang **batas pengeluaran / kuota** di Google Cloud sejak awal.
 
 ### 3. Jalankan lokal
 ```bash
-cp .env.example .env.local   # lalu isi nilainya
-npm install
+npm install                  # .env sudah diisi `neon link`; tambahkan GOOGLE_AI_API_KEY sendiri
 npm run dev
 ```
 
@@ -56,4 +54,4 @@ Sumbernya ada di [`legacy-v1/tools/build_foods.py`](legacy-v1/tools/build_foods.
 
 > ⚕️ Bukan saran medis. Tabel makanan adalah ringkasan panduan umum diet rendah purin & rendah garam. Sebelum disebar luas, minta ahli gizi atau dokter meninjaunya.
 
-Credits: Gemma 3 (Google DeepMind, open weights) · Ollama · Supabase · Next.js · Archivo Black & Space Grotesk (SIL OFL). License: MIT
+Credits: Gemma 3 (Google DeepMind, open weights) · Ollama · Neon · Next.js · Archivo Black & Space Grotesk (SIL OFL). License: MIT

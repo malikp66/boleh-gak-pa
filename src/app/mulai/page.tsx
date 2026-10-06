@@ -4,10 +4,10 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { api } from "@/components/ui";
 import { ALERGEN_LABEL, ALERGEN_LIST, CONDITIONS, ConditionId } from "@/lib/conditions";
-import { ensureSession } from "@/lib/session";
+import { ensureDevice, restoreDevice } from "@/lib/device";
 
 type Untuk = "diri" | "orang_tua" | "pasangan" | "anak" | "lainnya";
-type Step = "welcome" | "untuk" | "setuju" | "kondisi" | "detail" | "profil" | "kode";
+type Step = "welcome" | "untuk" | "setuju" | "kondisi" | "detail" | "profil" | "kode" | "pulih";
 
 const UNTUK: { id: Untuk; emoji: string; label: string; panggilan: string }[] = [
   { id: "diri", emoji: "🙋", label: "Diri sendiri", panggilan: "kamu" },
@@ -24,7 +24,7 @@ const DM_TIPE = [
 const WELCOME = [
   { emoji: "🍽️", title: "Ragu sebelum makan?", text: "Ketik atau foto makanannya. Langsung tahu aman, dibatasi, atau sebaiknya jangan, sesuai kondisimu." },
   { emoji: "🚦", title: "Lampu dari tabel gizi", text: "Penilaian memakai tabel 271 makanan Indonesia dan aturan dari pedoman Kemenkes, PERKENI, dan WHO. AI hanya menulis sarannya." },
-  { emoji: "🔒", title: "Tanpa daftar, tetap aman", text: "Langsung pakai tanpa login. Datamu hanya bisa dilihat olehmu dan keluarga yang kamu undang." },
+  { emoji: "🔒", title: "Tanpa daftar, tetap aman", text: "Langsung pakai tanpa login atau email. Datamu hanya bisa dilihat olehmu dan keluarga yang kamu undang, dan bisa dipulihkan dengan kode pemulihan." },
 ];
 
 export default function Mulai() {
@@ -39,16 +39,17 @@ export default function Mulai() {
   const [insulin, setInsulin] = useState(false);
   const [profil, setProfil] = useState({ nama: "", panggilan: "kamu", usia: "", catatan: "" });
   const [code, setCode] = useState("");
+  const [recovery, setRecovery] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
   // pengguna yang sudah punya profil langsung ke aplikasi
   useEffect(() => {
-    ensureSession()
+    ensureDevice()
       .then(() => fetch("/api/me"))
       .then((r) => (r.ok ? r.json() : null))
       .then((m) => { if (m?.consented && m.profiles?.length) router.replace("/"); })
-      .catch((e) => setError(e.message));
+      .catch((e: Error) => setError(e.message));
   }, [router]);
 
   const needsDetail = kondisi.includes("diabetes") || kondisi.includes("alergi");
@@ -58,7 +59,7 @@ export default function Mulai() {
     setBusy(true);
     setError("");
     try {
-      await ensureSession();
+      await ensureDevice();
       await api("/api/consent", {});
       const nama = profil.nama.trim() || (untuk === "diri" ? "Saya" : "Keluargaku");
       await api("/api/onboarding", {
@@ -82,9 +83,21 @@ export default function Mulai() {
     setBusy(true);
     setError("");
     try {
-      await ensureSession();
+      await ensureDevice();
       await api("/api/consent", {});
       await api("/api/onboarding", { action: "join", code });
+      router.replace("/");
+    } catch (e) {
+      setError((e as Error).message);
+      setBusy(false);
+    }
+  }
+
+  async function pulih() {
+    setBusy(true);
+    setError("");
+    try {
+      await restoreDevice(recovery);
       router.replace("/");
     } catch (e) {
       setError((e as Error).message);
@@ -114,7 +127,7 @@ export default function Mulai() {
               : <button className="btn big primary" onClick={() => setStep("untuk")}>Mulai sekarang →</button>}
             <div className="row" style={{ marginTop: 12 }}>
               <button className="btn sm" onClick={() => setStep("kode")}>Punya kode keluarga</button>
-              <Link className="btn sm" href="/login">Sudah punya akun</Link>
+              <button className="btn sm" onClick={() => setStep("pulih")}>Punya kode pemulihan</button>
             </div>
           </>
         )}
@@ -131,6 +144,22 @@ export default function Mulai() {
             <div className="row">
               <button className="btn" onClick={() => setStep("welcome")}>← Kembali</button>
               <button className="btn primary" disabled={busy || !agree || code.length < 4} onClick={join}>{busy ? "Bergabung…" : "Gabung"}</button>
+            </div>
+          </>
+        )}
+
+        {step === "pulih" && (
+          <>
+            <h2>Pulihkan data</h2>
+            <p className="small">Masukkan kode pemulihan yang kamu simpan (ada di tab Review di perangkat lama). Huruf besar/kecil dan tanda strip tidak masalah.</p>
+            <label className="field">Kode pemulihan
+              <input type="text" value={recovery} onChange={(e) => setRecovery(e.target.value)} placeholder="XXXX-XXXX-XXXX-XXXX-XXXX-XXXX" autoCapitalize="characters" autoComplete="off" />
+            </label>
+            <p className="small muted">Data yang sudah dibuat di perangkat ini sebelumnya tidak ikut dipindah.</p>
+            {error && <div className="error-box">{error}</div>}
+            <div className="row">
+              <button className="btn" onClick={() => setStep("welcome")}>← Kembali</button>
+              <button className="btn primary" disabled={busy || recovery.replace(/[^0-9a-z]/gi, "").length < 24} onClick={pulih}>{busy ? "Memulihkan…" : "Pulihkan"}</button>
             </div>
           </>
         )}
@@ -234,10 +263,10 @@ function Consent({ agree, setAgree }: { agree: boolean; setAgree: (v: boolean) =
   return (
     <div className="consent">
       <ul>
-        <li>Data kondisi dan catatan disimpan di Supabase (Singapura), terhubung ke perangkat ini.</li>
+        <li>Data kondisi dan catatan disimpan di database Neon (Singapura), terhubung ke perangkat ini.</li>
         <li>Hanya kamu dan keluarga yang kamu undang yang bisa melihatnya.</li>
         <li>Nama makanan dan kondisi dikirim ke Google AI Studio untuk membuat saran. Foto tidak disimpan.</li>
-        <li>Kalau data browser dihapus sebelum kamu menekan &quot;Amankan data&quot;, catatanmu tidak bisa dikembalikan.</li>
+        <li>Simpan kode pemulihan (ada di tab Review). Tanpa kode itu, data tidak bisa dibuka lagi kalau data browser dihapus.</li>
         <li>Ini bukan pengganti dokter.</li>
       </ul>
       <label className="check" style={{ margin: "10px 0 0" }}>

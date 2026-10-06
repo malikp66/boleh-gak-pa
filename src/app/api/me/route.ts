@@ -1,19 +1,20 @@
 import { aiInfo } from "@/lib/ai";
+import { q, one } from "@/lib/db";
 import { CONSENT_VERSION } from "@/lib/schemas";
 import { requireUser, route } from "@/lib/server";
 
 export const GET = route(async () => {
-  const { supabase, user } = await requireUser();
-  const [{ data: families }, { data: profiles }, { data: consent }] = await Promise.all([
-    supabase.from("families").select("id, name, invite_code"),
-    supabase.from("profiles").select("*").order("created_at"),
-    supabase.from("consents").select("version").eq("user_id", user.id).maybeSingle(),
+  const user = await requireUser();
+  const [families, profiles, consent] = await Promise.all([
+    q("select f.id, f.name, f.invite_code from families f join family_members m on m.family_id = f.id where m.user_id = $1 order by f.created_at", [user.id]),
+    q("select p.* from profiles p join family_members m on m.family_id = p.family_id where m.user_id = $1 order by p.created_at", [user.id]),
+    one<{ version: string }>("select version from consents where user_id = $1", [user.id]),
   ]);
   const ai = aiInfo();
   return {
-    user: { id: user.id, email: user.email ?? null, name: user.user_metadata?.full_name ?? null, anonymous: Boolean(user.is_anonymous) },
-    families: families ?? [],
-    profiles: profiles ?? [],
+    user: { id: user.id },
+    families,
+    profiles,
     consented: consent?.version === CONSENT_VERSION,
     ai: { provider: ai.provider, model: ai.textModel, ready: ai.configured },
   };

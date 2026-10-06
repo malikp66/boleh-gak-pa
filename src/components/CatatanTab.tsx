@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { api, CAT_EMOJI, dayKey, fmtDay, fmtTime, useToast } from "./ui";
 import { FoodItem, Me, Meal, Profile } from "./types";
-import SecureCard from "./SecureCard";
+import RecoveryCard from "./RecoveryCard";
 import { normalizeConditions } from "@/lib/conditions";
 
 const PORTION_TAG: Record<string, [string, string, string]> = {
@@ -73,7 +73,7 @@ export default function CatatanTab({ profile, me }: { profile: Profile; me: Me }
   let lastDay = "";
   return (
     <>
-      {me.user.anonymous && meals.length >= 3 && <SecureCard />}
+      {meals.length >= 3 && meals.length <= 5 && <RecoveryCard />}
       <div className="sticker-row">
         <div className="sticker yellow"><span className="emo">🔥</span><b>{streak}</b><small>hari tanpa merah</small></div>
         <div className="sticker blue"><span className="emo">🙅</span><b>{refused}</b><small>kali menolak</small></div>

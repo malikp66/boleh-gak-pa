@@ -1,9 +1,13 @@
-import { requireUser, route } from "@/lib/server";
+import { q } from "@/lib/db";
 import { CONSENT_VERSION } from "@/lib/schemas";
+import { requireUser, route } from "@/lib/server";
 
 export const POST = route(async () => {
-  const { supabase, user } = await requireUser();
-  const { error } = await supabase.from("consents").upsert({ user_id: user.id, version: CONSENT_VERSION, consented_at: new Date().toISOString() });
-  if (error) throw error;
+  const user = await requireUser();
+  await q(
+    `insert into consents (user_id, version) values ($1, $2)
+     on conflict (user_id) do update set version = excluded.version, consented_at = now()`,
+    [user.id, CONSENT_VERSION],
+  );
   return { ok: true };
 });
