@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
-import { api, CAT_EMOJI, Chips, fmtShort, painFace, useToast } from "./ui";
+import { api, CAT_EMOJI, Chips, dayKey, fmtShort, painFace, useToast } from "./ui";
 import { play } from "@/lib/sound";
 import { Flare, FoodItem, Profile, Recovery, Review } from "./types";
 
@@ -135,15 +135,7 @@ export default function KambuhTab({ profile, onChanged }: { profile: Profile; on
 
           <div className="card">
             <div className="title-row"><span className="emo-box">📉</span><h2>Grafik nyeri</h2></div>
-            <div className="pain-chart">
-              {active.pains.map((p, i) => (
-                <div className="pc-col" key={i}>
-                  <span className="pc-val">{p.pain}</span>
-                  <i className={p.pain >= 7 ? "hi" : p.pain >= 4 ? "mid" : "lo"} style={{ height: `${Math.max(6, p.pain * 10)}%` }} />
-                  <small>{fmtShort(p.at)}</small>
-                </div>
-              ))}
-            </div>
+            <PainWeek started={active.started} pains={active.pains} day={rec.day} remaining={rec.remaining} />
             <p className="eyebrow">Nyeri hari ini</p>
             <PainPicker value={current} onChange={setUpd} min={0} />
             <label className="check"><input type="checkbox" checked={updFever} onChange={(e) => setUpdFever(e.target.checked)} /> 🌡️ Ada demam</label>
@@ -213,5 +205,70 @@ export default function KambuhTab({ profile, onChanged }: { profile: Profile; on
         </ul>
       </div>
     </>
+  );
+}
+
+const HARI = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
+const level = (p: number) => (p >= 7 ? "hi" : p >= 4 ? "mid" : "lo");
+
+/**
+ * Grafik nyeri SELALU 7 hari: hari ke-1–7 kambuh (atau 7 hari terakhir kalau sudah lebih lama).
+ * Hari yang belum datang tampil sebagai kerangka, hari yang terlewat ditandai "belum dicatat",
+ * dan perkiraan hari reda diberi tanda 🌱.
+ */
+function PainWeek({ started, pains, day, remaining }: {
+  started: string; pains: { pain: number; at: string }[]; day: number; remaining: [number, number];
+}) {
+  const start = new Date(started);
+  start.setHours(0, 0, 0, 0);
+  const first = Math.max(1, day - 6); // hari ke-berapa yang jadi kolom pertama
+  const byDay = new Map<string, number>();
+  for (const p of [...pains].sort((a, b) => a.at.localeCompare(b.at))) byDay.set(dayKey(new Date(p.at)), p.pain); // nilai terakhir di hari itu
+  const [lo, hi] = remaining;
+  const cols = Array.from({ length: 7 }, (_, i) => {
+    const n = first + i;
+    const date = new Date(start);
+    date.setDate(start.getDate() + n - 1);
+    const pain = byDay.get(dayKey(date));
+    const state = n > day ? "future" : pain == null ? "missing" : "done";
+    const reda = n > day && hi > 0 && n >= day + Math.max(lo, 1) && n <= day + hi;
+    return { n, date, pain, state, today: n === day, reda };
+  });
+
+  return (
+    <div className="pain-week" role="img" aria-label={`Grafik nyeri 7 hari, hari ini hari ke-${day}`}>
+      <div className="pw-plot">
+        <div className="pw-grid" aria-hidden="true">
+          {[10, 5, 0].map((v) => <span key={v} style={{ bottom: `${v * 10}%` }}><b>{v}</b></span>)}
+        </div>
+        {cols.map((c) => (
+          <div key={c.n} className={`pw-col ${c.state}${c.today ? " today" : ""}`}>
+            {c.state === "done" ? (
+              <>
+                <span className="pw-val" style={{ bottom: `calc(${Math.max(c.pain!, 0.4) * 10}% + 4px)` }}>{c.pain}</span>
+                <i className={level(c.pain!)} style={{ height: `${Math.max(c.pain!, 0.4) * 10}%` }} />
+              </>
+            ) : c.state === "missing" ? (
+              <i className="pw-missing" title="Belum dicatat">?</i>
+            ) : (
+              <i className="pw-skeleton" />
+            )}
+            {c.reda && <span className="pw-reda" title="Perkiraan mulai reda">🌱</span>}
+          </div>
+        ))}
+      </div>
+      <div className="pw-axis">
+        {cols.map((c) => (
+          <div key={c.n} className={c.today ? "today" : ""}>
+            <b>{HARI[c.date.getDay()]}</b>
+            <small>{c.today ? "hari ini" : `ke-${c.n}`}</small>
+          </div>
+        ))}
+      </div>
+      <div className="pw-legend">
+        <span><i className="lo" />Ringan 0–3</span><span><i className="mid" />Sedang 4–6</span><span><i className="hi" />Berat 7–10</span>
+        {cols.some((c) => c.reda) && <span>🌱 Perkiraan reda</span>}
+      </div>
+    </div>
   );
 }
