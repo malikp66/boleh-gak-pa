@@ -19,6 +19,8 @@ export interface Food {
   bahan?: string;
   alasan?: string;
   custom?: boolean;
+  /** dinilai AI, belum dicek manusia */
+  ai?: boolean;
 }
 
 /** Makanan hasil pencocokan teks, dengan kata yang membuatnya cocok. */

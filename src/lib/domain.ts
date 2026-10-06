@@ -242,6 +242,7 @@ export async function assess(
     } : null,
     alergen: food ? [...new Set(found.flatMap((f) => f.alergen ?? []))] : [],
     in_table: Boolean(food),
+    estimated: found.some((f) => f.ai),
     flare_active: flare,
     components: found.map((f) => ({
       name: f.name, garam: f.garam, karbo: f.karbo ?? null, matched: f.matched,
@@ -303,12 +304,15 @@ export async function analyzeFood(name: string, bahan: string) {
     .map(([f]) => f);
   const kategori = [...new Set(FOODS.map((f) => f.kategori))] as [string, ...string[]];
   const Schema = z.object({
+    dikenal: z.boolean(),
+    nama: z.string().max(60),
     kategori: z.enum(kategori),
     purin: z.enum(["rendah", "sedang", "tinggi"]),
     garam: z.enum(["rendah", "sedang", "tinggi"]),
     karbo: z.enum(["rendah", "sedang", "tinggi"]),
     gula: z.enum(["rendah", "sedang", "tinggi"]),
     lemak: z.enum(["rendah", "sedang", "tinggi"]),
+    ig: z.enum(["rendah", "sedang", "tinggi"]).nullable(),
     alergen: z.array(z.enum(["kacang tanah", "kacang pohon", "kedelai", "susu", "telur", "gluten", "ikan", "krustasea", "moluska", "wijen"])),
     porsi_aman: z.string(),
     trik: z.array(z.string()).max(5),
@@ -321,6 +325,10 @@ export async function analyzeFood(name: string, bahan: string) {
         role: "system",
         content: [
           "Kamu ahli gizi rumahan Indonesia. Nilai satu porsi khas makanan ini.",
+          "dikenal: true HANYA jika ini makanan/minuman nyata yang kamu kenal (boleh merek atau masakan daerah). " +
+          "false untuk teks acak, bukan makanan, atau yang tidak kamu ketahui isinya — jangan menebak.",
+          "nama: nama baku yang umum dipakai, huruf kecil, tanpa merek kalau tidak perlu (mis. 'seblak ceker').",
+          "ig: indeks glikemik makanan ini (rendah/sedang/tinggi), null kalau hampir tanpa karbohidrat.",
           PURIN_RULES,
           "Karbohidrat per porsi: rendah < 15 g, sedang 15-40 g, tinggi > 40 g. Gula tambahan: rendah < 5 g, sedang 5-12,5 g, tinggi > 12,5 g. " +
           "Lemak jenuh: rendah < 3 g, sedang 3-6 g, tinggi > 6 g (santan kental, gorengan, kulit, mentega, keju = tinggi). " +

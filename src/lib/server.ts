@@ -7,6 +7,7 @@ import { AIUnavailableError, estimateUSD, onBudgetCheck, onSpend } from "./ai";
 import { one, q } from "./db";
 import { formatKey, generateKey, hashKey, isValidKey, normalizeKey } from "./device-key";
 import { AssessAI, FlareSummary, Profile } from "./domain";
+import { loadAiFoods } from "./ai-foods";
 import { FOODS } from "./foods/match";
 import { Food } from "./foods/types";
 
@@ -151,11 +152,14 @@ export async function getProfile(userId: string, profileId: string): Promise<Pro
 /** Profil + makanan (tabel + buatan keluarga) + kambuh aktif. */
 export async function loadProfileContext(userId: string, profileId: string) {
   const profile = await getProfile(userId, profileId);
-  const [custom, flare] = await Promise.all([
+  const [custom, flare, learned] = await Promise.all([
     q<Food>("select * from custom_foods where family_id = $1 order by created_at desc", [profile.family_id]),
     one<FlareSummary & { id: string; fever: boolean }>("select * from flares where profile_id = $1 and ended is null", [profile.id]),
+    loadAiFoods(),
   ]);
-  const foods: Food[] = [...custom.map((c) => ({ ...c, custom: true })), ...FOODS];
+  // urutan = prioritas: daftar keluarga → tabel resmi → hasil belajar AI
+  const official = new Set(FOODS.flatMap((f) => [f.name, ...f.aliases]));
+  const foods: Food[] = [...custom.map((c) => ({ ...c, custom: true })), ...FOODS, ...learned.filter((f) => !official.has(f.name))];
   return { profile, foods, flare };
 }
 

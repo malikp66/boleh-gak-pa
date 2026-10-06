@@ -39,6 +39,7 @@ export interface Me {
 }
 
 export interface FoodItem {
+  ai?: boolean;
   id?: string;
   name: string;
   aliases: string[];
@@ -58,6 +59,10 @@ export interface FoodItem {
 
 export interface AssessResult {
   checkId?: string;
+  /** makanan baru yang barusan dinilai AI & disimpan */
+  learned?: boolean;
+  /** nilai gizi dari perkiraan AI (belum dicek manusia) */
+  estimated?: boolean;
   headline: string;
   portion: string;
   tips: string[];

@@ -175,6 +175,7 @@ export default function DaftarTab({ profile, addName, onCheck }: {
                 })}
                 {conditions.includes("alergi") && (f.alergen ?? []).length > 0 && <span className="badge tinggi">⚠️ {f.alergen!.join(", ")}</span>}
                 {f.custom && <span className="badge keluarga">Buatan keluarga</span>}
+                {f.ai && <span className="badge ai">🤖 Perkiraan AI</span>}
               </div>
               {f.reason && f.status !== "hijau" && <p className="small" style={{ margin: "0 0 4px" }}>{f.reason}</p>}
               <p className="porsi">{f.porsi_aman}</p>

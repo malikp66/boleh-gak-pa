@@ -511,3 +511,4 @@ input.invalid, textarea.invalid, select.invalid { border-color: var(--merah) !im
 .pending-item + .pending-item { border-top: 2px solid var(--line); margin-top: 12px; padding-top: 12px; }
 .pending-item p { margin: 0 0 10px; font-size: 17px; }
 .pending .linklike { margin-top: 10px; }
+.badge.ai { background: #e8e3ff; }

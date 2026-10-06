@@ -18,6 +18,7 @@ const SPELLING: Record<string, string> = {
   telor: "telur", sambel: "sambal", ijo: "hijau", sayor: "sayur", pedes: "pedas",
   mie: "mi", bakmie: "bakmi", nasgor: "nasi goreng", krupuk: "kerupuk",
   "es teh": "es teh manis", "teh es": "es teh manis",
+  coklat: "cokelat",
 };
 
 const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -133,6 +134,26 @@ export function findFoods(text: string, foods: Food[] = FOODS): MatchedFood[] {
     clean.some((o) => o !== f && o.pemicu.join(" ").toLowerCase().includes(f.matched.split(" (")[0]) && order(f) <= order(o));
   const result = clean.filter((f) => !isIngredient(f));
   return result.length ? result : clean;
+}
+
+// kata yang tidak mengubah makanannya (ukuran, basa-basi, rasa)
+const FILLER = new Set([
+  "boleh", "gak", "nggak", "enggak", "yang", "dan", "level", "extra", "ekstra", "tanpa", "setengah", "buah", "potong",
+  "biji", "sendok", "aja", "saja", "nih", "ini", "itu", "enak", "mau", "ditawari", "ditawarin", "apa", "aman", "kecil",
+  "besar", "sedang", "jumbo", "mini", "tadi", "siang", "malam", "pagi", "sore", "bungkus", "porsinya",
+]);
+
+/**
+ * Kata penting yang TIDAK tercakup makanan yang ditemukan ('croffle cokelat' → ['croffle']).
+ * Kalau ada, berarti makanannya belum dikenal walau sebagian katanya cocok.
+ */
+export function leftoverWords(text: string, found: MatchedFood[]): string[] {
+  let t = " " + normalize(text).replace(/[^a-z0-9\s-]/g, " ") + " ";
+  for (const f of found) {
+    const src = /\(dari '(.+)'\)/.exec(f.matched)?.[1] ?? f.matched;
+    t = t.replace(new RegExp(`(?<![a-z])${escapeRe(src)}(?![a-z])`), " ");
+  }
+  return t.split(/\s+/).filter((w) => w.length >= 3 && !/^\d+$/.test(w) && !STOPWORDS.has(w) && !FILLER.has(w));
 }
 
 export function findFood(text: string, foods: Food[] = FOODS): MatchedFood | null {

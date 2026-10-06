@@ -230,7 +230,8 @@ export default function CekTab({ profile, flareJoint, prefill, welcome, onSaveUn
         <div id="result">
           <div className={`verdict ${r.status}`}>
             <span className="stamp">{VERDICT[r.status]}</span>
-            {!r.in_table && <span className="estimate">⚠️ Belum ada di daftar · lampu ini perkiraan AI</span>}
+            {!r.in_table && <span className="estimate">⚠️ Belum dikenal · tanyakan isinya ke penjual</span>}
+            {r.in_table && r.estimated && <span className="estimate">{r.learned ? "🤖 Makanan baru · dinilai AI & disimpan" : "🤖 Nilai gizi perkiraan AI"}</span>}
             <div className="food-name">{multi ? `Kombinasi ${r.components.length} makanan` : r.food}</div>
             <div className="headline">{r.headline}</div>
             {(multi || typo) && (
@@ -289,7 +290,7 @@ export default function CekTab({ profile, flareJoint, prefill, welcome, onSaveUn
               <summary>Kenapa?</summary>
               <p>{r.why}</p>
               <p className="muted small">
-                {r.in_table ? "Lampu dari tabel makanan." : "Tidak ada di tabel — perkiraan AI, hati-hati."}{" "}
+                {!r.in_table ? "Tidak dikenal — hati-hati, tanyakan bahannya." : r.estimated ? "Nilai gizi diperkirakan AI dari nama makanannya, lalu lampu ditentukan tabel aturan yang sama." : "Lampu dari tabel makanan."}{" "}
                 {r.source === "ai" ? `Ditulis ${r.model} dalam ${r.elapsed} detik.` : r.source === "cache" ? "Jawaban tersimpan (tanpa biaya AI)." : "Mode tabel (AI tidak dipakai)."}
               </p>
             </details>

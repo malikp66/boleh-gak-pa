@@ -64,3 +64,16 @@ describe("ratio (difflib port)", () => {
     expect(ratio("pizaa", "pizza")).toBeCloseTo(0.8, 5);
   });
 });
+
+import { leftoverWords } from "./match";
+describe("leftoverWords", () => {
+  const left = (t: string) => leftoverWords(t, findFoods(t));
+  it("menemukan kata makanan yang belum dikenal", () => {
+    expect(left("croffle cokelat")).toEqual(["croffle"]);
+  });
+  it("mengabaikan basa-basi, ukuran, dan kata yang sudah cocok", () => {
+    expect(left("boleh gak makan soto ayam")).toEqual([]);
+    expect(left("ketoprak pedas level 3 porsi kecil")).toEqual([]);
+    expect(left("indomie + es teh manis")).toEqual([]);
+  });
+});
