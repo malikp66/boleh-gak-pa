@@ -75,7 +75,7 @@ export default function KambuhTab({ profile, onChanged }: { profile: Profile; on
   async function save() {
     try {
       await api("/api/flares", { profileId: profile.id, joint, pain, fever });
-      toast(`Tercatat. Semoga cepat reda, ${profile.panggilan}.`);
+      toast("Tercatat. Semoga cepat reda.");
       load();
       onChanged();
     } catch (e) {
@@ -111,7 +111,7 @@ export default function KambuhTab({ profile, onChanged }: { profile: Profile; on
             <div className="big-num">{rangeText(rec)}</div>
             <p className="small"><b>Estimasi dari {rec.basis === "riwayat"
               ? `${rec.history_count} kali kambuh sebelumnya (biasanya ${rec.typical_days} hari)`
-              : `kisaran umum serangan asam urat (3–10 hari). Makin banyak catatan, makin pas untuk ${profile.panggilan}`}.</b></p>
+              : `kisaran umum serangan asam urat (3–10 hari). Makin banyak catatan, makin pas perkiraannya`}.</b></p>
           </div>
           {rec.red_flags.map((f) => <div className="flag" key={f}>🚨 {f}</div>)}
 
@@ -182,7 +182,7 @@ export default function KambuhTab({ profile, onChanged }: { profile: Profile; on
             </span>
             <span className="when">{fmtShort(f.started)}</span>
           </div>
-        )) : <div className="empty-state"><span className="emo-big">🙏</span><p><b>Belum ada riwayat kambuh.</b><br />Semoga tetap begitu, {profile.panggilan}.</p></div>}
+        )) : <div className="empty-state"><span className="emo-big">🙏</span><p><b>Belum ada riwayat kambuh.</b><br />Semoga tetap begitu.</p></div>}
       </div>
 
       <div className="card doctor">

@@ -42,7 +42,7 @@ export default function CekTab({ profile, flareJoint, prefill, onSaveUnknown, on
   }, [profile.id, note, toast]);
 
   function check(text: string) {
-    if (!text.trim()) return toast(`Ketik atau foto makanannya dulu, ${profile.panggilan}`);
+    if (!text.trim()) return toast("Ketik atau foto makanannya dulu ya");
     clear();
     setLoading("Lagi mikir…");
     runAssess(text);
@@ -79,7 +79,7 @@ export default function CekTab({ profile, flareJoint, prefill, onSaveUnknown, on
     if (!result) return;
     try {
       await api("/api/meals", { profileId: profile.id, food: result.food, portion, status: portion === "ditolak" ? "hijau" : result.status, note });
-      toast(portion === "ditolak" ? `Mantap, ${profile.panggilan}! Tercatat.` : "Tercatat di catatan makan");
+      toast(portion === "ditolak" ? "Mantap! Tercatat." : "Tercatat di catatan makan");
       setResult(null);
       setFood("");
       setPreview("");
@@ -102,7 +102,7 @@ export default function CekTab({ profile, flareJoint, prefill, onSaveUnknown, on
 
       <div className="card">
         <p className="eyebrow">Langkah 1</p>
-        <h2>Lagi ditawari apa, {profile.panggilan}?</h2>
+        <h2>Lagi ditawari apa?</h2>
         <label className="btn big ink">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg>
           Foto makanannya
@@ -115,7 +115,7 @@ export default function CekTab({ profile, flareJoint, prefill, onSaveUnknown, on
             {photo.komponen.length > 0 && <p className="small"><b>Isinya:</b> {photo.komponen.join(", ")}</p>}
             {photo.corrected && photo.model_guess !== "lainnya" && <p className="small muted">Pilihan awal &quot;{photo.model_guess}&quot; tidak cocok dengan yang terlihat, jadi dikoreksi.</p>}
             {!photo.in_table && <p className="small"><b>⚠️ Belum ada di daftar.</b> Nanti dinilai AI, atau simpan ke daftar.</p>}
-            <p className="eyebrow">Betul yang mana, {profile.panggilan}?</p>
+            <p className="eyebrow">Betul yang mana?</p>
             <div className="chips">
               {[photo.food, ...photo.alternatives].map((n) => (
                 <button key={n} type="button" className={`chip${food === n ? " on" : ""}`} onClick={() => { setFood(n); clear(); }}>{n}</button>
@@ -196,7 +196,7 @@ export default function CekTab({ profile, flareJoint, prefill, onSaveUnknown, on
           </div>
 
           <div className="card">
-            <h2>Jadinya gimana, {profile.panggilan}?</h2>
+            <h2>Jadinya gimana?</h2>
             <div className="stack">
               <button className="btn big good" onClick={() => log("sesuai saran")}>Makan sesuai saran</button>
               <button className="btn big" onClick={() => log("porsi penuh")}>Makan 1 porsi penuh</button>

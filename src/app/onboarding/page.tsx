@@ -14,7 +14,7 @@ export default function Onboarding() {
   const [agree, setAgree] = useState(false);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  const [form, setForm] = useState({ familyName: "", nama: "Papa", panggilan: "Pa", usia: "", kondisi: [...KONDISI] as string[], catatan: "", code: "" });
+  const [form, setForm] = useState({ familyName: "", nama: "", panggilan: "", usia: "", kondisi: [...KONDISI] as string[], catatan: "", code: "" });
 
   useEffect(() => {
     api<Me>("/api/me").then((m) => {
@@ -71,12 +71,12 @@ export default function Onboarding() {
         ) : (
           <>
             <label className="field">Nama keluarga
-              <input type="text" value={form.familyName} onChange={(e) => set("familyName", e.target.value)} placeholder="mis. Keluarga Putra" />
+              <input type="text" value={form.familyName} onChange={(e) => set("familyName", e.target.value)} placeholder="mis. Keluarga Santoso" />
             </label>
             <p className="eyebrow">Siapa yang dijaga?</p>
             <div className="grid2">
-              <label className="field">Nama <input type="text" value={form.nama} onChange={(e) => set("nama", e.target.value)} required /></label>
-              <label className="field">Panggilan <input type="text" value={form.panggilan} onChange={(e) => set("panggilan", e.target.value)} required /></label>
+              <label className="field">Nama <input type="text" value={form.nama} onChange={(e) => set("nama", e.target.value)} placeholder="mis. Budi / Ibu" required /></label>
+              <label className="field">Panggilan <input type="text" value={form.panggilan} onChange={(e) => set("panggilan", e.target.value)} placeholder="mis. kamu / Bu" required /></label>
             </div>
             <label className="field">Usia <input type="number" min={1} max={120} value={form.usia} onChange={(e) => set("usia", e.target.value)} /></label>
             <p className="eyebrow">Kondisi</p>

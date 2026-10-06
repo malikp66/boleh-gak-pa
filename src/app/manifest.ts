@@ -2,9 +2,9 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Boleh Gak, Pa?",
+    name: "Boleh Gak, Ya?",
     short_name: "Boleh Gak?",
-    description: "Teman makan keluarga: cek makanan untuk asam urat & darah tinggi.",
+    description: "Teman makan untuk yang sedang menjaga kesehatan: cek makanan sebelum dimakan.",
     lang: "id",
     start_url: "/",
     scope: "/",

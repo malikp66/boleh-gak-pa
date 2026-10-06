@@ -56,7 +56,7 @@ export default function CatatanTab({ profile }: { profile: Profile }) {
   const top = [...freq.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5);
   const maxTop = top[0]?.[1] ?? 1;
 
-  const saltMsg = saltToday === 0 ? `Belum ada makanan asin hari ini. Mantap, ${profile.panggilan}! 👍`
+  const saltMsg = saltToday === 0 ? `Belum ada makanan asin hari ini. Mantap! 👍`
     : saltToday < SALT_LIMIT ? "Masih aman. Makan berikutnya pilih yang tidak asin ya."
     : saltToday === SALT_LIMIT ? "Sudah cukup garamnya hari ini. Sisanya pilih yang hijau. 🥬"
     : "Garam sudah lewat batas. Minum air putih yang banyak dan cek tensi. 💧";

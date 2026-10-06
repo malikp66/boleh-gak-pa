@@ -18,7 +18,7 @@
   --head: var(--font-head), "Arial Black", system-ui, sans-serif;
   --body: var(--font-body), system-ui, -apple-system, sans-serif;
 }
-/* Selalu terang: kontras tinggi lebih mudah dibaca Papa di luar ruangan. */
+/* Selalu terang: kontras tinggi lebih mudah dibaca orang tua dan di luar ruangan. */
 :root { color-scheme: light; }
 
 * { box-sizing: border-box; }

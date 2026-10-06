@@ -28,7 +28,7 @@ export default function ReviewTab({ profile, me }: { profile: Profile; me: Me })
           <div className="stat kuning"><b>{w.status.kuning ?? 0}</b><span>dibatasi</span></div>
           <div className="stat merah"><b>{w.status.merah ?? 0}</b><span>berisiko</span></div>
         </div>
-        <p><b>{w.garam_tinggi} dari {w.meals}</b> makanan tinggi garam — penting untuk tensi {profile.panggilan}.</p>
+        <p><b>{w.garam_tinggi} dari {w.meals}</b> makanan tinggi garam — penting untuk tensi.</p>
       </div>
 
       <div className="card">
@@ -44,7 +44,7 @@ export default function ReviewTab({ profile, me }: { profile: Profile; me: Me })
       <div className="card">
         <h2>Lama sembuh</h2>
         <p>{rec.basis === "riwayat"
-          ? <>Dari {rec.history_count} kali kambuh, {profile.panggilan} biasanya pulih dalam <b>{rec.typical_days} hari</b> ({rec.range[0]}–{rec.range[1]} hari).</>
+          ? <>Dari {rec.history_count} kali kambuh, biasanya pulih dalam <b>{rec.typical_days} hari</b> ({rec.range[0]}–{rec.range[1]} hari).</>
           : <>Belum ada riwayat. Kisaran umum serangan asam urat: <b>3–10 hari</b>.</>}</p>
       </div>
 
@@ -69,7 +69,7 @@ export default function ReviewTab({ profile, me }: { profile: Profile; me: Me })
           <div className="invite">
             <code>{family.invite_code}</code>
             <button className="btn sm" style={{ width: "auto" }} onClick={() => {
-              const text = `Gabung "${family.name}" di Boleh Gak, Pa? → ${location.origin} (kode: ${family.invite_code})`;
+              const text = `Gabung "${family.name}" di Boleh Gak, Ya? → ${location.origin} (kode: ${family.invite_code})`;
               (navigator.share ? navigator.share({ text }) : navigator.clipboard.writeText(text)).then(() => toast("Siap dibagikan"), () => {});
             }}>Bagikan</button>
           </div>

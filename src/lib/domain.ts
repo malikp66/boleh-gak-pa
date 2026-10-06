@@ -46,7 +46,7 @@ function assessPrompt(foodText: string, food: CombinedFood | null, status: Statu
   const lines = [
     `Kamu adalah 'Teman Makan' untuk ${p.nama}${p.usia ? `, ${p.usia} tahun` : ""}.`,
     `Kondisi: ${p.kondisi.join(", ")}. Catatan dokter: ${p.catatan_dokter || "-"}`,
-    `Bahasa: Indonesia santai dan hangat, kalimat pendek, mudah dibaca orang tua. Panggil dia '${p.panggilan}'.`,
+    `Bahasa: Indonesia santai dan hangat, kalimat pendek, mudah dibaca semua umur. Panggil dia '${p.panggilan}'.`,
     "Aturan keras: jangan menyarankan obat atau dosis obat; jangan menakut-nakuti; jujur soal risiko; selalu praktis.",
     "Perhatikan DUA hal: purin (asam urat) DAN garam (darah tinggi). Sering kali garam yang lebih penting.",
     "",

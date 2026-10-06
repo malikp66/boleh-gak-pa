@@ -23,9 +23,9 @@ export default function LoginPage() {
   return (
     <main className="center-page">
       <div className="card">
-        <p className="eyebrow">Teman makan keluarga</p>
-        <h1 className="hero-title">Boleh Gak, Pa?</h1>
-        <p className="lead">Cek makanan untuk asam urat &amp; darah tinggi: porsi aman, tips di warung, dan cara menolak dengan sopan.</p>
+        <p className="eyebrow">Teman makan yang jujur</p>
+        <h1 className="hero-title">Boleh Gak, Ya?</h1>
+        <p className="lead">Ditawari makanan dan ragu? Cek dulu: aman atau tidak untuk kondisimu, porsi yang pas, tips di warung, sampai cara menolak dengan sopan.</p>
         {error && <div className="error-box">{error}</div>}
         <button className="btn big google-btn" onClick={google} disabled={busy}>
           <svg viewBox="0 0 48 48" aria-hidden="true">
@@ -37,7 +37,7 @@ export default function LoginPage() {
           {busy ? "Membuka Google…" : "Masuk dengan Google"}
         </button>
         <p className="small muted" style={{ marginTop: 16 }}>
-          Data kesehatan hanya bisa dilihat anggota keluargamu sendiri. <Link href="/privasi">Kebijakan privasi</Link>
+          Data kesehatanmu hanya bisa dilihat olehmu dan keluarga yang kamu undang. <Link href="/privasi">Kebijakan privasi</Link>
         </p>
       </div>
     </main>

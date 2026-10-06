@@ -54,8 +54,8 @@ export default function App() {
     <ToastProvider>
       <header className="top">
         <div className="brand">
-          <h1>Boleh Gak, {profile.panggilan}?</h1>
-          <p className="sub">{profile.kondisi.map((k) => k.split(" (")[0]).join(" · ")}</p>
+          <h1>Boleh Gak, Ya?</h1>
+          <p className="sub">{profile.nama} · {profile.kondisi.map((k) => k.split(" (")[0]).join(" · ")}</p>
         </div>
         {me.profiles.length > 1 ? (
           <select className="profile-switch" value={profileId} onChange={(e) => {

@@ -1,8 +1,8 @@
-# Boleh Gak, Pa? — v2
+# Boleh Gak, Ya?
 
-Teman makan keluarga: cek makanan untuk **asam urat & darah tinggi**. Ketik atau foto makanannya, lalu dapat lampu 🟢🟡🔴, porsi aman, tips di warung, dan kalimat untuk menolak dengan sopan. Ada juga catatan makan, log kambuh dengan estimasi sembuh, dan ringkasan mingguan.
+Teman makan untuk yang sedang menjaga kesehatan. Saat ini mendukung **asam urat & darah tinggi**, dan **diabetes** serta kondisi lain sedang dikerjakan. Ketik atau foto makanannya, lalu dapat lampu 🟢🟡🔴, porsi aman, tips di warung, dan kalimat untuk menolak dengan sopan. Ada juga catatan makan, log kambuh dengan estimasi sembuh, dan ringkasan mingguan.
 
-> v1 (HTML + Python + Gemma lokal) adalah versi yang disubmit ke DEV Hacktoberfest Weekend Challenge, 5 Okt 2026.
+> Awalnya bernama *Boleh Gak, Pa?*, dibuat untuk ayah saya. v1 (HTML + Python + Gemma lokal) adalah versi yang disubmit ke DEV Hacktoberfest Weekend Challenge, 5 Okt 2026.
 > Kodenya ada di [`legacy-v1/`](legacy-v1) dan di tag `hf26-submission`. **Semua commit setelah deadline challenge ada di branch `v2`.**
 
 ## Arsitektur

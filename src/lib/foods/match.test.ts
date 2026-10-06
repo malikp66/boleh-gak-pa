@@ -5,7 +5,7 @@ import { ratio } from "./similarity";
 const names = (t: string) => findFoods(t).map((f) => f.name);
 const status = (t: string, flare = false) => ruleStatus(combine(findFoods(t)), flare);
 
-// Kasus-kasus ini ditemukan saat menguji v1 bersama Papa (5 Okt 2026).
+// Kasus-kasus ini ditemukan saat uji coba v1 (5 Okt 2026).
 describe("findFoods", () => {
   it.each([
     ["indomi ketoprak", ["mi instan", "ketoprak"]],

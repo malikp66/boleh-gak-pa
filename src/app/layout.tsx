@@ -6,8 +6,8 @@ const head = Archivo_Black({ weight: "400", subsets: ["latin"], variable: "--fon
 const body = Space_Grotesk({ weight: ["400", "500", "700"], subsets: ["latin"], variable: "--font-body" });
 
 export const metadata: Metadata = {
-  title: "Boleh Gak, Pa?",
-  description: "Teman makan keluarga: cek makanan untuk asam urat & darah tinggi.",
+  title: "Boleh Gak, Ya?",
+  description: "Teman makan untuk yang sedang menjaga kesehatan: cek makanan sebelum dimakan.",
   manifest: "/manifest.webmanifest",
   icons: { icon: "/icons/icon-192.png", apple: "/icons/icon-192.png" },
   appleWebApp: { capable: true, title: "Boleh Gak?", statusBarStyle: "default" },

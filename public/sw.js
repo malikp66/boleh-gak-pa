@@ -1,6 +1,6 @@
 // Cache tampilan aplikasi supaya tetap terbuka walau sinyal putus.
 // Panggilan /api/* dan halaman login tidak pernah di-cache (data keluarga tidak disimpan di HP).
-const CACHE = "boleh-gak-pa-v2-1";
+const CACHE = "boleh-gak-ya-v2-2";
 
 self.addEventListener("install", () => self.skipWaiting());
 self.addEventListener("activate", (e) => {

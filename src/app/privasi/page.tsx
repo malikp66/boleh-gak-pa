@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export const metadata = { title: "Kebijakan Privasi · Boleh Gak, Pa?" };
+export const metadata = { title: "Kebijakan Privasi · Boleh Gak, Ya?" };
 
 export default function Privasi() {
   return (

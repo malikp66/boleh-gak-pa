@@ -1,4 +1,4 @@
--- Boleh Gak, Pa? v2 — skema awal
+-- Boleh Gak, Ya? — skema awal
 -- Prinsip: setiap baris milik satu keluarga; RLS memastikan pengguna hanya melihat keluarganya sendiri.
 -- Tabel makanan bawaan (271 item) TIDAK disimpan di sini: ikut di kode (src/lib/foods/foods.json).
 
@@ -28,12 +28,12 @@ create table public.consents (
   consented_at timestamptz not null default now()
 );
 
--- Orang yang dijaga (Papa, Om, ...). Tidak harus punya akun sendiri.
+-- Orang yang dijaga: diri sendiri atau anggota keluarga. Tidak harus punya akun sendiri.
 create table public.profiles (
   id uuid primary key default gen_random_uuid(),
   family_id uuid not null references public.families(id) on delete cascade,
   nama text not null check (char_length(nama) between 1 and 40),
-  panggilan text not null default 'Pa' check (char_length(panggilan) between 1 and 20),
+  panggilan text not null default 'kamu' check (char_length(panggilan) between 1 and 20),
   usia int check (usia between 1 and 120),
   kondisi text[] not null default '{}',
   catatan_dokter text not null default '' check (char_length(catatan_dokter) <= 500),
