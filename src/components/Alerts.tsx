@@ -65,12 +65,11 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
-  const toast = useMemo(() => {
-    const fn = ((input: string | AlertInput, type?: AlertType) => push(input, type)) as Toast;
-    (Object.keys(META) as AlertType[]).forEach((t) => {
-      fn[t] = (message, title) => push({ type: t, message, title });
+  const toast = useMemo<Toast>(() => {
+    const short = (type: AlertType): Shortcut => (message, title) => push({ type, message, title });
+    return Object.assign((input: string | AlertInput, type?: AlertType) => push(input, type), {
+      success: short("success"), info: short("info"), warning: short("warning"), error: short("error"),
     });
-    return fn;
   }, [push]);
 
   return (
