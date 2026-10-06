@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import InstallGuide from "@/components/InstallGuide";
+import WaConnect from "@/components/WaConnect";
 import { api, useToast } from "@/components/ui";
 import { ALERGEN_LABEL, ALERGEN_LIST, CONDITIONS, ConditionId, EXCLUSIVE } from "@/lib/conditions";
 import { ensureDevice, restoreDevice } from "@/lib/device";
@@ -45,6 +46,7 @@ export default function Mulai() {
   const [busy, setBusy] = useState(false);
   const [newProfileId, setNewProfileId] = useState("");
   const [nameError, setNameError] = useState("");
+  const [waReady, setWaReady] = useState(false);
   const toast = useToast();
   /** Tampilkan masalah isian: alert di atas + pesan di bawah tombol. */
   const warn = (msg: string) => { play("error"); setError(msg); toast.warning(msg, "Belum lengkap"); };
@@ -57,7 +59,7 @@ export default function Mulai() {
     ensureDevice()
       .then(() => fetch("/api/me"))
       .then((r) => (r.ok ? r.json() : null))
-      .then((m) => { if (m?.consented && m.profiles?.length) router.replace("/"); })
+      .then((m) => { if (m?.consented && m.profiles?.length) router.replace("/"); else setWaReady(Boolean(m?.wa?.available)); })
       .catch((e: Error) => setError(e.message));
   }, [router]);
 
@@ -192,6 +194,15 @@ export default function Mulai() {
             <p className="lead">Ragu sebelum makan? Tanya dulu di sini.</p>
             <ul className="welcome-list">{WELCOME.map((w) => <li key={w.text}><span>{w.emoji}</span>{w.text}</li>)}</ul>
             <button className="btn big primary" onClick={() => setStep("siapa")}>Mulai →</button>
+            {waReady && (
+              <>
+                <div className="or"><span>pernah daftar?</span></div>
+                <WaConnect label="💬 Masuk dengan WhatsApp" onDone={(r) => {
+                  if (r === "merged") router.replace("/");
+                  else { toast.info("Nomor ini baru. Lanjut isi profil ya, nanti tersimpan ke nomor ini.", "Nomor baru"); setStep("siapa"); }
+                }} />
+              </>
+            )}
             <div className="row" style={{ marginTop: 12 }}>
               <button className="btn sm" onClick={() => setStep("kode")}>Punya kode keluarga</button>
               <button className="btn sm" onClick={() => setStep("pulih")}>Punya kode pemulihan</button>

@@ -482,3 +482,6 @@ details.situasi .chips { margin-top: 8px; }
 input.invalid, textarea.invalid, select.invalid { border-color: var(--merah) !important; box-shadow: 0 0 0 3px rgba(229, 57, 53, .25) !important; }
 .field-error { margin: -6px 0 12px; color: var(--merah); font-weight: 700; font-size: 14px; }
 .field-error::before { content: "⚠️ "; }
+.btn.wa { background: #25d366; color: #0b2e17; }
+.wa-wait { border: var(--b) dashed #111; border-radius: var(--r); background: #fff; padding: 12px 14px; margin: 8px 0; }
+.wa-wait p { margin: 0 0 6px; }

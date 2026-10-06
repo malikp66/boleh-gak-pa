@@ -35,6 +35,7 @@ export interface Me {
   profiles: Profile[];
   consented: boolean;
   ai: { provider: string; model: string; ready: boolean };
+  wa: { available: boolean; phone: string | null; profileId: string | null };
 }
 
 export interface FoodItem {

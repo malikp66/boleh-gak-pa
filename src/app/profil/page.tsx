@@ -5,6 +5,7 @@ import ProfileForm, { emptyDraft, ProfileDraft } from "@/components/ProfileForm"
 import InviteCard from "@/components/InviteCard";
 import RecoveryCard from "@/components/RecoveryCard";
 import VoiceSettings from "@/components/VoiceSettings";
+import WaConnect from "@/components/WaConnect";
 import { api, useToast } from "@/components/ui";
 import { Me, Profile } from "@/components/types";
 import { conditionInfo, normalizeConditions } from "@/lib/conditions";
@@ -136,6 +137,27 @@ export default function ProfilPage() {
               )}
             </div>
 
+            {me.wa.available && (
+              <div className="card">
+                <h2>💬 WhatsApp</h2>
+                {me.wa.phone ? (
+                  <>
+                    <p className="small">Terhubung dengan <b>{me.wa.phone}</b>{me.wa.profileId && <> · milik <b>{me.profiles.find((p) => p.id === me.wa.profileId)?.nama}</b></>}.</p>
+                    <p className="small muted">Ganti HP atau aplikasi terhapus? Cukup pilih <b>Masuk dengan WhatsApp</b>, data langsung kembali.</p>
+                    <button className="btn sm" onClick={async () => {
+                      if (!confirm("Putuskan WhatsApp dari akun ini?")) return;
+                      try { await api("/api/wa/link", undefined, "DELETE"); toast.info("WhatsApp diputuskan."); await load(); }
+                      catch (e) { toast.error((e as Error).message); }
+                    }}>Putuskan</button>
+                  </>
+                ) : (
+                  <>
+                    <p className="small">Hubungkan nomor WhatsApp {profile?.nama} supaya data <b>tidak hilang walau ganti HP</b>, dan keluarga bisa mengingatkan lewat WA.</p>
+                    <WaConnect label="💬 Hubungkan WhatsApp" profileId={activeId || null} onDone={() => { void load(); }} />
+                  </>
+                )}
+              </div>
+            )}
             {(() => { const f = me.families.find((x) => x.id === profile?.family_id) ?? me.families[0]; return f ? <InviteCard family={f} /> : null; })()}
             <RecoveryCard />
           </>

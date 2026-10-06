@@ -13,6 +13,7 @@ export default function Privasi() {
           <li>Tanpa akun, tanpa email: setiap perangkat punya kunci acak di cookie. Database hanya menyimpan sidik (hash) kunci itu.</li>
           <li>Profil orang yang dijaga: nama panggilan, usia, kondisi kesehatan, catatan dokter.</li>
           <li>Catatan makan, catatan kambuh asam urat, dan skala nyeri.</li>
+          <li>Nomor WhatsApp (hanya kalau kamu menghubungkannya): dipakai untuk masuk di HP baru dan pengingat dari keluarga. Pesan dikirim lewat WhatsApp Business Platform resmi dari Meta. Bisa diputuskan kapan saja di menu Profil.</li>
         </ul>
         <h3>Siapa yang bisa melihat</h3>
         <p>Hanya kamu dan anggota keluarga yang bergabung dengan kode undanganmu. Server memeriksa keanggotaan keluarga di setiap permintaan data.</p>

@@ -29,6 +29,8 @@ export const POST = route(async (req) => {
       [family.id, p.nama, p.panggilan, p.usia, p.untuk, p.kondisi, p.alergen, p.diabetes_tipe, p.insulin, p.catatan_dokter, p.obat,
         p.kontak_nama, p.kontak_telepon, p.kondisi_lain, p.obat_lain, p.alergen_lain],
     )).rows[0];
+    // nomor WA yang sudah terhubung sebelum profil dibuat → milik profil pertama ini
+    await c.query("update users set self_profile_id = $2 where id = $1 and phone is not null and self_profile_id is null", [user.id, profile.id]);
     return { family, profile };
   });
 });

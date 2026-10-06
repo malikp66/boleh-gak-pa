@@ -2,6 +2,7 @@ import "server-only";
 import { one, q } from "./db";
 import { PushRow, sendPush } from "./push";
 import { getProfile, HttpError, todayStartISO } from "./server";
+import { notifyUser } from "./whatsapp";
 
 /** Jeda minimum antar "bel" ke orang yang sama, supaya tidak terasa diteror. */
 export const NUDGE_GAP_HOURS = 2;
@@ -24,7 +25,8 @@ const LAST_LOG = `greatest(
 export async function familyStatus(userId: string): Promise<FamilyStatus[]> {
   const rows = await q<Omit<FamilyStatus, "logged_today">>(
     `select p.id as profile_id, p.nama, ${LAST_LOG} as last_log,
-       (select count(*)::int from push_subscriptions s where s.profile_id = p.id and s.user_id <> $1) as devices,
+       (select count(*)::int from push_subscriptions s where s.profile_id = p.id and s.user_id <> $1)
+         + (select count(*)::int from users u where u.self_profile_id = p.id and u.phone is not null and u.id <> $1) as devices,
        (select max(created_at) from nudges n where n.profile_id = p.id) as last_nudge
      from profiles p join family_members fm on fm.family_id = p.family_id
      where fm.user_id = $1 order by p.created_at`,
@@ -35,7 +37,7 @@ export async function familyStatus(userId: string): Promise<FamilyStatus[]> {
 }
 
 /** Kirim bel ke HP orang tersebut. Mengembalikan jumlah HP yang menerima. */
-export async function nudge(userId: string, profileId: string): Promise<{ sent: number; nama: string }> {
+export async function nudge(userId: string, profileId: string): Promise<{ sent: number; viaWa: boolean; nama: string }> {
   const profile = await getProfile(userId, profileId); // sekaligus memastikan satu keluarga
   const recent = await one<{ created_at: string }>(
     `select created_at from nudges where profile_id = $1 and created_at > now() - interval '${NUDGE_GAP_HOURS} hours'
@@ -50,7 +52,6 @@ export async function nudge(userId: string, profileId: string): Promise<{ sent: 
     "select id, endpoint, p256dh, auth from push_subscriptions where profile_id = $1 and user_id <> $2",
     [profileId, userId],
   );
-  if (!subs.length) throw new HttpError(409, `${profile.nama} belum menyalakan notifikasi di HP-nya. Coba telepon atau WA langsung ya.`);
   const sapa = profile.panggilan && profile.panggilan !== "kamu" ? profile.panggilan : profile.nama;
   let sent = 0;
   for (const s of subs) {
@@ -60,9 +61,26 @@ export async function nudge(userId: string, profileId: string): Promise<{ sent: 
       url: "/?tab=catatan", tag: "bel-keluarga",
     })) sent++;
   }
-  if (!sent) throw new HttpError(502, "Notifikasi tidak terkirim. HP-nya mungkin sudah mencabut izin notifikasi.");
+  // cadangan: WhatsApp ke nomor yang terhubung dengan profil ini
+  let viaWa = 0;
+  if (!sent) {
+    const owners = await q<{ phone: string; wa_last_inbound: string | null }>(
+      `select u.phone, u.wa_last_inbound from users u join family_members fm on fm.user_id = u.id and fm.family_id = $2
+       where u.self_profile_id = $1 and u.phone is not null and u.id <> $3`,
+      [profileId, profile.family_id, userId],
+    );
+    for (const o of owners) {
+      if (await notifyUser(o, `🔔 ${sapa}, jangan lupa catat makan hari ini ya. Keluarga ikut memantau 💛\nBuka aplikasi Boleh Gak untuk mencatat.`,
+        { name: process.env.WA_TEMPLATE_NUDGE, params: [sapa] })) viaWa++;
+    }
+  }
+  if (!sent && !viaWa) {
+    throw new HttpError(subs.length ? 502 : 409, subs.length
+      ? "Notifikasi tidak terkirim. HP-nya mungkin sudah mencabut izin notifikasi."
+      : `${profile.nama} belum menyalakan notifikasi atau menghubungkan WhatsApp. Coba telepon langsung ya.`);
+  }
   await q("insert into nudges (profile_id, from_user) values ($1, $2)", [profileId, userId]);
-  return { sent, nama: profile.nama };
+  return { sent: sent + viaWa, viaWa: viaWa > 0, nama: profile.nama };
 }
 
 /**

@@ -72,7 +72,14 @@ async function userByKey(key: string | undefined): Promise<User | null> {
   if (!key) return null;
   const k = normalizeKey(key);
   if (!isValidKey(k)) return null;
-  return one<User>("update users set last_seen = now() where device_key_hash = $1 returning id", [hashKey(k)]);
+  const h = hashKey(k);
+  // HP utama akun, atau HP tambahan yang masuk lewat WhatsApp (user_devices)
+  return one<User>(
+    `update users set last_seen = now()
+     where id = coalesce((select id from users where device_key_hash = $1), (select user_id from user_devices where key_hash = $1))
+     returning id`,
+    [h],
+  );
 }
 
 export async function currentUser(): Promise<User | null> {

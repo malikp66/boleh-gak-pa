@@ -17,9 +17,9 @@ export default function FamilyCard() {
   async function ring(r: Status) {
     setBusy(r.profile_id);
     try {
-      await api("/api/nudge", { profileId: r.profile_id });
+      const res = await api<{ viaWa: boolean }>("/api/nudge", { profileId: r.profile_id });
       play("saved");
-      toast.success(`Pengingat terkirim ke HP ${r.nama}.`, "🔔 Bel terkirim");
+      toast.success(res.viaWa ? `Pengingat terkirim ke WhatsApp ${r.nama}.` : `Pengingat terkirim ke HP ${r.nama}.`, "🔔 Bel terkirim");
       setRows((list) => list?.map((x) => (x.profile_id === r.profile_id ? { ...x, last_nudge: new Date().toISOString() } : x)) ?? null);
     } catch (e) {
       play("error");
@@ -42,7 +42,7 @@ export default function FamilyCard() {
           {!r.logged_today && (
             r.devices > 0
               ? <button className="btn sm bell" disabled={busy === r.profile_id} onClick={() => ring(r)}>🔔 Ingatkan</button>
-              : <small className="muted fam-note">belum pasang notifikasi</small>
+              : <small className="muted fam-note">belum pasang notifikasi / WA</small>
           )}
         </div>
       ))}
