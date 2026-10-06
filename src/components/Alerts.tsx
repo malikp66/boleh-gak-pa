@@ -37,6 +37,7 @@ const META: Record<AlertType, { icon: string; label: string; duration: number }>
   error: { icon: "⛔", label: "Gagal", duration: 6000 },
 };
 const MAX_VISIBLE = 3;
+let alertSeq = 0; // penomoran alert; cukup di level modul (bukan state/ref) karena tidak memengaruhi render
 
 const noop = Object.assign(() => {}, { success: () => {}, info: () => {}, warning: () => {}, error: () => {} }) as Toast;
 const AlertCtx = createContext<Toast>(noop);
@@ -44,7 +45,6 @@ export const useToast = () => useContext(AlertCtx);
 
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<AlertItem[]>([]);
-  const nextId = useRef(1);
 
   const dismiss = useCallback((id: number) => {
     setItems((list) => list.map((a) => (a.id === id ? { ...a, leaving: true } : a)));
@@ -55,7 +55,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     const a: AlertInput = typeof input === "string" ? { message: input, type } : input;
     const t = a.type ?? type ?? "info";
     const item: AlertItem = {
-      id: nextId.current++, type: t, title: a.title, message: a.message,
+      id: ++alertSeq, type: t, title: a.title, message: a.message,
       duration: a.duration ?? META[t].duration, action: a.action,
     };
     setItems((list) => {
