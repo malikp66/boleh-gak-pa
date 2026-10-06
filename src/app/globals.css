@@ -368,6 +368,11 @@ a.btn { text-decoration: none; }
 .sign-k { width: 40px; height: 40px; flex: none; display: grid; place-items: center; font: 400 16px var(--head); background: var(--merah); border: 2px solid #111; }
 .med-list { display: grid; gap: 8px; margin-bottom: 8px; }
 .care-item.on-plain { background: var(--blue); }
+/* baris pengaturan yang berdiri sendiri (di luar .care / .med-list) tetap berjarak */
+.care-item { margin: 0 0 10px; }
+.care > .care-item, .med-list > .care-item { margin: 0; }
+.care-item + .btn { margin-top: 2px; }
+.care-item small { display: block; font-weight: 600; line-height: 1.35; margin-top: 2px; }
 a.pill { text-decoration: none; }
 
 /* ---------- alert global (atas layar) */
