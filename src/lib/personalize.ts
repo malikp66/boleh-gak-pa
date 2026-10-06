@@ -43,7 +43,9 @@ const ALLERGEN_WORDS: [string, RegExp][] = [
 export interface LocalMapping { kondisi: ConditionId[]; obat: MedId[]; alergen: string[] }
 
 export function mapLocally(kondisiLain: string, obatLain: string, alergenLain: string): LocalMapping {
-  const k = kondisiLain.toLowerCase(), o = (obatLain + " " + kondisiLain).toLowerCase(), a = alergenLain.toLowerCase();
+  // satu kotak bebas boleh berisi semuanya: alergen hanya dibaca dari bagian yang menyebut "alergi"
+  const k = kondisiLain.toLowerCase(), o = (obatLain + " " + kondisiLain).toLowerCase();
+  const a = [alergenLain, ...(k.match(/alergi[^,.;\n]*/g) ?? [])].join(" ").toLowerCase();
   return {
     kondisi: CONDITION_WORDS.filter(([, re]) => re.test(k)).map(([id]) => id),
     obat: MED_WORDS.filter(([, re]) => re.test(o)).map(([id]) => id),

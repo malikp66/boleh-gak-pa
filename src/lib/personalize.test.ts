@@ -35,3 +35,12 @@ describe("personal notes in evaluation", () => {
     expect(r.reasons.some((x) => x.condition === "pribadi")).toBe(true);
   });
 });
+
+describe("single free-text box", () => {
+  it("reads meds, conditions and allergies from one sentence without false allergens", () => {
+    const m = mapLocally("minum amlodipin, maag, darah tinggi, alergi udang. suka tahu tempe", "", "");
+    expect(m.kondisi).toEqual(["hipertensi"]);
+    expect(m.obat).toEqual(["amlodipin"]);
+    expect(m.alergen).toEqual(["krustasea"]);
+  });
+});

@@ -13,9 +13,14 @@ import { ensureDevice } from "@/lib/device";
 import { play } from "@/lib/sound";
 import Link from "next/link";
 import { EmergencyButton, EmergencySheet } from "./Emergency";
+import { simpleMode } from "@/lib/simple-mode";
+import { useClientValue } from "@/lib/use-client-value";
 
 type Tab = "cek" | "daftar" | "catatan" | "pantau" | "review";
 const PROFILE_KEY = "active-profile";
+const TAB_LABEL: Record<Tab, [string, string]> = {
+  cek: ["🍽️", "Tanya"], daftar: ["📋", "Daftar"], catatan: ["📒", "Catatan"], pantau: ["📈", "Pantau"], review: ["⭐", "Rangkuman"],
+};
 
 export default function App() {
   const router = useRouter();
@@ -55,7 +60,10 @@ export default function App() {
   const profile = me?.profiles.find((p) => p.id === profileId);
   const conditions = profile ? normalizeConditions(profile.kondisi) : [];
   const monitors = conditions.map((c) => conditionInfo(c)?.monitor).filter(Boolean) as MonitorKind[];
-  const tabs: Tab[] = ["cek", "daftar", "catatan", ...(monitors.length ? (["pantau"] as Tab[]) : []), "review"];
+  const simple = useClientValue(simpleMode, true);
+  const tabs: Tab[] = simple
+    ? ["cek", "catatan", ...(monitors.length ? (["pantau"] as Tab[]) : [])]
+    : ["cek", "daftar", "catatan", ...(monitors.length ? (["pantau"] as Tab[]) : []), "review"];
   const hasGout = monitors.includes("kambuh");
 
   // banner "lagi kambuh" di tab Cek; dimuat ulang setiap ada perubahan di tab Pantau (reload)
@@ -113,7 +121,7 @@ export default function App() {
 
       {sos && <EmergencySheet profile={profile} onClose={() => setSos(false)} />}
       <nav className="bottom" style={{ gridTemplateColumns: `repeat(${tabs.length}, 1fr)` }}>
-        {tabs.map((t) => <button key={t} className={tab === t ? "active" : ""} onClick={() => go(t)}>{t}</button>)}
+        {tabs.map((t) => <button key={t} className={tab === t ? "active" : ""} onClick={() => go(t)}><span aria-hidden="true">{TAB_LABEL[t][0]}</span>{TAB_LABEL[t][1]}</button>)}
       </nav>
     </>
   );

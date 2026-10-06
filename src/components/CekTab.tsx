@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api, Chips, Meter, resizeImage, speak, useToast } from "./ui";
 import { AssessResult, Profile } from "./types";
-import { ConditionId, conditionInfo, normalizeConditions } from "@/lib/conditions";
+import { ConditionId, conditionInfo, normalizeConditions, spokenAlergen } from "@/lib/conditions";
 import { play } from "@/lib/sound";
 import { cleanSpoken, useSpeech } from "@/lib/speech";
 
@@ -184,8 +184,10 @@ export default function CekTab({ profile, flareJoint, prefill, welcome, onSaveUn
           <input type="text" value={food} placeholder="mis. ketoprak" autoComplete="off" enterKeyHint="go"
             onChange={(e) => { setFood(e.target.value); clear(); }} />
           <div className="chips"><Chips items={chips} onPick={(f) => { setFood(f); clear(); }} /></div>
-          <p className="eyebrow">Situasinya</p>
-          <div className="chips"><Chips items={NOTE_CHIPS} value={note} onPick={setNote} /></div>
+          <details className="situasi">
+            <summary>Situasinya: <b>{note}</b> ✎</summary>
+            <div className="chips"><Chips items={NOTE_CHIPS} value={note} onPick={setNote} /></div>
+          </details>
           <button className="btn big primary" type="submit" disabled={Boolean(loading)}>Boleh gak? →</button>
         </form>
       </div>
@@ -226,9 +228,10 @@ export default function CekTab({ profile, flareJoint, prefill, welcome, onSaveUn
             {r.nutrients && dims.length > 0 && (
               <div className="meters">{dims.map((d) => <Meter key={d} label={DIM_LABEL[d]} level={(r.nutrients as Record<string, string | null>)[d]} />)}</div>
             )}
-            {conditions.includes("alergi") && r.alergen.length > 0 && <p className="small" style={{ marginTop: 10 }}><b>Mungkin mengandung:</b> {r.alergen.join(", ")}. Tanyakan ke penjual.</p>}
+            {conditions.includes("alergi") && r.alergen.length > 0 && <p className="small" style={{ marginTop: 10 }}><b>Mungkin mengandung:</b> {spokenAlergen(r.alergen)}. Tanyakan ke penjual.</p>}
             {r.flare_active && <span className="flare-tag">Lagi kambuh, lebih ketat</span>}
           </div>
+          <button className="btn big listen" onClick={() => speak(`${r.food}. ${VERDICT[r.status]}. ${r.headline} Porsinya: ${r.portion}.`, toast)}>🔊 Dengarkan jawabannya</button>
 
           <div className="card">
             <p className="eyebrow">Porsi aman</p>

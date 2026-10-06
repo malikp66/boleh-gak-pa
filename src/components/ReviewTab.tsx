@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { api, speak, useToast } from "./ui";
 import { Me, Profile, Review } from "./types";
+import InviteCard from "./InviteCard";
 import RecoveryCard from "./RecoveryCard";
 import { normalizeConditions } from "@/lib/conditions";
 
@@ -66,19 +67,7 @@ export default function ReviewTab({ profile, me }: { profile: Profile; me: Me })
         )}
       </div>
 
-      {family && (
-        <div className="card">
-          <h2>Ajak keluarga</h2>
-          <p className="small">Bagikan kode ini supaya anggota keluarga lain bisa ikut mencatat dan melihat data {family.name}.</p>
-          <div className="invite">
-            <code>{family.invite_code}</code>
-            <button className="btn sm" style={{ width: "auto" }} onClick={() => {
-              const text = `Gabung "${family.name}" di Boleh Gak, Ya? → ${location.origin} (kode: ${family.invite_code})`;
-              (navigator.share ? navigator.share({ text }) : navigator.clipboard.writeText(text)).then(() => toast.success("Undangan siap dibagikan."), () => {});
-            }}>Bagikan</button>
-          </div>
-        </div>
-      )}
+      {family && <InviteCard family={family} />}
     </>
   );
 }

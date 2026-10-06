@@ -47,6 +47,11 @@ export const ALERGEN_LABEL: Record<string, string> = {
   susu: "Susu", telur: "Telur", gluten: "Gluten (terigu)", ikan: "Ikan", krustasea: "Udang & kepiting (termasuk terasi, ebi)",
   moluska: "Cumi, kerang, gurita", wijen: "Wijen",
 };
+/** Sebutan sehari-hari untuk kalimat (bukan istilah gizi). */
+export const ALERGEN_SPOKEN: Record<string, string> = {
+  krustasea: "udang/kepiting", moluska: "cumi/kerang", "kacang pohon": "kacang mete/almond", gluten: "terigu",
+};
+export const spokenAlergen = (list: string[]) => list.map((a) => ALERGEN_SPOKEN[a] ?? a).join(", ");
 
 /**
  * Risiko kontaminasi silang per kategori: alat, minyak goreng, atau bumbu yang sering dipakai bersama
@@ -149,9 +154,9 @@ function single(f: NutrientFood, c: ConditionId, ctx: EvalContext): Reason | nul
       return null;
     case "alergi": {
       const hit = (f.alergen ?? []).filter((a) => ctx.alergen?.includes(a));
-      if (hit.length) return { condition: c, status: "merah", text: `biasanya mengandung ${hit.join(", ")}` };
+      if (hit.length) return { condition: c, status: "merah", text: `biasanya mengandung ${spokenAlergen(hit)}` };
       const cross = (CROSS_CONTACT[f.kategori ?? ""] ?? []).filter((a) => ctx.alergen?.includes(a));
-      if (cross.length) return { condition: c, status: "kuning", text: `risiko tercampur ${cross.join(", ")} (alat/minyak sama) — tanya penjual` };
+      if (cross.length) return { condition: c, status: "kuning", text: `risiko tercampur ${spokenAlergen(cross)} (alat/minyak sama) — tanya penjual` };
       return null;
     }
     case "sehat": {

@@ -1,7 +1,7 @@
 import "server-only";
 import { z } from "zod";
 import { AIUnavailableError, generateJSON } from "./ai";
-import { ConditionId, conditionInfo, evaluate, Evaluation, normalizeConditions } from "./conditions";
+import { ConditionId, conditionInfo, evaluate, Evaluation, normalizeConditions, spokenAlergen } from "./conditions";
 import { combine, findFoods, FOODS } from "./foods/match";
 import { CombinedFood, Food, MatchedFood } from "./foods/types";
 import { resolveVision, VisionGuess } from "./foods/vision";
@@ -76,7 +76,7 @@ const DIABETES_TIPE: Record<string, string> = {
 function personLine(p: Profile, conds: ConditionId[]) {
   const labels = conds.map((c) => (c === "diabetes" && p.diabetes_tipe ? DIABETES_TIPE[p.diabetes_tipe] : conditionInfo(c)!.short));
   const extra = [
-    conds.includes("alergi") && p.alergen.length ? `alergi: ${p.alergen.join(", ")}` : "",
+    conds.includes("alergi") && p.alergen.length ? `alergi: ${spokenAlergen(p.alergen)}` : "",
     conds.includes("diabetes") && p.insulin ? "memakai insulin" : "",
   ].filter(Boolean);
   const lain = [
@@ -166,7 +166,7 @@ export function assessCacheKey(foodText: string, foods: Food[], ctx: AssessConte
   const found = findFoods(foodText, foods);
   const conds = [...conditionsOf(ctx.profile)].sort();
   return JSON.stringify({
-    v: 3,
+    v: 4,
     foods: found.length ? found.map((f) => f.name) : [foodText.trim().toLowerCase()],
     conds,
     alergen: conds.includes("alergi") ? [...ctx.profile.alergen].sort() : [],

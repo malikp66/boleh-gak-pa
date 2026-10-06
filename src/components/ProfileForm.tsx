@@ -94,6 +94,7 @@ export default function ProfileForm({ initial, submitLabel, onSubmit, onCancel }
     try {
       await onSubmit({
         ...d,
+        panggilan: (d.panggilan.trim() || d.nama.trim()).slice(0, 20),
         alergen: has("alergi") ? d.alergen : [],
         diabetes_tipe: has("diabetes") ? d.diabetes_tipe ?? "tidak_tahu" : null,
         insulin: has("diabetes") && d.insulin,
@@ -111,18 +112,9 @@ export default function ProfileForm({ initial, submitLabel, onSubmit, onCancel }
 
   return (
     <form onSubmit={submit}>
-      <div className="grid2">
-        <label className="field">Nama <input type="text" value={d.nama} onChange={(e) => set("nama", e.target.value)} placeholder="mis. Omah" required /></label>
-        <label className="field">Dipanggil <input type="text" value={d.panggilan} onChange={(e) => set("panggilan", e.target.value)} placeholder="mis. Mah" required /></label>
-      </div>
-      <div className="grid2">
-        <label className="field">Usia <input type="number" min={1} max={120} value={d.usia ?? ""} onChange={(e) => set("usia", num(e.target.value))} /></label>
-        <label className="field">Untuk
-          <select value={d.untuk} onChange={(e) => set("untuk", e.target.value)}>{UNTUK.map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select>
-        </label>
-      </div>
+      <label className="field">Nama <input type="text" value={d.nama} onChange={(e) => set("nama", e.target.value)} placeholder="mis. Omah" required /></label>
 
-      <p className="eyebrow">Kondisi</p>
+      <p className="eyebrow">Kondisi (boleh lebih dari satu)</p>
       <div className="cond-list">
         {CONDITIONS.map((c) => (
           <button type="button" key={c.id} className={`cond${has(c.id) ? " on" : ""}`} onClick={() => pickCondition(c.id)}>
@@ -132,18 +124,6 @@ export default function ProfileForm({ initial, submitLabel, onSubmit, onCancel }
           </button>
         ))}
       </div>
-
-      <label className="field">➕ Kondisi lain (opsional)
-        <textarea rows={2} value={d.kondisi_lain} onChange={(e) => set("kondisi_lain", e.target.value)} placeholder="mis. maag kronis, ginjal, asma, sedang hamil" />
-      </label>
-
-      {has("diabetes") && (
-        <>
-          <p className="eyebrow">🩸 Jenis diabetes</p>
-          <div className="chips">{DM_TIPE.map(([v, l]) => <button type="button" key={v} className={`chip${d.diabetes_tipe === v ? " on" : ""}`} onClick={() => set("diabetes_tipe", v)}>{l}</button>)}</div>
-          <label className="check"><input type="checkbox" checked={d.insulin} onChange={(e) => set("insulin", e.target.checked)} /> Memakai suntikan insulin</label>
-        </>
-      )}
       {has("alergi") && (
         <>
           <p className="eyebrow">⚠️ Alergi terhadap</p>
@@ -151,28 +131,13 @@ export default function ProfileForm({ initial, submitLabel, onSubmit, onCancel }
         </>
       )}
 
-      <label className="field">⚠️ Alergi lain (opsional)
-        <input type="text" value={d.alergen_lain} onChange={(e) => set("alergen_lain", e.target.value)} placeholder="mis. alergi nanas, MSG" />
+      <label className="field">Ada yang perlu diperhatikan lagi? (boleh kosong)
+        <textarea rows={3} value={d.kondisi_lain} maxLength={300} onChange={(e) => set("kondisi_lain", e.target.value)}
+          placeholder="Tulis bebas: obat yang diminum, penyakit lain, alergi. Mis. minum amlodipin, maag, alergi udang" />
       </label>
-
-      <p className="eyebrow">💊 Obat yang rutin diminum (opsional)</p>
-      <p className="small muted" style={{ margin: "0 0 6px" }}>Untuk peringatan interaksi makanan. Lihat nama di bungkus obat.</p>
-      <div className="med-list">
-        {MEDICATIONS.map((m) => (
-          <label key={m.id} className={`care-item${d.obat.includes(m.id) ? " on-plain" : ""}`}>
-            <input type="checkbox" checked={d.obat.includes(m.id)} onChange={() => set("obat", toggle(d.obat, m.id))} />
-            <span><b>{m.label}</b><br /><small className="muted">{m.contoh}</small></span>
-          </label>
-        ))}
-      </div>
-
-      <label className="field">💊 Obat lain (opsional)
-        <input type="text" value={d.obat_lain} onChange={(e) => set("obat_lain", e.target.value)} placeholder="tulis nama di bungkus obat, mis. captopril, omeprazole" />
-      </label>
-
       {hasOther && !sug && (
-        <button type="button" className="btn ink" style={{ margin: "6px 0 4px" }} onClick={understand} disabled={thinking}>
-          {thinking ? "AI sedang memahami…" : "🤖 Pahami isian lainnya dengan AI"}
+        <button type="button" className="btn ink" style={{ margin: "0 0 4px" }} onClick={understand} disabled={thinking}>
+          {thinking ? "Sedang dipahami…" : "🤖 Bantu pahami tulisan ini"}
         </button>
       )}
       {d.personalisasi && !sug && (
@@ -203,7 +168,7 @@ export default function ProfileForm({ initial, submitLabel, onSubmit, onCancel }
               {sug.ai.perlu_dokter && <div className="alert perhatian small">Kondisi ini biasanya butuh diet khusus dari dokter/ahli gizi. Aplikasi hanya membantu mengingatkan.</div>}
               {sug.ai.catatan_keamanan && <p className="small muted">{sug.ai.catatan_keamanan}</p>}
             </>
-          ) : <p className="small muted">AI belum tersedia. Isian tetap disimpan dan dibaca AI saat menulis saran nanti.</p>}
+          ) : <p className="small muted">AI belum tersedia. Tulisan tetap disimpan dan dibaca AI saat menulis saran nanti.</p>}
           <div className="row" style={{ marginTop: 8 }}>
             <button type="button" className="btn sm" onClick={() => setSug(null)}>Abaikan</button>
             <button type="button" className="btn sm good" onClick={applySuggestion}>Pakai usulan ini</button>
@@ -211,39 +176,75 @@ export default function ProfileForm({ initial, submitLabel, onSubmit, onCancel }
         </div>
       )}
 
-      {(has("diabetes") || tensi) && (
-        <>
-          <p className="eyebrow">🎯 Target dari dokter (opsional)</p>
-          <p className="small muted" style={{ margin: "0 0 6px" }}>Kalau dokter memberi target sendiri, isi di sini. Kosongkan untuk memakai target umum.</p>
-          {has("diabetes") && (
-            <div className="grid2">
-              <label className="field">Gula puasa maks <input type="number" min={60} max={250} value={d.target_gula_puasa ?? ""} onChange={(e) => set("target_gula_puasa", num(e.target.value))} placeholder="mis. 130" /></label>
-              <label className="field">Gula 2 jam maks <input type="number" min={80} max={300} value={d.target_gula_2jam ?? ""} onChange={(e) => set("target_gula_2jam", num(e.target.value))} placeholder="mis. 180" /></label>
-            </div>
-          )}
-          {tensi && (
-            <div className="grid2">
-              <label className="field">Tensi atas maks <input type="number" min={80} max={200} value={d.target_sistolik ?? ""} onChange={(e) => set("target_sistolik", num(e.target.value))} placeholder="mis. 130" /></label>
-              <label className="field">Tensi bawah maks <input type="number" min={50} max={130} value={d.target_diastolik ?? ""} onChange={(e) => set("target_diastolik", num(e.target.value))} placeholder="mis. 80" /></label>
-            </div>
-          )}
-        </>
-      )}
+      <details className="more">
+        <summary>Detail tambahan <small>boleh dilewati, bisa diisi anak/keluarga nanti</small></summary>
+        <div className="grid2">
+          <label className="field">Dipanggil <input type="text" value={d.panggilan} onChange={(e) => set("panggilan", e.target.value)} placeholder="mis. Mah" /></label>
+          <label className="field">Usia <input type="number" min={1} max={120} value={d.usia ?? ""} onChange={(e) => set("usia", num(e.target.value))} /></label>
+        </div>
+        <label className="field">Untuk
+          <select value={d.untuk} onChange={(e) => set("untuk", e.target.value)}>{UNTUK.map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select>
+        </label>
 
-      <p className="eyebrow">📞 Kontak darurat keluarga</p>
-      <div className="grid2">
-        <label className="field">Nama <input type="text" value={d.kontak_nama} onChange={(e) => set("kontak_nama", e.target.value)} placeholder="mis. Malik" /></label>
-        <label className="field">Telepon <input type="tel" inputMode="tel" value={d.kontak_telepon} onChange={(e) => set("kontak_telepon", e.target.value)} placeholder="08…" /></label>
-      </div>
+        {has("diabetes") && (
+          <>
+            <p className="eyebrow">🩸 Jenis diabetes</p>
+            <div className="chips">{DM_TIPE.map(([v, l]) => <button type="button" key={v} className={`chip${d.diabetes_tipe === v ? " on" : ""}`} onClick={() => set("diabetes_tipe", v)}>{l}</button>)}</div>
+            <label className="check"><input type="checkbox" checked={d.insulin} onChange={(e) => set("insulin", e.target.checked)} /> Memakai suntikan insulin</label>
+          </>
+        )}
 
-      <label className="field">Catatan dari dokter
-        <textarea rows={2} value={d.catatan_dokter} onChange={(e) => set("catatan_dokter", e.target.value)} placeholder="mis. nasi maks ¾ gelas, hindari santan" />
-      </label>
+        <p className="eyebrow">💊 Obat yang rutin diminum</p>
+        <p className="small muted" style={{ margin: "0 0 6px" }}>Atau cukup tulis nama obatnya di kotak atas.</p>
+        <div className="med-list">
+          {MEDICATIONS.map((m) => (
+            <label key={m.id} className={`care-item${d.obat.includes(m.id) ? " on-plain" : ""}`}>
+              <input type="checkbox" checked={d.obat.includes(m.id)} onChange={() => set("obat", toggle(d.obat, m.id))} />
+              <span><b>{m.label}</b><br /><small className="muted">{m.contoh}</small></span>
+            </label>
+          ))}
+        </div>
+        {(initial.obat_lain || initial.alergen_lain) && (
+          <>
+            <label className="field">Obat lain <input type="text" value={d.obat_lain} onChange={(e) => set("obat_lain", e.target.value)} /></label>
+            <label className="field">Alergi lain <input type="text" value={d.alergen_lain} onChange={(e) => set("alergen_lain", e.target.value)} /></label>
+          </>
+        )}
+
+        {(has("diabetes") || tensi) && (
+          <>
+            <p className="eyebrow">🎯 Target dari dokter</p>
+            <p className="small muted" style={{ margin: "0 0 6px" }}>Kosongkan untuk memakai target umum.</p>
+            {has("diabetes") && (
+              <div className="grid2">
+                <label className="field">Gula puasa maks <input type="number" min={60} max={250} value={d.target_gula_puasa ?? ""} onChange={(e) => set("target_gula_puasa", num(e.target.value))} placeholder="mis. 130" /></label>
+                <label className="field">Gula 2 jam maks <input type="number" min={80} max={300} value={d.target_gula_2jam ?? ""} onChange={(e) => set("target_gula_2jam", num(e.target.value))} placeholder="mis. 180" /></label>
+              </div>
+            )}
+            {tensi && (
+              <div className="grid2">
+                <label className="field">Tensi atas maks <input type="number" min={80} max={200} value={d.target_sistolik ?? ""} onChange={(e) => set("target_sistolik", num(e.target.value))} placeholder="mis. 130" /></label>
+                <label className="field">Tensi bawah maks <input type="number" min={50} max={130} value={d.target_diastolik ?? ""} onChange={(e) => set("target_diastolik", num(e.target.value))} placeholder="mis. 80" /></label>
+              </div>
+            )}
+          </>
+        )}
+
+        <p className="eyebrow">📞 Kontak darurat keluarga</p>
+        <div className="grid2">
+          <label className="field">Nama <input type="text" value={d.kontak_nama} onChange={(e) => set("kontak_nama", e.target.value)} placeholder="mis. Malik" /></label>
+          <label className="field">Telepon <input type="tel" inputMode="tel" value={d.kontak_telepon} onChange={(e) => set("kontak_telepon", e.target.value)} placeholder="08…" /></label>
+        </div>
+
+        <label className="field">Catatan dari dokter
+          <textarea rows={2} value={d.catatan_dokter} onChange={(e) => set("catatan_dokter", e.target.value)} placeholder="mis. nasi maks ¾ gelas, hindari santan" />
+        </label>
+      </details>
 
       {error && <div className="error-box">{error}</div>}
       <div className="row" style={{ marginTop: 14 }}>
         {onCancel && <button type="button" className="btn" onClick={onCancel}>Batal</button>}
-        <button className="btn primary" disabled={busy}>{busy ? "Menyimpan…" : submitLabel}</button>
+        <button className="btn big primary" disabled={busy}>{busy ? "Menyimpan…" : submitLabel}</button>
       </div>
     </form>
   );

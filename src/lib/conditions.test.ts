@@ -35,7 +35,7 @@ describe("evaluate per condition", () => {
   it("flags allergens only for the person's allergies", () => {
     expect(ev("ketoprak", ["alergi"], { alergen: ["kacang tanah"] }).status).toBe("merah");
     expect(ev("ketoprak", ["alergi"], { alergen: ["udang"] }).status).toBe("hijau");
-    expect(ev("tumis kangkung", ["alergi"], { alergen: ["krustasea"] }).reasons[0].text).toContain("krustasea"); // terasi
+    expect(ev("tumis kangkung", ["alergi"], { alergen: ["krustasea"] }).reasons[0].text).toContain("udang"); // terasi
   });
 
   it("takes the worst light across conditions and explains why", () => {

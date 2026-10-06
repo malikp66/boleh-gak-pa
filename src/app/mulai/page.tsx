@@ -4,12 +4,11 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { api } from "@/components/ui";
 import { ALERGEN_LABEL, ALERGEN_LIST, CONDITIONS, ConditionId, EXCLUSIVE } from "@/lib/conditions";
-import { MEDICATIONS } from "@/lib/medications";
 import { ensureDevice, restoreDevice } from "@/lib/device";
 import { mapLocally } from "@/lib/personalize";
 
 type Untuk = "diri" | "orang_tua" | "pasangan" | "anak" | "lainnya";
-type Step = "welcome" | "untuk" | "setuju" | "kondisi" | "detail" | "profil" | "kode" | "pulih";
+type Step = "welcome" | "siapa" | "kondisi" | "kode" | "pulih";
 
 const UNTUK: { id: Untuk; emoji: string; label: string; panggilan: string }[] = [
   { id: "diri", emoji: "🙋", label: "Diri sendiri", panggilan: "kamu" },
@@ -19,30 +18,21 @@ const UNTUK: { id: Untuk; emoji: string; label: string; panggilan: string }[] = 
   { id: "lainnya", emoji: "👥", label: "Orang lain", panggilan: "" },
 ];
 
-const DM_TIPE = [
-  ["pradiabetes", "Pradiabetes"], ["tipe_2", "Tipe 2"], ["tipe_1", "Tipe 1"], ["gestasional", "Saat hamil"], ["tidak_tahu", "Tidak tahu"],
-] as const;
-
 const WELCOME = [
-  { emoji: "🍽️", title: "Ragu sebelum makan?", text: "Ketik atau foto makanannya. Langsung tahu aman, dibatasi, atau sebaiknya jangan, sesuai kondisimu." },
-  { emoji: "🚦", title: "Lampu dari tabel gizi", text: "Penilaian memakai tabel 342 makanan Indonesia dan aturan dari pedoman Kemenkes, PERKENI, dan WHO. AI hanya menulis sarannya." },
-  { emoji: "🔒", title: "Tanpa daftar, tetap aman", text: "Langsung pakai tanpa login atau email. Datamu hanya bisa dilihat olehmu dan keluarga yang kamu undang, dan bisa dipulihkan dengan kode pemulihan." },
+  { emoji: "🚦", text: "Langsung tahu boleh, dibatasi, atau jangan" },
+  { emoji: "🎤", text: "Cukup tanya pakai suara atau foto" },
+  { emoji: "🔒", text: "Tanpa daftar akun, data tetap aman" },
 ];
 
 export default function Mulai() {
   const router = useRouter();
   const [step, setStep] = useState<Step>("welcome");
-  const [slide, setSlide] = useState(0);
   const [untuk, setUntuk] = useState<Untuk>("diri");
   const [agree, setAgree] = useState(false);
   const [kondisi, setKondisi] = useState<ConditionId[]>([]);
   const [alergen, setAlergen] = useState<string[]>([]);
-  const [dmTipe, setDmTipe] = useState<string>("tipe_2");
-  const [insulin, setInsulin] = useState(false);
-  const [obat, setObat] = useState<string[]>([]);
-  const [kontak, setKontak] = useState({ nama: "", telepon: "" });
-  const [lain, setLain] = useState({ kondisi: "", obat: "" });
-  const [profil, setProfil] = useState({ nama: "", panggilan: "kamu", usia: "", catatan: "" });
+  const [lain, setLain] = useState("");
+  const [nama, setNama] = useState("");
   const [code, setCode] = useState("");
   const [recovery, setRecovery] = useState("");
   const [error, setError] = useState("");
@@ -57,7 +47,6 @@ export default function Mulai() {
       .catch((e: Error) => setError(e.message));
   }, [router]);
 
-  const needsDetail = true; // obat & kontak darurat selalu ditawarkan (opsional)
   const toggle = <T,>(list: T[], v: T) => (list.includes(v) ? list.filter((x) => x !== v) : [...list, v]);
 
   async function finish() {
@@ -67,19 +56,19 @@ export default function Mulai() {
       await ensureDevice();
       await api("/api/consent", {});
       // kata yang dikenali dari isian "lainnya" langsung ikut dipakai (tanpa AI); sisanya dibaca AI saat menulis saran
-      const m = mapLocally(lain.kondisi, lain.obat, "");
+      const m = mapLocally(lain, "", "");
       const allKondisi = [...new Set([...kondisi.filter((k) => k !== "sehat" || !m.kondisi.length), ...m.kondisi])];
-      const allObat = [...new Set([...obat, ...m.obat])];
-      const nama = profil.nama.trim() || (untuk === "diri" ? "Saya" : "Keluargaku");
+      const allAlergen = [...new Set([...(kondisi.includes("alergi") ? alergen : []), ...m.alergen])];
+      if (allAlergen.length && !allKondisi.includes("alergi")) allKondisi.push("alergi");
+      const name = nama.trim() || (untuk === "diri" ? "Saya" : "Keluargaku");
       await api("/api/onboarding", {
         action: "create",
-        familyName: `Keluarga ${nama}`.slice(0, 60),
+        familyName: `Keluarga ${name}`.slice(0, 60),
         profile: {
-          nama, panggilan: profil.panggilan.trim() || "kamu", usia: profil.usia ? Number(profil.usia) : null, untuk,
+          nama: name, panggilan: untuk === "diri" ? "kamu" : name.slice(0, 20), usia: null, untuk,
           kondisi: EXCLUSIVE.some(([a, b]) => allKondisi.includes(a) && allKondisi.includes(b)) ? kondisi : allKondisi,
-          alergen: kondisi.includes("alergi") ? alergen : [],
-          diabetes_tipe: kondisi.includes("diabetes") ? dmTipe : null, insulin: kondisi.includes("diabetes") && insulin,
-          catatan_dokter: profil.catatan, obat: allObat, kondisi_lain: lain.kondisi.trim(), obat_lain: lain.obat.trim(), kontak_nama: kontak.nama, kontak_telepon: kontak.telepon,
+          alergen: allAlergen, diabetes_tipe: allKondisi.includes("diabetes") ? "tidak_tahu" : null, insulin: false,
+          catatan_dokter: "", obat: m.obat, kondisi_lain: lain.trim(),
         },
       });
       router.replace("/?welcome=1");
@@ -115,26 +104,20 @@ export default function Mulai() {
     }
   }
 
-  const progress = ["untuk", "setuju", "kondisi", "detail", "profil"].indexOf(step);
+  const progress = ["siapa", "kondisi"].indexOf(step);
 
   return (
     <main className="center-page">
       <div className="card onboard">
-        {progress >= 0 && <div className="steps">{[0, 1, 2, 3, 4].map((i) => <i key={i} className={i <= progress ? "on" : ""} />)}</div>}
+        {progress >= 0 && <div className="steps">{[0, 1].map((i) => <i key={i} className={i <= progress ? "on" : ""} />)}</div>}
 
         {step === "welcome" && (
           <>
             <p className="eyebrow">Selamat datang di</p>
             <h1 className="hero-title">Boleh Gak, Ya?</h1>
-            <div className="slide">
-              <span className="emo-big">{WELCOME[slide].emoji}</span>
-              <h2>{WELCOME[slide].title}</h2>
-              <p>{WELCOME[slide].text}</p>
-              <div className="dots">{WELCOME.map((_, i) => <button key={i} aria-label={`Kartu ${i + 1}`} className={i === slide ? "on" : ""} onClick={() => setSlide(i)} />)}</div>
-            </div>
-            {slide < WELCOME.length - 1
-              ? <button className="btn big" onClick={() => setSlide(slide + 1)}>Lanjut →</button>
-              : <button className="btn big primary" onClick={() => setStep("untuk")}>Mulai sekarang →</button>}
+            <p className="lead">Ragu sebelum makan? Tanya dulu di sini.</p>
+            <ul className="welcome-list">{WELCOME.map((w) => <li key={w.text}><span>{w.emoji}</span>{w.text}</li>)}</ul>
+            <button className="btn big primary" onClick={() => setStep("siapa")}>Mulai →</button>
             <div className="row" style={{ marginTop: 12 }}>
               <button className="btn sm" onClick={() => setStep("kode")}>Punya kode keluarga</button>
               <button className="btn sm" onClick={() => setStep("pulih")}>Punya kode pemulihan</button>
@@ -145,7 +128,7 @@ export default function Mulai() {
         {step === "kode" && (
           <>
             <h2>Gabung keluarga</h2>
-            <p className="small">Masukkan kode undangan dari anggota keluargamu (ada di tab Review mereka).</p>
+            <p className="small">Masukkan kode undangan dari anggota keluargamu (ada di menu ⚙️ Profil mereka).</p>
             <label className="field">Kode undangan
               <input type="text" value={code} onChange={(e) => setCode(e.target.value.toUpperCase())} placeholder="mis. 8F3A21C9" />
             </label>
@@ -161,7 +144,7 @@ export default function Mulai() {
         {step === "pulih" && (
           <>
             <h2>Pulihkan data</h2>
-            <p className="small">Masukkan kode pemulihan yang kamu simpan (ada di tab Review di perangkat lama). Huruf besar/kecil dan tanda strip tidak masalah.</p>
+            <p className="small">Masukkan kode pemulihan yang kamu simpan (ada di menu ⚙️ Profil di HP lama). Huruf besar/kecil dan tanda strip tidak masalah.</p>
             <label className="field">Kode pemulihan
               <input type="text" value={recovery} onChange={(e) => setRecovery(e.target.value)} placeholder="XXXX-XXXX-XXXX-XXXX-XXXX-XXXX" autoCapitalize="characters" autoComplete="off" />
             </label>
@@ -174,33 +157,26 @@ export default function Mulai() {
           </>
         )}
 
-        {step === "untuk" && (
+        {step === "siapa" && (
           <>
             <h2>Untuk siapa?</h2>
-            <p className="small muted">Kamu bisa menambah anggota keluarga lain nanti.</p>
             <div className="choice-grid">
               {UNTUK.map((u) => (
-                <button key={u.id} className={`choice${untuk === u.id ? " on" : ""}`} onClick={() => { setUntuk(u.id); setProfil((p) => ({ ...p, panggilan: u.panggilan })); }}>
+                <button key={u.id} className={`choice${untuk === u.id ? " on" : ""}`} onClick={() => setUntuk(u.id)}>
                   <span>{u.emoji}</span>{u.label}
                 </button>
               ))}
             </div>
-            <Nav back={() => setStep("welcome")} next={() => setStep("setuju")} />
-          </>
-        )}
-
-        {step === "setuju" && (
-          <>
-            <h2>Sebelum lanjut</h2>
-            <p className="small">Berikutnya kamu akan mengisi data kesehatan. Ini yang perlu kamu tahu:</p>
-            <Consent agree={agree} setAgree={setAgree} />
-            <Nav back={() => setStep("untuk")} next={() => setStep("kondisi")} disabled={!agree} />
+            <label className="field">{untuk === "diri" ? "Nama kamu" : "Dipanggil apa?"}
+              <input type="text" value={nama} maxLength={40} onChange={(e) => setNama(e.target.value)} placeholder={untuk === "diri" ? "mis. Rina" : "mis. Omah, Papa, Om"} />
+            </label>
+            <Nav back={() => setStep("welcome")} next={() => setStep("kondisi")} />
           </>
         )}
 
         {step === "kondisi" && (
           <>
-            <h2>Kondisi apa yang dijaga?</h2>
+            <h2>{untuk === "diri" ? "Apa yang perlu dijaga?" : `Apa yang perlu dijaga ${nama.trim() || "dia"}?`}</h2>
             <p className="small muted">Boleh pilih lebih dari satu.</p>
             <div className="cond-list">
               {CONDITIONS.map((c) => (
@@ -212,26 +188,9 @@ export default function Mulai() {
                   })}>
                   <span className="cond-emo">{c.emoji}</span>
                   <span className="cond-text"><b>{c.label}</b><small>{c.desc}</small></span>
-                  {c.status === "beta" && <span className="beta">Beta</span>}
                 </button>
               ))}
             </div>
-            <Nav back={() => setStep("setuju")} next={() => setStep(needsDetail ? "detail" : "profil")} disabled={!kondisi.length} />
-          </>
-        )}
-
-        {step === "detail" && (
-          <>
-            <h2>Sedikit detail</h2>
-            {kondisi.includes("diabetes") && (
-              <>
-                <p className="eyebrow">🩸 Jenis diabetes</p>
-                <div className="chips">
-                  {DM_TIPE.map(([id, label]) => <button key={id} className={`chip${dmTipe === id ? " on" : ""}`} onClick={() => setDmTipe(id)}>{label}</button>)}
-                </div>
-                <label className="check"><input type="checkbox" checked={insulin} onChange={(e) => setInsulin(e.target.checked)} /> Memakai suntikan insulin</label>
-              </>
-            )}
             {kondisi.includes("alergi") && (
               <>
                 <p className="eyebrow">⚠️ Alergi terhadap</p>
@@ -240,49 +199,13 @@ export default function Mulai() {
                 </div>
               </>
             )}
-            <p className="eyebrow">💊 Obat yang rutin diminum (opsional)</p>
-            <p className="small muted" style={{ margin: "0 0 6px" }}>Supaya aplikasi bisa memperingatkan makanan yang berinteraksi dengan obat.</p>
-            <div className="med-list">
-              {MEDICATIONS.map((m) => (
-                <label key={m.id} className={`care-item${obat.includes(m.id) ? " on-plain" : ""}`}>
-                  <input type="checkbox" checked={obat.includes(m.id)} onChange={() => setObat((o) => toggle(o, m.id))} />
-                  <span><b>{m.label}</b><br /><small className="muted">{m.contoh}</small></span>
-                </label>
-              ))}
-            </div>
-            <label className="field">➕ Kondisi lain (opsional)
-              <input type="text" value={lain.kondisi} maxLength={300} onChange={(e) => setLain({ ...lain, kondisi: e.target.value })} placeholder="mis. maag, ginjal, sedang hamil" />
+            <label className="field">Ada yang lain? (boleh kosong)
+              <input type="text" value={lain} maxLength={300} onChange={(e) => setLain(e.target.value)} placeholder="mis. minum amlodipin, maag" />
             </label>
-            <label className="field">💊 Obat lain (opsional)
-              <input type="text" value={lain.obat} maxLength={300} onChange={(e) => setLain({ ...lain, obat: e.target.value })} placeholder="nama di bungkus obat" />
-            </label>
-            <p className="small muted" style={{ marginTop: 0 }}>Nanti bisa dipahami lebih lengkap oleh AI di halaman Profil ⚙️.</p>
-            {kondisi.includes("stroke_jantung") && (
-              <>
-                <p className="eyebrow">📞 Kontak darurat keluarga</p>
-                <div className="grid2">
-                  <label className="field">Nama <input type="text" value={kontak.nama} onChange={(e) => setKontak({ ...kontak, nama: e.target.value })} placeholder="mis. Malik" /></label>
-                  <label className="field">Telepon <input type="tel" inputMode="tel" value={kontak.telepon} onChange={(e) => setKontak({ ...kontak, telepon: e.target.value })} placeholder="08…" /></label>
-                </div>
-              </>
-            )}
-            <Nav back={() => setStep("kondisi")} next={() => setStep("profil")} disabled={kondisi.includes("alergi") && !alergen.length} />
-          </>
-        )}
-
-        {step === "profil" && (
-          <>
-            <h2>{untuk === "diri" ? "Tentang kamu" : "Tentang dia"}</h2>
-            <div className="grid2">
-              <label className="field">Nama <input type="text" value={profil.nama} onChange={(e) => setProfil({ ...profil, nama: e.target.value })} placeholder={untuk === "diri" ? "mis. Rina" : "mis. Ibu"} /></label>
-              <label className="field">Dipanggil <input type="text" value={profil.panggilan} onChange={(e) => setProfil({ ...profil, panggilan: e.target.value })} placeholder="mis. Bu / Pak" /></label>
-            </div>
-            <label className="field">Usia (opsional) <input type="number" min={1} max={120} value={profil.usia} onChange={(e) => setProfil({ ...profil, usia: e.target.value })} /></label>
-            <label className="field">Catatan dari dokter (opsional)
-              <textarea rows={2} value={profil.catatan} onChange={(e) => setProfil({ ...profil, catatan: e.target.value })} placeholder="mis. nasi maksimal ¾ gelas, kurangi santan" />
-            </label>
+            <Consent agree={agree} setAgree={setAgree} />
             {error && <div className="error-box">{error}</div>}
-            <Nav back={() => setStep(needsDetail ? "detail" : "kondisi")} next={finish} nextLabel={busy ? "Menyiapkan…" : "Selesai →"} disabled={busy} />
+            <Nav back={() => setStep("siapa")} next={finish} nextLabel={busy ? "Menyiapkan…" : "Selesai ✓"}
+              disabled={busy || !agree || !kondisi.length || (kondisi.includes("alergi") && !alergen.length && !/alergi/i.test(lain))} />
           </>
         )}
       </div>
@@ -303,14 +226,11 @@ function Consent({ agree, setAgree }: { agree: boolean; setAgree: (v: boolean) =
   return (
     <div className="consent">
       <ul>
-        <li>Data kondisi dan catatan disimpan di database Neon (Singapura), terhubung ke perangkat ini.</li>
-        <li>Hanya kamu dan keluarga yang kamu undang yang bisa melihatnya.</li>
-        <li>Nama makanan dan kondisi dikirim ke Google AI Studio untuk membuat saran. Foto tidak disimpan.</li>
-        <li>Simpan kode pemulihan (ada di tab Review). Tanpa kode itu, data tidak bisa dibuka lagi kalau data browser dihapus.</li>
-        <li>Ini bukan pengganti dokter.</li>
+        <li>Data hanya bisa dilihat kamu dan keluarga yang kamu undang.</li>
+        <li>Ini pembantu, bukan pengganti dokter.</li>
       </ul>
       <label className="check" style={{ margin: "10px 0 0" }}>
-        <input type="checkbox" checked={agree} onChange={(e) => setAgree(e.target.checked)} /> Saya setuju (<Link href="/privasi">baca kebijakan</Link>)
+        <input type="checkbox" checked={agree} onChange={(e) => setAgree(e.target.checked)} /> Saya setuju (<Link href="/privasi">baca lengkap</Link>)
       </label>
     </div>
   );

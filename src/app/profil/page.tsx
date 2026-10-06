@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import ProfileForm, { emptyDraft, ProfileDraft } from "@/components/ProfileForm";
+import InviteCard from "@/components/InviteCard";
 import RecoveryCard from "@/components/RecoveryCard";
 import VoiceSettings from "@/components/VoiceSettings";
 import { api, useToast } from "@/components/ui";
@@ -10,6 +11,7 @@ import { conditionInfo, normalizeConditions } from "@/lib/conditions";
 import { ensureDevice } from "@/lib/device";
 import { currentSubscription, disablePush, enablePush, pushSupport, PushSupport } from "@/lib/push-client";
 import { play, setSound, soundOn } from "@/lib/sound";
+import { setSimpleMode, simpleMode } from "@/lib/simple-mode";
 import { useClientValue } from "@/lib/use-client-value";
 
 const PROFILE_KEY = "active-profile";
@@ -24,6 +26,9 @@ export default function ProfilPage() {
   const initialSound = useClientValue(soundOn, true);
   const [soundOverride, setSoundState] = useState<boolean | null>(null);
   const sound = soundOverride ?? initialSound;
+  const initialSimple = useClientValue(simpleMode, true);
+  const [simpleOverride, setSimpleState] = useState<boolean | null>(null);
+  const simple = simpleOverride ?? initialSimple;
   const support = useClientValue<PushSupport>(pushSupport, "unsupported");
   const [push, setPush] = useState<{ on: boolean; pagi: boolean; malam: boolean }>({ on: false, pagi: true, malam: true });
 
@@ -104,7 +109,12 @@ export default function ProfilPage() {
                 <input type="checkbox" checked={sound} onChange={(e) => { setSound(e.target.checked); setSoundState(e.target.checked); if (e.target.checked) play("hijau"); }} />
                 <span className="ce">🔊</span>Efek suara &amp; getar
               </label>
+              <label className="care-item">
+                <input type="checkbox" checked={simple} onChange={(e) => { setSimpleMode(e.target.checked); setSimpleState(e.target.checked); }} />
+                <span className="ce">👵</span><span>Tampilan sederhana<br /><small className="muted">menu bawah hanya Tanya, Catatan, Pantau. Matikan untuk melihat Daftar makanan &amp; Rangkuman</small></span>
+              </label>
 
+              <p className="eyebrow">🗣️ Suara bacaan</p>
               <VoiceSettings />
 
               <p className="eyebrow">🔔 Pengingat</p>
@@ -125,6 +135,7 @@ export default function ProfilPage() {
               )}
             </div>
 
+            {(() => { const f = me.families.find((x) => x.id === profile?.family_id) ?? me.families[0]; return f ? <InviteCard family={f} /> : null; })()}
             <RecoveryCard />
           </>
         )}
@@ -146,7 +157,7 @@ export default function ProfilPage() {
         {mode === "add" && (
           <div className="card">
             <h2>Tambah orang</h2>
-            <p className="small muted">Misalnya Omah, Papa, Om, atau Tante. Mereka bisa memakai HP-mu, atau kamu kirim kode undangan keluarga (tab Review) supaya mereka bisa membuka dari HP sendiri.</p>
+            <p className="small muted">Misalnya Omah, Papa, Om, atau Tante. Mereka bisa memakai HP-mu, atau kamu kirim kode undangan keluarga (di halaman ini) supaya mereka bisa membuka dari HP sendiri.</p>
             <ProfileForm initial={emptyDraft()} submitLabel="Tambahkan" onCancel={() => setMode("list")}
               onSubmit={async (d) => {
                 const created = await api<Profile>("/api/profiles", { ...d, family_id: profile?.family_id ?? me.families[0]?.id });
