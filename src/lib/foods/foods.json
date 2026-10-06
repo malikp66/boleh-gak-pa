@@ -1,5 +1,5 @@
 {
- "_note": "Dibuat oleh tools/build_foods.py. Ringkasan panduan umum diet rendah purin & rendah garam; bukan data laboratorium. Selalu ikuti saran dokter.",
+ "_note": "Dibuat oleh tools/build_foods.py + tools/nutrition.py. Perkiraan per porsi khas; sumber & ambang di docs/SUMBER-GIZI.md. Bukan data laboratorium.",
  "foods": [
   {
    "name": "ketoprak",
@@ -9,6 +9,14 @@
    "kategori": "Kaki lima",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "tinggi",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "kacang tanah",
+    "kedelai",
+    "telur"
+   ],
    "porsi_aman": "setengah porsi, bumbu kacang sedikit",
    "trik": [
     "minta bumbu kacang dipisah",
@@ -30,6 +38,14 @@
    "kategori": "Kaki lima",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "kacang tanah",
+    "kedelai",
+    "telur"
+   ],
    "porsi_aman": "1 porsi, bumbu setengah",
    "trik": [
     "minta tanpa emping",
@@ -49,6 +65,12 @@
    "kategori": "Kaki lima",
    "purin": "rendah",
    "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "rendah",
+   "alergen": [
+    "kacang tanah"
+   ],
    "porsi_aman": "1 porsi, bumbu secukupnya",
    "trik": [
     "bumbu kacang sedikit",
@@ -67,6 +89,12 @@
    "kategori": "Kaki lima",
    "purin": "rendah",
    "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "rendah",
+   "alergen": [
+    "kacang tanah"
+   ],
    "porsi_aman": "1 porsi, sambal secukupnya",
    "trik": [
     "hindari rempeyek teri",
@@ -85,6 +113,15 @@
    "kategori": "Kaki lima",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "rendah",
+   "alergen": [
+    "ikan",
+    "kacang tanah",
+    "kedelai",
+    "telur"
+   ],
    "porsi_aman": "1 porsi, bumbu sedikit",
    "trik": [
     "bumbu kacang sedikit",
@@ -101,6 +138,14 @@
    "kategori": "Kaki lima",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "ikan",
+    "kacang tanah",
+    "kedelai"
+   ],
    "porsi_aman": "setengah porsi",
    "trik": [
     "bumbu sedikit",
@@ -117,6 +162,12 @@
    "kategori": "Kaki lima",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "kedelai"
+   ],
    "porsi_aman": "1 porsi",
    "trik": [
     "kuah secukupnya"
@@ -132,6 +183,13 @@
    "kategori": "Kaki lima",
    "purin": "rendah",
    "garam": "sedang",
+   "karbo": "tinggi",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "telur",
+    "krustasea"
+   ],
    "porsi_aman": "1 porsi",
    "trik": [
     "serundeng secukupnya"
@@ -149,6 +207,12 @@
    "kategori": "Kaki lima",
    "purin": "rendah",
    "garam": "sedang",
+   "karbo": "tinggi",
+   "gula": "sedang",
+   "lemak": "rendah",
+   "alergen": [
+    "kacang tanah"
+   ],
    "porsi_aman": "1 porsi kecil",
    "trik": [
     "saus kacang sedikit"
@@ -163,6 +227,12 @@
    "kategori": "Kaki lima",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "tinggi",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "telur"
+   ],
    "porsi_aman": "setengah porsi",
    "trik": [
     "pilih kerupuk & telur",
@@ -179,6 +249,12 @@
    "kategori": "Kaki lima",
    "purin": "rendah",
    "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "gluten"
+   ],
    "porsi_aman": "2-3 potong",
    "trik": [
     "saus secukupnya"
@@ -193,6 +269,13 @@
    "kategori": "Kaki lima",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "rendah",
+   "alergen": [
+    "ikan",
+    "kacang tanah"
+   ],
    "porsi_aman": "3-4 buah",
    "trik": [
     "saus kacang sedikit"
@@ -210,6 +293,14 @@
    "kategori": "Kaki lima",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "tinggi",
+   "gula": "tinggi",
+   "lemak": "rendah",
+   "alergen": [
+    "ikan",
+    "telur",
+    "gluten"
+   ],
    "porsi_aman": "2-3 buah kecil",
    "trik": [
     "cuko secukupnya"
@@ -225,6 +316,14 @@
    "kategori": "Kaki lima",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "tinggi",
+   "lemak": "sedang",
+   "alergen": [
+    "gluten",
+    "telur",
+    "susu"
+   ],
    "porsi_aman": "4-5 buah",
    "trik": [
     "jangan topping manis berlebihan"
@@ -239,6 +338,12 @@
    "kategori": "Kaki lima",
    "purin": "rendah",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "telur"
+   ],
    "porsi_aman": "2-3 tusuk",
    "trik": [
     "saus sedikit"
@@ -255,6 +360,12 @@
    "kategori": "Kaki lima",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "tinggi",
+   "alergen": [
+    "gluten"
+   ],
    "porsi_aman": "1 tusuk",
    "trik": [
     "jarang-jarang saja"
@@ -269,6 +380,10 @@
    "kategori": "Kaki lima",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [],
    "porsi_aman": "2 tusuk",
    "trik": [
     "saus sedikit"
@@ -287,6 +402,10 @@
    "kategori": "Nasi & lauk",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "tinggi",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 centong (porsi biasa)",
    "trik": [
     "aman, batasi kalau ada diabetes"
@@ -301,6 +420,13 @@
    "kategori": "Nasi & lauk",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "tinggi",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "telur",
+    "kedelai"
+   ],
    "porsi_aman": "1 porsi biasa",
    "trik": [
     "pilih telur/ayam",
@@ -322,6 +448,13 @@
    "kategori": "Nasi & lauk",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "tinggi",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [
+    "kedelai",
+    "gluten"
+   ],
    "porsi_aman": "1 mangkuk",
    "trik": [
     "tanpa sate usus/ati",
@@ -341,6 +474,12 @@
    "kategori": "Nasi & lauk",
    "purin": "rendah",
    "garam": "sedang",
+   "karbo": "tinggi",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "kedelai"
+   ],
    "porsi_aman": "1 porsi",
    "trik": [
     "lauk telur/tempe"
@@ -358,6 +497,12 @@
    "kategori": "Nasi & lauk",
    "purin": "rendah",
    "garam": "sedang",
+   "karbo": "tinggi",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "telur"
+   ],
    "porsi_aman": "1 porsi",
    "trik": [
     "hindari sambal goreng ati",
@@ -374,6 +519,12 @@
    "kategori": "Nasi & lauk",
    "purin": "rendah",
    "garam": "tinggi",
+   "karbo": "tinggi",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "ikan"
+   ],
    "porsi_aman": "1 porsi",
    "trik": [
     "ikan asin/teri sedikit saja"
@@ -391,6 +542,10 @@
    "kategori": "Nasi & lauk",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "tinggi",
+   "gula": "rendah",
+   "lemak": "tinggi",
+   "alergen": [],
    "porsi_aman": "1 potong kecil",
    "trik": [
     "pilih ayam pop/sayur",
@@ -408,6 +563,10 @@
    "kategori": "Nasi & lauk",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [],
    "porsi_aman": "1 potong",
    "trik": [
     "buang kulit"
@@ -424,6 +583,10 @@
    "kategori": "Nasi & lauk",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [],
    "porsi_aman": "1-2 lembar",
    "trik": [
     "jarang-jarang"
@@ -440,6 +603,12 @@
    "kategori": "Nasi & lauk",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "tinggi",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "telur"
+   ],
    "porsi_aman": "1 porsi",
    "trik": [
     "pilih sayur, telur, tempe"
@@ -456,6 +625,12 @@
    "kategori": "Nasi & lauk",
    "purin": "rendah",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [
+    "ikan"
+   ],
    "porsi_aman": "2 bungkus",
    "trik": [
     "hindari sate usus/ati",
@@ -474,6 +649,10 @@
    "kategori": "Nasi & lauk",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "tinggi",
+   "gula": "rendah",
+   "lemak": "tinggi",
+   "alergen": [],
    "porsi_aman": "1 potong",
    "trik": [
     "buang kulit",
@@ -492,6 +671,12 @@
    "kategori": "Nasi & lauk",
    "purin": "tinggi",
    "garam": "sedang",
+   "karbo": "tinggi",
+   "gula": "rendah",
+   "lemak": "tinggi",
+   "alergen": [
+    "susu"
+   ],
    "porsi_aman": "setengah porsi",
    "trik": [
     "daging kambing sedikit"
@@ -507,6 +692,12 @@
    "kategori": "Nasi & lauk",
    "purin": "rendah",
    "garam": "sedang",
+   "karbo": "tinggi",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "telur"
+   ],
    "porsi_aman": "1 porsi",
    "trik": [
     "kuah santan secukupnya"
@@ -525,6 +716,12 @@
    "kategori": "Nasi & lauk",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "tinggi",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "telur"
+   ],
    "porsi_aman": "1 porsi",
    "trik": [
     "hindari sambal goreng ati",
@@ -541,6 +738,10 @@
    "kategori": "Nasi & lauk",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [],
    "porsi_aman": "sebaiknya dihindari",
    "trik": [
     "ganti telur pindang"
@@ -557,6 +758,12 @@
    "kategori": "Nasi & lauk",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "kedelai"
+   ],
    "porsi_aman": "1 potong kecil",
    "trik": [
     "kuah kecap sedikit"
@@ -574,6 +781,10 @@
    "kategori": "Nasi & lauk",
    "purin": "tinggi",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [],
    "porsi_aman": "1 potong kecil",
    "trik": [
     "pilih yang tanpa jeroan"
@@ -596,6 +807,12 @@
    "kategori": "Nasi & lauk",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [
+    "telur"
+   ],
    "porsi_aman": "1-2 butir",
    "trik": [
     "lauk aman untuk asam urat",
@@ -609,6 +826,12 @@
    "kategori": "Nasi & lauk",
    "purin": "rendah",
    "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [
+    "telur"
+   ],
    "porsi_aman": "setengah butir",
    "trik": [
     "jangan setiap hari"
@@ -625,6 +848,13 @@
    "kategori": "Nasi & lauk",
    "purin": "rendah",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "rendah",
+   "alergen": [
+    "telur",
+    "kedelai"
+   ],
    "porsi_aman": "1 butir",
    "trik": [
     "aman"
@@ -645,6 +875,10 @@
    "kategori": "Nasi & lauk",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [],
    "porsi_aman": "1 potong",
    "trik": [
     "buang kulit",
@@ -661,6 +895,10 @@
    "kategori": "Nasi & lauk",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [],
    "porsi_aman": "1 potong",
    "trik": [
     "sambal secukupnya"
@@ -679,6 +917,12 @@
    "kategori": "Nasi & lauk",
    "purin": "sedang",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [
+    "kedelai"
+   ],
    "porsi_aman": "2-3 potong",
    "trik": [
     "bacem tinggi gula, secukupnya"
@@ -698,6 +942,12 @@
    "kategori": "Nasi & lauk",
    "purin": "sedang",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [
+    "kedelai"
+   ],
    "porsi_aman": "2-3 potong",
    "trik": [
     "orek manis & asin, secukupnya"
@@ -714,6 +964,12 @@
    "kategori": "Nasi & lauk",
    "purin": "rendah",
    "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "telur"
+   ],
    "porsi_aman": "1-2 buah",
    "trik": [
     "aman"
@@ -728,6 +984,10 @@
    "kategori": "Nasi & lauk",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [],
    "porsi_aman": "1 sendok",
    "trik": [
     "sedikit saja"
@@ -742,6 +1002,10 @@
    "kategori": "Nasi & lauk",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "tinggi",
+   "alergen": [],
    "porsi_aman": "1-2 sendok",
    "trik": [
     "jarang-jarang"
@@ -759,6 +1023,12 @@
    "kategori": "Berkuah",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "telur"
+   ],
    "porsi_aman": "1 mangkuk, kuah tidak dihabiskan",
    "trik": [
     "tanpa ati ampela",
@@ -781,6 +1051,12 @@
    "kategori": "Berkuah",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "tinggi",
+   "alergen": [
+    "susu"
+   ],
    "porsi_aman": "isi daging saja, setengah mangkuk",
    "trik": [
     "minta tanpa jeroan",
@@ -799,6 +1075,12 @@
    "kategori": "Berkuah",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "kacang tanah"
+   ],
    "porsi_aman": "sebaiknya dihindari",
    "trik": [
     "kalau terpaksa pilih isi daging saja"
@@ -813,6 +1095,10 @@
    "kategori": "Berkuah",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [],
    "porsi_aman": "setengah mangkuk",
    "trik": [
     "pilih daging tanpa babat",
@@ -833,6 +1119,10 @@
    "kategori": "Berkuah",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "tinggi",
+   "alergen": [],
    "porsi_aman": "setengah porsi, kuah sedikit",
    "trik": [
     "fokus ke sayur",
@@ -852,6 +1142,10 @@
    "kategori": "Berkuah",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "tinggi",
+   "alergen": [],
    "porsi_aman": "sebaiknya dihindari",
    "trik": [
     "kalau terpaksa beberapa sendok kuah saja"
@@ -867,6 +1161,10 @@
    "kategori": "Berkuah",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "tinggi",
+   "alergen": [],
    "porsi_aman": "sebaiknya dihindari",
    "trik": [
     "ganti menu lain"
@@ -883,6 +1181,10 @@
    "kategori": "Berkuah",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "tinggi",
+   "alergen": [],
    "porsi_aman": "maksimal 3 potong kecil",
    "trik": [
     "jangan minum kuahnya",
@@ -901,6 +1203,10 @@
    "kategori": "Berkuah",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [],
    "porsi_aman": "1 potong",
    "trik": [
     "kuah sedikit"
@@ -918,6 +1224,10 @@
    "kategori": "Berkuah",
    "purin": "rendah",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [],
    "porsi_aman": "1 mangkuk",
    "trik": [
     "aman"
@@ -935,6 +1245,12 @@
    "kategori": "Berkuah",
    "purin": "rendah",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [
+    "kacang tanah"
+   ],
    "porsi_aman": "bebas, kuah jangan terlalu asin",
    "trik": [
     "pilihan aman"
@@ -950,6 +1266,10 @@
    "kategori": "Berkuah",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 mangkuk",
    "trik": [
     "buang kulit ayam"
@@ -966,6 +1286,12 @@
    "kategori": "Berkuah",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "rendah",
+   "alergen": [
+    "ikan"
+   ],
    "porsi_aman": "1 potong",
    "trik": [
     "kuah secukupnya"
@@ -980,6 +1306,10 @@
    "kategori": "Berkuah",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
     "aman"
@@ -994,6 +1324,12 @@
    "kategori": "Berkuah",
    "purin": "tinggi",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "kedelai"
+   ],
    "porsi_aman": "sedikit",
    "trik": [
     "pilih tahu dan telurnya"
@@ -1010,6 +1346,13 @@
    "kategori": "Sate & bakar",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "kacang tanah",
+    "kedelai"
+   ],
    "porsi_aman": "5 tusuk, bumbu sedikit",
    "trik": [
     "hindari sate kulit dan ati ampela",
@@ -1027,6 +1370,12 @@
    "kategori": "Sate & bakar",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "tinggi",
+   "alergen": [
+    "kedelai"
+   ],
    "porsi_aman": "maksimal 3 tusuk",
    "trik": [
     "pilih tanpa jeroan",
@@ -1044,6 +1393,10 @@
    "kategori": "Sate & bakar",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [],
    "porsi_aman": "3 tusuk",
    "trik": [
     "kuah sedikit"
@@ -1058,6 +1411,12 @@
    "kategori": "Sate & bakar",
    "purin": "tinggi",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "kedelai"
+   ],
    "porsi_aman": "3-4 tusuk",
    "trik": [
     "sambal oncom sedikit"
@@ -1072,6 +1431,10 @@
    "kategori": "Sate & bakar",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "5 tusuk",
    "trik": [
     "sambal secukupnya"
@@ -1090,6 +1453,12 @@
    "kategori": "Sate & bakar",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "kedelai"
+   ],
    "porsi_aman": "sebaiknya dihindari",
    "trik": [
     "ganti sate telur puyuh"
@@ -1106,6 +1475,13 @@
    "kategori": "Sate & bakar",
    "purin": "rendah",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "rendah",
+   "alergen": [
+    "telur",
+    "kedelai"
+   ],
    "porsi_aman": "1-2 tusuk",
    "trik": [
     "aman"
@@ -1122,6 +1498,13 @@
    "kategori": "Sate & bakar",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "rendah",
+   "alergen": [
+    "ikan",
+    "kedelai"
+   ],
    "porsi_aman": "1 ekor kecil",
    "trik": [
     "kecap secukupnya"
@@ -1136,6 +1519,12 @@
    "kategori": "Sate & bakar",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "tinggi",
+   "lemak": "sedang",
+   "alergen": [
+    "kedelai"
+   ],
    "porsi_aman": "1 potong",
    "trik": [
     "buang kulit"
@@ -1161,6 +1550,10 @@
    "kategori": "Daging & jeroan",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "tinggi",
+   "alergen": [],
    "porsi_aman": "sebaiknya dihindari",
    "trik": [
     "ganti telur atau ayam tanpa kulit"
@@ -1178,6 +1571,10 @@
    "kategori": "Daging & jeroan",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [],
    "porsi_aman": "2-3 buah",
    "trik": [
     "kuah sedikit"
@@ -1195,6 +1592,12 @@
    "kategori": "Daging & jeroan",
    "purin": "tinggi",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "tinggi",
+   "alergen": [
+    "kedelai"
+   ],
    "porsi_aman": "1 potong kecil",
    "trik": [
     "pilih porsi kecil",
@@ -1212,6 +1615,10 @@
    "kategori": "Daging & jeroan",
    "purin": "tinggi",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "tinggi",
+   "alergen": [],
    "porsi_aman": "sebaiknya dibatasi",
    "trik": [
     "porsi kecil, jarang"
@@ -1228,6 +1635,10 @@
    "kategori": "Daging & jeroan",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "tinggi",
+   "alergen": [],
    "porsi_aman": "1 potong",
    "trik": [
     "buang kulit"
@@ -1244,6 +1655,14 @@
    "kategori": "Seafood",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "krustasea",
+    "moluska",
+    "ikan"
+   ],
    "porsi_aman": "sedikit saja, pilih ikan putih",
    "trik": [
     "pilih ikan bakar biasa",
@@ -1263,6 +1682,12 @@
    "kategori": "Seafood",
    "purin": "tinggi",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [
+    "krustasea"
+   ],
    "porsi_aman": "3-4 ekor",
    "trik": [
     "jangan sering"
@@ -1281,6 +1706,12 @@
    "kategori": "Seafood",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [
+    "moluska"
+   ],
    "porsi_aman": "sebaiknya dihindari",
    "trik": [
     "ganti ikan putih"
@@ -1298,6 +1729,12 @@
    "kategori": "Seafood",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [
+    "moluska"
+   ],
    "porsi_aman": "sedikit",
    "trik": [
     "jangan tiap hari"
@@ -1314,6 +1751,12 @@
    "kategori": "Seafood",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "rendah",
+   "alergen": [
+    "krustasea"
+   ],
    "porsi_aman": "sedikit",
    "trik": [
     "saus sedikit"
@@ -1330,6 +1773,12 @@
    "kategori": "Seafood",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "ikan"
+   ],
    "porsi_aman": "sebaiknya dihindari",
    "trik": [
     "ganti telur"
@@ -1348,6 +1797,12 @@
    "kategori": "Seafood",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [
+    "ikan"
+   ],
    "porsi_aman": "sebaiknya dihindari",
    "trik": [
     "ganti tempe"
@@ -1367,6 +1822,12 @@
    "kategori": "Seafood",
    "purin": "tinggi",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [
+    "ikan"
+   ],
    "porsi_aman": "1 potong kecil",
    "trik": [
     "jangan sering"
@@ -1384,6 +1845,12 @@
    "kategori": "Seafood",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [
+    "ikan"
+   ],
    "porsi_aman": "1 potong kecil",
    "trik": [
     "rendam/cuci dulu",
@@ -1402,6 +1869,12 @@
    "kategori": "Seafood",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "ikan"
+   ],
    "porsi_aman": "1 ekor",
    "trik": [
     "lalapan diperbanyak"
@@ -1419,6 +1892,12 @@
    "kategori": "Seafood",
    "purin": "sedang",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "ikan"
+   ],
    "porsi_aman": "1 potong",
    "trik": [
     "dipanggang lebih baik"
@@ -1436,6 +1915,12 @@
    "kategori": "Mi & bakso",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "gluten"
+   ],
    "porsi_aman": "1 mangkuk kecil, kuah sedikit",
    "trik": [
     "hindari tetelan banyak",
@@ -1454,6 +1939,13 @@
    "kategori": "Mi & bakso",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "tinggi",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "gluten",
+    "kedelai"
+   ],
    "porsi_aman": "1 porsi, kuah sedikit",
    "trik": [
     "tanpa ceker/kepala",
@@ -1475,6 +1967,13 @@
    "kategori": "Mi & bakso",
    "purin": "rendah",
    "garam": "tinggi",
+   "karbo": "tinggi",
+   "gula": "rendah",
+   "lemak": "tinggi",
+   "alergen": [
+    "gluten",
+    "kedelai"
+   ],
    "porsi_aman": "jarang-jarang, bumbu setengah",
    "trik": [
     "pakai setengah bumbu",
@@ -1495,6 +1994,14 @@
    "kategori": "Mi & bakso",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "tinggi",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "gluten",
+    "kedelai",
+    "telur"
+   ],
    "porsi_aman": "1 porsi",
    "trik": [
     "tanpa seafood",
@@ -1513,6 +2020,13 @@
    "kategori": "Mi & bakso",
    "purin": "rendah",
    "garam": "sedang",
+   "karbo": "tinggi",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "kedelai",
+    "telur"
+   ],
    "porsi_aman": "1 porsi",
    "trik": [
     "kecap secukupnya"
@@ -1529,6 +2043,13 @@
    "kategori": "Mi & bakso",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "tinggi",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "gluten",
+    "krustasea"
+   ],
    "porsi_aman": "setengah porsi",
    "trik": [
     "pilih topping ayam, bukan kepiting/kambing"
@@ -1546,6 +2067,12 @@
    "kategori": "Mi & bakso",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "tinggi",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "gluten"
+   ],
    "porsi_aman": "setengah porsi",
    "trik": [
     "minta tanpa kikil"
@@ -1563,6 +2090,12 @@
    "kategori": "Mi & bakso",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "tinggi",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "gluten"
+   ],
    "porsi_aman": "1 porsi",
    "trik": [
     "kuah sedikit"
@@ -1582,6 +2115,12 @@
    "kategori": "Gorengan & camilan",
    "purin": "rendah",
    "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "gluten"
+   ],
    "porsi_aman": "2 potong",
    "trik": [
     "jangan lebih dari 2",
@@ -1599,6 +2138,10 @@
    "kategori": "Gorengan & camilan",
    "purin": "tinggi",
    "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "sebaiknya dihindari",
    "trik": [
     "ganti kerupuk biasa 1-2 keping"
@@ -1617,6 +2160,12 @@
    "kategori": "Gorengan & camilan",
    "purin": "rendah",
    "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [
+    "krustasea"
+   ],
    "porsi_aman": "1-2 keping",
    "trik": [
     "jangan lebih dari 2"
@@ -1634,6 +2183,12 @@
    "kategori": "Gorengan & camilan",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "kacang tanah"
+   ],
    "porsi_aman": "1-2 keping",
    "trik": [
     "pilih kacang, bukan teri/udang"
@@ -1653,6 +2208,12 @@
    "kategori": "Gorengan & camilan",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "kacang tanah"
+   ],
    "porsi_aman": "segenggam kecil",
    "trik": [
     "pilih yang tanpa garam"
@@ -1678,6 +2239,10 @@
    "kategori": "Gorengan & camilan",
    "purin": "rendah",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [],
    "porsi_aman": "segenggam kecil",
    "trik": [
     "jangan habiskan sebungkus"
@@ -1696,6 +2261,13 @@
    "kategori": "Gorengan & camilan",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "tinggi",
+   "alergen": [
+    "gluten",
+    "telur"
+   ],
    "porsi_aman": "1-2 potong",
    "trik": [
     "acar diperbanyak"
@@ -1715,6 +2287,14 @@
    "kategori": "Gorengan & camilan",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "gluten",
+    "telur",
+    "susu"
+   ],
    "porsi_aman": "1-2 buah",
    "trik": [
     "aman dalam jumlah kecil"
@@ -1734,6 +2314,15 @@
    "kategori": "Kue & manis",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "tinggi",
+   "gula": "tinggi",
+   "lemak": "tinggi",
+   "alergen": [
+    "gluten",
+    "telur",
+    "susu",
+    "kacang tanah"
+   ],
    "porsi_aman": "1-2 potong",
    "trik": [
     "hindari topping super manis"
@@ -1753,6 +2342,10 @@
    "kategori": "Kue & manis",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [],
    "porsi_aman": "1-2 buah",
    "trik": [
     "aman dalam jumlah kecil"
@@ -1773,6 +2366,10 @@
    "kategori": "Kue & manis",
    "purin": "sedang",
    "garam": "rendah",
+   "karbo": "tinggi",
+   "gula": "tinggi",
+   "lemak": "sedang",
+   "alergen": [],
    "porsi_aman": "1 mangkuk kecil",
    "trik": [
     "gula sedikit"
@@ -1790,6 +2387,10 @@
    "kategori": "Kue & manis",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "tinggi",
+   "gula": "tinggi",
+   "lemak": "sedang",
+   "alergen": [],
    "porsi_aman": "1 mangkuk kecil",
    "trik": [
     "gula sedikit"
@@ -1807,6 +2408,12 @@
    "kategori": "Kue & manis",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "tinggi",
+   "lemak": "rendah",
+   "alergen": [
+    "susu"
+   ],
    "porsi_aman": "1 gelas kecil",
    "trik": [
     "sirup sedikit"
@@ -1824,6 +2431,13 @@
    "kategori": "Kue & manis",
    "purin": "rendah",
    "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "gluten",
+    "susu"
+   ],
    "porsi_aman": "1-2 lembar",
    "trik": [
     "selai secukupnya"
@@ -1844,6 +2458,12 @@
    "kategori": "Kue & manis",
    "purin": "rendah",
    "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [
+    "gluten"
+   ],
    "porsi_aman": "1-2 iris",
    "trik": [
     "pilih isian sayur/telur, bukan daging asap",
@@ -1863,6 +2483,14 @@
    "kategori": "Kue & manis",
    "purin": "rendah",
    "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "tinggi",
+   "alergen": [
+    "gluten",
+    "susu",
+    "telur"
+   ],
    "porsi_aman": "1 buah",
    "trik": [
     "jangan sering, tinggi mentega"
@@ -1883,6 +2511,14 @@
    "kategori": "Kue & manis",
    "purin": "rendah",
    "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "gluten",
+    "susu",
+    "telur"
+   ],
    "porsi_aman": "1 buah",
    "trik": [
     "pilih yang tidak terlalu manis"
@@ -1900,6 +2536,14 @@
    "kategori": "Kue & manis",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "tinggi",
+   "lemak": "sedang",
+   "alergen": [
+    "gluten",
+    "telur",
+    "susu"
+   ],
    "porsi_aman": "1 buah",
    "trik": [
     "jangan sering"
@@ -1916,6 +2560,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
     "minta tanpa ati ayam/seafood"
@@ -1933,6 +2581,12 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [
+    "krustasea"
+   ],
    "porsi_aman": "1 porsi",
    "trik": [
     "terasi sedikit"
@@ -1950,6 +2604,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 mangkuk",
    "trik": [
     "aman"
@@ -1964,6 +2622,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
     "aman"
@@ -1979,6 +2641,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "bebas",
    "trik": [
     "sangat dianjurkan, sambal secukupnya"
@@ -1993,6 +2659,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
     "aman"
@@ -2009,6 +2679,12 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "tinggi",
+   "lemak": "sedang",
+   "alergen": [
+    "telur"
+   ],
    "porsi_aman": "1 porsi",
    "trik": [
     "hindari krecek & ati ampela"
@@ -2026,6 +2702,12 @@
    "kategori": "Sayur & lalapan",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "rendah",
+   "alergen": [
+    "kedelai"
+   ],
    "porsi_aman": "1 porsi",
    "trik": [
     "aman"
@@ -2044,6 +2726,12 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [
+    "krustasea"
+   ],
    "porsi_aman": "1 sendok",
    "trik": [
     "sedikit saja"
@@ -2062,6 +2750,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 piring kecil",
    "trik": [
     "bagus untuk camilan pengganti gorengan"
@@ -2076,6 +2768,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "segenggam",
    "trik": [
     "bagus untuk penderita asam urat"
@@ -2088,6 +2784,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1-2 biji",
    "trik": [
     "jangan banyak"
@@ -2104,6 +2804,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "3-4 biji",
    "trik": [
     "secukupnya"
@@ -2120,6 +2824,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 buah",
    "trik": [
     "jus tanpa susu kental manis"
@@ -2140,6 +2848,10 @@
    "kategori": "Minuman",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "tinggi",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 gelas, minta kurang manis",
    "trik": [
     "minta gula sedikit",
@@ -2173,6 +2885,10 @@
    "kategori": "Minuman",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "tinggi",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "sebaiknya dihindari, maksimal 1 kaleng kecil sesekali",
    "trik": [
     "ganti air putih atau teh tawar",
@@ -2199,6 +2915,10 @@
    "kategori": "Minuman",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 kaleng sesekali",
    "trik": [
     "lebih baik dari soda biasa, tapi air putih tetap terbaik"
@@ -2217,6 +2937,10 @@
    "kategori": "Minuman",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "8+ gelas sehari",
    "trik": [
     "sangat dianjurkan"
@@ -2232,6 +2956,10 @@
    "kategori": "Minuman",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "bebas",
    "trik": [
     "pilihan aman"
@@ -2247,6 +2975,10 @@
    "kategori": "Minuman",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1-2 cangkir tanpa banyak gula",
    "trik": [
     "hindari kopi sachet manis"
@@ -2264,6 +2996,12 @@
    "kategori": "Minuman",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "tinggi",
+   "lemak": "sedang",
+   "alergen": [
+    "susu"
+   ],
    "porsi_aman": "1 gelas",
    "trik": [
     "minta gula aren sedikit"
@@ -2281,6 +3019,12 @@
    "kategori": "Minuman",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "susu"
+   ],
    "porsi_aman": "1 gelas",
    "trik": [
     "susu rendah lemak baik untuk asam urat"
@@ -2296,6 +3040,10 @@
    "kategori": "Minuman",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "tinggi",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 gelas kecil",
    "trik": [
     "tanpa gula tambahan"
@@ -2315,6 +3063,10 @@
    "kategori": "Minuman",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 gelas",
    "trik": [
     "gula sedikit"
@@ -2334,6 +3086,12 @@
    "kategori": "Minuman",
    "purin": "tinggi",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [
+    "gluten"
+   ],
    "porsi_aman": "sebaiknya tidak sama sekali",
    "trik": [
     "ganti air putih atau teh tawar"
@@ -2352,6 +3110,10 @@
    "kategori": "Minuman",
    "purin": "rendah",
    "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "tinggi",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "jarang",
    "trik": [
     "ganti air putih"
@@ -2372,6 +3134,13 @@
    "kategori": "Fast food & western",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "tinggi",
+   "alergen": [
+    "gluten",
+    "susu"
+   ],
    "porsi_aman": "1-2 potong",
    "trik": [
     "pilih topping sayur/ayam",
@@ -2395,6 +3164,14 @@
    "kategori": "Fast food & western",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "tinggi",
+   "alergen": [
+    "gluten",
+    "susu",
+    "telur"
+   ],
    "porsi_aman": "1 buah, tanpa extra keju",
    "trik": [
     "pilih burger ayam panggang",
@@ -2418,6 +3195,12 @@
    "kategori": "Fast food & western",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "gluten"
+   ],
    "porsi_aman": "1 potong, kulit dikurangi",
    "trik": [
     "buang kulit tepungnya",
@@ -2437,6 +3220,10 @@
    "kategori": "Fast food & western",
    "purin": "rendah",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [],
    "porsi_aman": "porsi kecil",
    "trik": [
     "minta tanpa garam",
@@ -2454,6 +3241,12 @@
    "kategori": "Fast food & western",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "tinggi",
+   "alergen": [
+    "gluten"
+   ],
    "porsi_aman": "1 buah",
    "trik": [
     "jarang-jarang"
@@ -2475,6 +3268,14 @@
    "kategori": "Fast food & western",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "tinggi",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "gluten",
+    "susu",
+    "telur"
+   ],
    "porsi_aman": "1 porsi",
    "trik": [
     "pilih saus tomat",
@@ -2496,6 +3297,10 @@
    "kategori": "Fast food & western",
    "purin": "tinggi",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "tinggi",
+   "alergen": [],
    "porsi_aman": "1 potong kecil (100 g)",
    "trik": [
     "saus blackpepper sedikit",
@@ -2515,6 +3320,13 @@
    "kategori": "Fast food & western",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "gluten",
+    "telur"
+   ],
    "porsi_aman": "1 porsi",
    "trik": [
     "saus sedikit"
@@ -2535,6 +3347,13 @@
    "kategori": "Fast food & western",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "gluten",
+    "telur"
+   ],
    "porsi_aman": "1 buah",
    "trik": [
     "pilih isian ayam/telur",
@@ -2554,6 +3373,12 @@
    "kategori": "Fast food & western",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "rendah",
+   "alergen": [
+    "telur"
+   ],
    "porsi_aman": "bebas",
    "trik": [
     "dressing sedikit"
@@ -2572,6 +3397,14 @@
    "kategori": "Fast food & western",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "tinggi",
+   "alergen": [
+    "susu",
+    "gluten",
+    "moluska"
+   ],
    "porsi_aman": "1 mangkuk kecil",
    "trik": [
     "hindari yang isi kerang"
@@ -2589,6 +3422,13 @@
    "kategori": "Fast food & western",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "gluten",
+    "telur"
+   ],
    "porsi_aman": "3-4 buah",
    "trik": [
     "jangan sering"
@@ -2608,6 +3448,14 @@
    "kategori": "Chinese & oriental",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "tinggi",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "gluten",
+    "kedelai",
+    "telur"
+   ],
    "porsi_aman": "1 porsi",
    "trik": [
     "kuah sedikit",
@@ -2629,6 +3477,13 @@
    "kategori": "Chinese & oriental",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "tinggi",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "kedelai",
+    "telur"
+   ],
    "porsi_aman": "1 porsi",
    "trik": [
     "pilih ayam, bukan seafood/sapi"
@@ -2646,6 +3501,13 @@
    "kategori": "Chinese & oriental",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "tinggi",
+   "lemak": "sedang",
+   "alergen": [
+    "telur",
+    "krustasea"
+   ],
    "porsi_aman": "1 porsi",
    "trik": [
     "saus asam manis sedikit"
@@ -2666,6 +3528,14 @@
    "kategori": "Chinese & oriental",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "gluten",
+    "krustasea",
+    "kedelai"
+   ],
    "porsi_aman": "3-4 buah",
    "trik": [
     "pilih ayam",
@@ -2686,6 +3556,12 @@
    "kategori": "Chinese & oriental",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "tinggi",
+   "lemak": "sedang",
+   "alergen": [
+    "gluten"
+   ],
    "porsi_aman": "1 porsi",
    "trik": [
     "saus sedikit"
@@ -2704,6 +3580,13 @@
    "kategori": "Chinese & oriental",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "tinggi",
+   "lemak": "tinggi",
+   "alergen": [
+    "gluten",
+    "kedelai"
+   ],
    "porsi_aman": "sedikit",
    "trik": [
     "jarang-jarang"
@@ -2721,6 +3604,12 @@
    "kategori": "Chinese & oriental",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "tinggi",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "kedelai"
+   ],
    "porsi_aman": "1 porsi",
    "trik": [
     "kecap asin sedikit"
@@ -2739,6 +3628,13 @@
    "kategori": "Chinese & oriental",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "tinggi",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [
+    "telur",
+    "kedelai"
+   ],
    "porsi_aman": "1 mangkuk",
    "trik": [
     "hindari ati dan century egg banyak"
@@ -2759,6 +3655,16 @@
    "kategori": "Chinese & oriental",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "tinggi",
+   "alergen": [
+    "krustasea",
+    "moluska",
+    "ikan",
+    "kedelai",
+    "gluten"
+   ],
    "porsi_aman": "sedikit kuah",
    "trik": [
     "pilih sayur, jamur, tahu",
@@ -2777,6 +3683,14 @@
    "kategori": "Chinese & oriental",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "tinggi",
+   "alergen": [
+    "kedelai",
+    "gluten",
+    "kacang tanah"
+   ],
    "porsi_aman": "sedikit",
    "trik": [
     "jangan minum kuahnya"
@@ -2795,6 +3709,17 @@
    "kategori": "Jepang & Korea",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "tinggi",
+   "gula": "sedang",
+   "lemak": "rendah",
+   "alergen": [
+    "ikan",
+    "kedelai",
+    "gluten",
+    "krustasea",
+    "moluska",
+    "telur"
+   ],
    "porsi_aman": "4-6 potong",
    "trik": [
     "kecap asin sedikit",
@@ -2815,6 +3740,14 @@
    "kategori": "Jepang & Korea",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "tinggi",
+   "gula": "rendah",
+   "lemak": "tinggi",
+   "alergen": [
+    "gluten",
+    "kedelai",
+    "telur"
+   ],
    "porsi_aman": "setengah porsi, kuah sedikit",
    "trik": [
     "jangan habiskan kuah",
@@ -2832,6 +3765,14 @@
    "kategori": "Jepang & Korea",
    "purin": "rendah",
    "garam": "tinggi",
+   "karbo": "tinggi",
+   "gula": "sedang",
+   "lemak": "rendah",
+   "alergen": [
+    "gluten",
+    "kedelai",
+    "ikan"
+   ],
    "porsi_aman": "1 porsi, kuah sedikit",
    "trik": [
     "jangan habiskan kuah"
@@ -2848,6 +3789,14 @@
    "kategori": "Jepang & Korea",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "gluten",
+    "telur",
+    "moluska"
+   ],
    "porsi_aman": "4-5 butir",
    "trik": [
     "saus sedikit"
@@ -2868,6 +3817,13 @@
    "kategori": "Jepang & Korea",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "tinggi",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "kedelai",
+    "gluten"
+   ],
    "porsi_aman": "1 porsi kecil",
    "trik": [
     "minta saus sedikit"
@@ -2886,6 +3842,13 @@
    "kategori": "Jepang & Korea",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "kedelai",
+    "gluten"
+   ],
    "porsi_aman": "1 porsi",
    "trik": [
     "saus sedikit"
@@ -2903,6 +3866,14 @@
    "kategori": "Jepang & Korea",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "gluten",
+    "telur",
+    "krustasea"
+   ],
    "porsi_aman": "3-4 potong",
    "trik": [
     "pilih sayur"
@@ -2921,6 +3892,13 @@
    "kategori": "Jepang & Korea",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "tinggi",
+   "alergen": [
+    "kedelai",
+    "gluten"
+   ],
    "porsi_aman": "sedikit",
    "trik": [
     "perbanyak selada",
@@ -2939,6 +3917,14 @@
    "kategori": "Jepang & Korea",
    "purin": "rendah",
    "garam": "tinggi",
+   "karbo": "tinggi",
+   "gula": "tinggi",
+   "lemak": "rendah",
+   "alergen": [
+    "gluten",
+    "kedelai",
+    "ikan"
+   ],
    "porsi_aman": "setengah porsi",
    "trik": [
     "saus sedikit"
@@ -2953,6 +3939,13 @@
    "kategori": "Jepang & Korea",
    "purin": "rendah",
    "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [
+    "ikan",
+    "krustasea"
+   ],
    "porsi_aman": "2-3 sendok",
    "trik": [
     "sedikit saja"
@@ -2971,6 +3964,13 @@
    "kategori": "Jepang & Korea",
    "purin": "rendah",
    "garam": "tinggi",
+   "karbo": "tinggi",
+   "gula": "rendah",
+   "lemak": "tinggi",
+   "alergen": [
+    "gluten",
+    "kedelai"
+   ],
    "porsi_aman": "jarang, bumbu setengah",
    "trik": [
     "pakai setengah bumbu"
@@ -2989,6 +3989,13 @@
    "kategori": "Jepang & Korea",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "tinggi",
+   "lemak": "sedang",
+   "alergen": [
+    "gluten",
+    "kedelai"
+   ],
    "porsi_aman": "3-4 potong",
    "trik": [
     "saus dipisah"
@@ -3007,6 +4014,13 @@
    "kategori": "Masakan daerah",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "tinggi",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "kacang tanah",
+    "ikan"
+   ],
    "porsi_aman": "1 porsi kecil",
    "trik": [
     "ikan asin sedikit"
@@ -3025,6 +4039,13 @@
    "kategori": "Masakan daerah",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "tinggi",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "ikan",
+    "kedelai"
+   ],
    "porsi_aman": "1 porsi",
    "trik": [
     "ikan asin dan sambal secukupnya"
@@ -3042,6 +4063,12 @@
    "kategori": "Masakan daerah",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "tinggi",
+   "gula": "tinggi",
+   "lemak": "tinggi",
+   "alergen": [
+    "telur"
+   ],
    "porsi_aman": "1 porsi",
    "trik": [
     "krecek sedikit",
@@ -3060,6 +4087,12 @@
    "kategori": "Masakan daerah",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "ikan"
+   ],
    "porsi_aman": "1 porsi",
    "trik": [
     "sambal secukupnya"
@@ -3076,6 +4109,12 @@
    "kategori": "Masakan daerah",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "tinggi",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [
+    "ikan"
+   ],
    "porsi_aman": "1 porsi",
    "trik": [
     "aman"
@@ -3094,6 +4133,10 @@
    "kategori": "Masakan daerah",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "tinggi",
+   "alergen": [],
    "porsi_aman": "sedikit",
    "trik": [
     "pilih daging tanpa kulit"
@@ -3109,6 +4152,12 @@
    "kategori": "Masakan daerah",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "ikan"
+   ],
    "porsi_aman": "3 tusuk",
    "trik": [
     "aman"
@@ -3125,6 +4174,13 @@
    "kategori": "Masakan daerah",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "kacang tanah",
+    "krustasea"
+   ],
    "porsi_aman": "sebaiknya dihindari",
    "trik": [
     "minta tanpa cingur"
@@ -3142,6 +4198,13 @@
    "kategori": "Masakan daerah",
    "purin": "rendah",
    "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "tinggi",
+   "lemak": "rendah",
+   "alergen": [
+    "kacang tanah",
+    "krustasea"
+   ],
    "porsi_aman": "1 porsi",
    "trik": [
     "bumbu gula merah secukupnya"
@@ -3159,6 +4222,14 @@
    "kategori": "Masakan daerah",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "tinggi",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "moluska",
+    "kedelai",
+    "krustasea"
+   ],
    "porsi_aman": "setengah porsi",
    "trik": [
     "minta tanpa kupang"
@@ -3175,6 +4246,15 @@
    "kategori": "Masakan daerah",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "kedelai",
+    "kacang tanah",
+    "krustasea",
+    "telur"
+   ],
    "porsi_aman": "1 porsi",
    "trik": [
     "bumbu petis sedikit"
@@ -3192,6 +4272,10 @@
    "kategori": "Masakan daerah",
    "purin": "tinggi",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "tinggi",
+   "alergen": [],
    "porsi_aman": "sebaiknya dihindari",
    "trik": [
     "kalau terpaksa sedikit, tanpa jeroan"
@@ -3210,6 +4294,12 @@
    "kategori": "Masakan daerah",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [
+    "ikan"
+   ],
    "porsi_aman": "1 porsi",
    "trik": [
     "sambal secukupnya"
@@ -3227,6 +4317,13 @@
    "kategori": "Masakan daerah",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "tinggi",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "kedelai",
+    "telur"
+   ],
    "porsi_aman": "1 porsi",
    "trik": [
     "pilih lauk tahu, tempe, telur"
@@ -3244,6 +4341,14 @@
    "kategori": "Masakan daerah",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "gluten",
+    "kedelai",
+    "telur"
+   ],
    "porsi_aman": "1 mangkuk kecil",
    "trik": [
     "kuah sedikit"
@@ -3261,6 +4366,12 @@
    "kategori": "Masakan daerah",
    "purin": "sedang",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "telur"
+   ],
    "porsi_aman": "1 mangkuk",
    "trik": [
     "kuah sedikit",
@@ -3280,6 +4391,13 @@
    "kategori": "Masakan daerah",
    "purin": "rendah",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "ikan",
+    "gluten"
+   ],
    "porsi_aman": "segenggam kecil",
    "trik": [
     "jangan habiskan sebungkus"
@@ -3297,6 +4415,13 @@
    "kategori": "Kue & manis",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "tinggi",
+   "gula": "tinggi",
+   "lemak": "sedang",
+   "alergen": [
+    "gluten",
+    "susu"
+   ],
    "porsi_aman": "1-2 potong",
    "trik": [
     "selai secukupnya"
@@ -3314,6 +4439,13 @@
    "kategori": "Kue & manis",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "tinggi",
+   "gula": "tinggi",
+   "lemak": "sedang",
+   "alergen": [
+    "gluten",
+    "susu"
+   ],
    "porsi_aman": "1-2 buah",
    "trik": [
     "topping sedikit"
@@ -3334,6 +4466,14 @@
    "kategori": "Kue & manis",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "tinggi",
+   "lemak": "sedang",
+   "alergen": [
+    "gluten",
+    "telur",
+    "susu"
+   ],
    "porsi_aman": "1 potong",
    "trik": [
     "jangan sering"
@@ -3359,6 +4499,14 @@
    "kategori": "Kue & manis",
    "purin": "rendah",
    "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "gluten",
+    "telur",
+    "susu"
+   ],
    "porsi_aman": "3-4 buah",
    "trik": [
     "jangan habiskan setoples"
@@ -3377,6 +4525,12 @@
    "kategori": "Kue & manis",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "tinggi",
+   "lemak": "sedang",
+   "alergen": [
+    "susu"
+   ],
    "porsi_aman": "1 scoop",
    "trik": [
     "jangan sering"
@@ -3394,6 +4548,12 @@
    "kategori": "Kue & manis",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "tinggi",
+   "lemak": "rendah",
+   "alergen": [
+    "susu"
+   ],
    "porsi_aman": "1 potong",
    "trik": [
     "aman"
@@ -3422,6 +4582,10 @@
    "kategori": "Kue & manis",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1-2 butir saja",
    "trik": [
     "jangan jadi camilan rutin",
@@ -3445,6 +4609,12 @@
    "kategori": "Kue & manis",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [
+    "susu"
+   ],
    "porsi_aman": "1-2 potong kecil",
    "trik": [
     "pilih dark chocolate"
@@ -3464,6 +4634,10 @@
    "kategori": "Kue & manis",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "tinggi",
+   "gula": "sedang",
+   "lemak": "sedang",
+   "alergen": [],
    "porsi_aman": "1-2 buah",
    "trik": [
     "aman"
@@ -3481,6 +4655,10 @@
    "kategori": "Kue & manis",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1-2 buah",
    "trik": [
     "aman"
@@ -3501,6 +4679,12 @@
    "kategori": "Gorengan & camilan",
    "purin": "rendah",
    "garam": "tinggi",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "gluten"
+   ],
    "porsi_aman": "segenggam kecil",
    "trik": [
     "baca label natrium"
@@ -3517,6 +4701,10 @@
    "kategori": "Gorengan & camilan",
    "purin": "rendah",
    "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 mangkuk kecil",
    "trik": [
     "pilih tanpa garam/karamel"
@@ -3535,6 +4723,12 @@
    "kategori": "Gorengan & camilan",
    "purin": "sedang",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [
+    "kacang pohon"
+   ],
    "porsi_aman": "segenggam kecil",
    "trik": [
     "pilih tanpa garam"
@@ -3554,6 +4748,12 @@
    "kategori": "Minuman",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "tinggi",
+   "gula": "tinggi",
+   "lemak": "sedang",
+   "alergen": [
+    "susu"
+   ],
    "porsi_aman": "1 gelas kecil, less sugar",
    "trik": [
     "minta gula 25%"
@@ -3571,6 +4771,10 @@
    "kategori": "Minuman",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 gelas",
    "trik": [
     "tanpa sirup"
@@ -3587,6 +4791,10 @@
    "kategori": "Minuman",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 gelas",
    "trik": [
     "tanpa gula"
@@ -3604,6 +4812,10 @@
    "kategori": "Minuman",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "tinggi",
+   "gula": "tinggi",
+   "lemak": "sedang",
+   "alergen": [],
    "porsi_aman": "1 gelas",
    "trik": [
     "gula sedikit"
@@ -3620,6 +4832,12 @@
    "kategori": "Minuman",
    "purin": "sedang",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "rendah",
+   "alergen": [
+    "kedelai"
+   ],
    "porsi_aman": "1 gelas",
    "trik": [
     "tanpa gula banyak"
@@ -3637,6 +4855,10 @@
    "kategori": "Minuman",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "sedang",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 gelas",
    "trik": [
     "gula sedikit"
@@ -3655,6 +4877,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1-2 buah",
    "trik": [
     "kaya kalium, bagus untuk tensi"
@@ -3667,6 +4893,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 potong besar",
    "trik": [
     "bagus untuk pencernaan"
@@ -3684,6 +4914,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1-2 buah",
    "trik": [
     "makan buahnya lebih baik dari jus"
@@ -3699,6 +4933,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "sedikit, tanya dokter dulu",
    "trik": [
     "bisa berinteraksi dengan beberapa obat darah tinggi (mis. amlodipin) — tanya dokter"
@@ -3713,6 +4951,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "2-3 potong",
    "trik": [
     "segar dan banyak air"
@@ -3727,6 +4969,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "2-3 potong",
    "trik": [
     "aman"
@@ -3742,6 +4988,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 buah",
    "trik": [
     "makan dengan kulitnya"
@@ -3757,6 +5007,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 buah kecil",
    "trik": [
     "jangan berlebihan, cukup manis"
@@ -3773,6 +5027,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "2-3 potong",
    "trik": [
     "aman"
@@ -3788,6 +5046,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "segenggam kecil",
    "trik": [
     "jangan berlebihan"
@@ -3804,6 +5066,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "2-3 buah",
    "trik": [
     "aman"
@@ -3816,6 +5082,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "5-6 buah",
    "trik": [
     "jangan berlebihan"
@@ -3833,6 +5103,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "segenggam",
    "trik": [
     "aman"
@@ -3845,6 +5119,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "3-4 buah",
    "trik": [
     "aman"
@@ -3860,6 +5138,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 buah",
    "trik": [
     "tinggi vitamin C, bagus untuk asam urat"
@@ -3874,6 +5156,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "3-4 buah",
    "trik": [
     "aman"
@@ -3888,6 +5174,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 buah",
    "trik": [
     "hindari kalau ada gangguan ginjal"
@@ -3904,6 +5194,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 potong / 1 gelas tanpa gula",
    "trik": [
     "aman"
@@ -3918,6 +5212,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1-2 buah",
    "trik": [
     "manis, secukupnya"
@@ -3935,6 +5233,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "segenggam kecil",
    "trik": [
     "jangan berlebihan"
@@ -3951,6 +5253,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "setengah buah",
    "trik": [
     "aman"
@@ -3965,6 +5271,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "segenggam",
    "trik": [
     "bagus untuk camilan"
@@ -3977,6 +5287,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1-2 buah",
    "trik": [
     "tinggi vitamin C"
@@ -3992,6 +5306,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 buah",
    "trik": [
     "aman"
@@ -4004,6 +5322,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1-2 buah",
    "trik": [
     "tanpa gula tambahan"
@@ -4016,6 +5338,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1-2 buah",
    "trik": [
     "rujak kedondong: bumbu secukupnya"
@@ -4030,6 +5356,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 buah kecil",
    "trik": [
     "manis, secukupnya"
@@ -4044,6 +5374,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "3 butir",
    "trik": [
     "manis sekali, secukupnya"
@@ -4061,6 +5395,10 @@
    "kategori": "Buah",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "tinggi",
+   "alergen": [],
    "porsi_aman": "sedikit",
    "trik": [
     "lemak jenuh, secukupnya"
@@ -4078,6 +5416,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "bebas",
    "trik": [
     "sangat dianjurkan"
@@ -4093,6 +5435,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "bebas",
    "trik": [
     "aman"
@@ -4105,6 +5451,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "bebas",
    "trik": [
     "aman"
@@ -4117,6 +5467,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "bebas",
    "trik": [
     "aman"
@@ -4129,6 +5483,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1-2 buah",
    "trik": [
     "aman"
@@ -4141,6 +5499,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
     "aman"
@@ -4155,6 +5517,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "sedang",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
     "purin nabati, risiko kecil"
@@ -4172,6 +5538,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "bebas (kol goreng secukupnya)",
    "trik": [
     "kol goreng menyerap minyak"
@@ -4189,6 +5559,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
     "aman"
@@ -4201,6 +5575,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
     "aman"
@@ -4213,6 +5591,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
     "aman"
@@ -4228,6 +5610,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "sedang",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
     "rebus/tumis, secukupnya"
@@ -4245,6 +5631,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
     "balado/goreng menyerap minyak & garam"
@@ -4261,6 +5651,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
     "aman"
@@ -4275,6 +5669,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
     "aman"
@@ -4289,6 +5687,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
     "aman"
@@ -4303,6 +5705,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
     "aman"
@@ -4317,6 +5723,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
     "aman (versi gulai: santan secukupnya)"
@@ -4329,6 +5739,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
     "aman"
@@ -4341,6 +5755,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "sedang",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
     "purin nabati, risiko kecil"
@@ -4359,6 +5777,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "tinggi",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "sebaiknya dihindari",
    "trik": [
     "di sayur asem: sisihkan melinjonya"
@@ -4375,6 +5797,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "sedang",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "sedikit",
    "trik": [
     "secukupnya"
@@ -4389,6 +5815,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "sedang",
    "garam": "sedang",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "sebaiknya dihindari",
    "trik": [
     "bisa membebani ginjal, minum banyak air"
@@ -4406,6 +5836,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 tongkol",
    "trik": [
     "rebus lebih baik dari bakar bermentega"
@@ -4420,6 +5854,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1-2 buah",
    "trik": [
     "rebus/kukus lebih baik dari goreng"
@@ -4435,6 +5873,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 potong",
    "trik": [
     "rebus lebih baik dari goreng"
@@ -4451,6 +5893,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 buah",
    "trik": [
     "aman"
@@ -4463,6 +5909,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
     "aman"
@@ -4478,6 +5928,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
     "aman"
@@ -4490,6 +5944,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
     "aman"
@@ -4504,6 +5962,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "sedang",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "sedang",
+   "alergen": [],
    "porsi_aman": "1 porsi",
    "trik": [
     "kuah santan secukupnya"
@@ -4521,6 +5983,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "sedang",
    "garam": "rendah",
+   "karbo": "sedang",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "1 mangkuk kecil",
    "trik": [
     "purin nabati, secukupnya"
@@ -4537,6 +6003,12 @@
    "kategori": "Sayur & lalapan",
    "purin": "sedang",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [
+    "kedelai"
+   ],
    "porsi_aman": "segenggam",
    "trik": [
     "purin nabati, secukupnya"
@@ -4554,6 +6026,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "secukupnya",
    "trik": [
     "aman, asal bukan sambal asin"
@@ -4569,6 +6045,10 @@
    "kategori": "Sayur & lalapan",
    "purin": "rendah",
    "garam": "rendah",
+   "karbo": "rendah",
+   "gula": "rendah",
+   "lemak": "rendah",
+   "alergen": [],
    "porsi_aman": "secukupnya",
    "trik": [
     "aman"

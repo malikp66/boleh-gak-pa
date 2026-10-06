@@ -8,6 +8,10 @@ export interface Food {
   kategori: string;
   purin: Level;
   garam: Level;
+  karbo?: Level;
+  gula?: Level;
+  lemak?: Level;
+  alergen?: string[];
   porsi_aman: string;
   trik: string[];
   pemicu: string[];
