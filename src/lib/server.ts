@@ -172,14 +172,34 @@ export async function loadProfileContext(userId: string, profileId: string) {
 }
 
 // ---------------------------------------------------------------- kuota & cache AI
-const LIMITS = {
+export const LIMITS = {
   assess: Number(process.env.AI_LIMIT_ASSESS ?? 30),
   photo: Number(process.env.AI_LIMIT_PHOTO ?? 8),
   analyze: Number(process.env.AI_LIMIT_ANALYZE ?? 10),
   summary: Number(process.env.AI_LIMIT_SUMMARY ?? 3),
   tts: Number(process.env.AI_LIMIT_TTS ?? 40),
 };
-type QuotaKind = keyof typeof LIMITS;
+export type QuotaKind = keyof typeof LIMITS;
+
+/** Pemakaian hari ini per jenis (tanpa menambah hitungan). */
+export async function usageToday(userId: string): Promise<Record<QuotaKind, { limit: number; used: number; left: number }>> {
+  const rows = await q<{ kind: QuotaKind; count: number }>(
+    "select kind, count from ai_usage where user_id = $1 and day = (now() at time zone 'Asia/Jakarta')::date",
+    [userId],
+  );
+  const used = new Map(rows.map((r) => [r.kind, r.count]));
+  return Object.fromEntries(
+    (Object.keys(LIMITS) as QuotaKind[]).map((k) => {
+      const u = Math.min(used.get(k) ?? 0, LIMITS[k]);
+      return [k, { limit: LIMITS[k], used: u, left: LIMITS[k] - u }];
+    }),
+  ) as Record<QuotaKind, { limit: number; used: number; left: number }>;
+}
+
+/** Apakah anggaran AI bulan ini sudah habis (semua jawaban sementara dari tabel). */
+export async function budgetReached(): Promise<boolean> {
+  try { await (budgetGuardFn ?? (async () => {}))(); return false; } catch { return true; }
+}
 
 /** Pakai satu jatah AI harian (hari menurut WIB). Dipanggil hanya saat benar-benar memanggil model. */
 export function quota(userId: string, kind: QuotaKind) {
@@ -193,10 +213,16 @@ export function quota(userId: string, kind: QuotaKind) {
   };
 }
 
+const QUOTA_DONE: Record<QuotaKind, string> = {
+  assess: "Jatah jawaban AI hari ini sudah terpakai. Jawaban tetap dari tabel gizi, besok terisi lagi.",
+  photo: "Jatah kenali foto hari ini sudah terpakai. Ketik atau ucapkan nama makanannya ya, besok terisi lagi.",
+  analyze: "Jatah pelajari makanan baru hari ini sudah terpakai. Besok bisa lagi.",
+  summary: "Jatah ringkasan AI hari ini sudah terpakai. Ringkasan biasa tetap bisa dilihat.",
+  tts: "Jatah suara natural hari ini sudah terpakai",
+};
+
 export async function requireQuota(userId: string, kind: QuotaKind) {
-  if (!(await quota(userId, kind)())) {
-    throw new HttpError(429, "Jatah AI hari ini sudah habis. Coba lagi besok, atau ketik nama makanannya.");
-  }
+  if (!(await quota(userId, kind)())) throw new HttpError(429, QUOTA_DONE[kind]);
 }
 
 /** Cache jawaban AI (teks saran umum, tanpa data pribadi). */
@@ -227,7 +253,7 @@ onSpend(async (model, input, output) => {
   if (budgetCache) budgetCache.spent += usd;
 });
 
-onBudgetCheck(async () => {
+const budgetGuardFn = async () => {
   if (!budgetCache || Date.now() - budgetCache.at > 60_000) {
     const row = await one<{ spent: string }>(
       `select coalesce(sum(est_usd), 0) as spent from ai_spend
@@ -238,7 +264,8 @@ onBudgetCheck(async () => {
   if (budgetCache.spent >= MONTHLY_BUDGET) {
     throw new AIUnavailableError("Anggaran AI bulan ini sudah tercapai; sementara memakai tabel saja.");
   }
-});
+};
+onBudgetCheck(budgetGuardFn);
 
 export const todayStartISO = () => {
   // awal hari menurut WIB, supaya "hari ini" sesuai jam pengguna di Indonesia

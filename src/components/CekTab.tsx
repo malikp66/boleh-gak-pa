@@ -4,6 +4,9 @@ import { api, Chips, Meter, resizeImage, speak, useToast } from "./ui";
 import { AssessResult, PendingCheck, Profile } from "./types";
 import { ConditionId, conditionInfo, normalizeConditions, spokenAlergen } from "@/lib/conditions";
 import { play } from "@/lib/sound";
+import { refreshLimits, useLimits } from "@/lib/limits";
+import LimitNote from "./LimitNote";
+import CharCount from "./CharCount";
 import { cleanSpoken, useSpeech } from "@/lib/speech";
 
 // contoh makanan yang paling "menguji" tiap kondisi
@@ -50,6 +53,8 @@ export default function CekTab({ profile, flareJoint, prefill, welcome, onSaveUn
   const [photo, setPhoto] = useState<PhotoInfo | null>(null);
 
   const clear = () => setResult(null);
+  const limits = useLimits();
+  const photoLeft = limits?.usage.photo.left ?? 1;
 
   // pertanyaan lewat suara → jawabannya dibacakan otomatis
   const speakNext = useRef(false);
@@ -69,7 +74,7 @@ export default function CekTab({ profile, flareJoint, prefill, welcome, onSaveUn
         setTimeout(() => document.getElementById("result")?.scrollIntoView({ behavior: "smooth" }), 50);
       })
       .catch((e: Error) => { play("error"); toast.error(e.message, "Gagal mengecek"); })
-      .finally(() => setLoading(""));
+      .finally(() => { setLoading(""); void refreshLimits(); });
   }, [profile.id, note, toast]);
 
   function check(text: string) {
@@ -111,6 +116,7 @@ export default function CekTab({ profile, flareJoint, prefill, welcome, onSaveUn
       toast.error((err as Error).message || "Belum bisa baca foto. Ketik saja namanya ya.", "Foto belum terbaca");
     } finally {
       setLoading("");
+      void refreshLimits();
     }
   }
 
@@ -186,11 +192,19 @@ export default function CekTab({ profile, flareJoint, prefill, welcome, onSaveUn
             <div style={{ height: 12 }} />
           </>
         )}
-        <label className="btn big ink">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg>
-          Foto makanannya
-          <input type="file" accept="image/*" capture="environment" hidden onChange={onPhoto} />
-        </label>
+        {photoLeft > 0 ? (
+          <label className="btn big ink">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg>
+            Foto makanannya
+            <input type="file" accept="image/*" capture="environment" hidden onChange={onPhoto} />
+          </label>
+        ) : (
+          <button type="button" className="btn big ink resting" onClick={() => toast.info("Foto bisa dipakai lagi besok. Sementara ketik atau ucapkan nama makanannya ya.", "Kenali foto")}>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg>
+            Foto terisi lagi besok
+          </button>
+        )}
+        <LimitNote kind="photo" />
         {preview && <img src={preview} className="preview" alt="Foto makanan" />}
         {photo && (
           <div className="photo-info">
@@ -208,14 +222,16 @@ export default function CekTab({ profile, flareJoint, prefill, welcome, onSaveUn
         )}
         <div className="or"><span>atau ketik</span></div>
         <form onSubmit={(e) => { e.preventDefault(); check(food); }}>
-          <input type="text" value={food} placeholder="mis. ketoprak" autoComplete="off" enterKeyHint="go"
+          <input type="text" value={food} maxLength={200} placeholder="mis. ketoprak" autoComplete="off" enterKeyHint="go"
             onChange={(e) => { setFood(e.target.value); clear(); }} />
           <div className="chips"><Chips items={chips} onPick={(f) => { setFood(f); clear(); }} /></div>
           <details className="situasi">
             <summary>Situasinya: <b>{note}</b> ✎</summary>
             <div className="chips"><Chips items={NOTE_CHIPS} value={note} onPick={setNote} /></div>
           </details>
+          <CharCount value={food} max={200} />
           <button className="btn big primary" type="submit" disabled={Boolean(loading)}>Boleh gak? →</button>
+          <LimitNote kind="assess" showBelow={5} />
         </form>
       </div>
 

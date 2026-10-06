@@ -1,4 +1,5 @@
 "use client";
+import { refreshLimits } from "./limits";
 /**
  * Membacakan jawaban dengan suara yang paling halus yang tersedia.
  *   1. "ai"        → Gemini TTS lewat /api/tts (paling natural, berbayar kecil, butuh internet)
@@ -120,6 +121,7 @@ async function speakAI(text: string, st: VoiceSettings) {
     if (!res.ok) throw new Error((await res.json().catch(() => null))?.error ?? "Suara AI tidak tersedia");
     url = URL.createObjectURL(await res.blob());
     audioCache.set(k, url);
+    void refreshLimits();
   }
   current = new Audio(url);
   current.playbackRate = Math.max(0.8, Math.min(1.2, st.rate + 0.05));

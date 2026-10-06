@@ -1,6 +1,7 @@
 "use client";
 import { useState, useSyncExternalStore } from "react";
 import { useToast } from "./ui";
+import LimitNote from "./LimitNote";
 import { useClientValue } from "@/lib/use-client-value";
 import { AI_VOICES, getVoiceSettings, indonesianVoices, setVoiceSettings, speakText, subscribeVoices, VoiceSettings as VS } from "@/lib/voice";
 
@@ -31,6 +32,7 @@ export default function VoiceSettings() {
         <span className="ce">🐢</span>Bacakan lebih pelan
       </label>
       <button className="btn sm" onClick={() => test()}>▶️ Coba suara</button>
+      {st.mode === "ai" && <LimitNote kind="tts" showBelow={10} />}
 
       <details className="more">
         <summary>Pilih suara lain</summary>

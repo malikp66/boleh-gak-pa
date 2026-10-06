@@ -12,7 +12,7 @@ export const POST = route(async (req) => {
     text: z.string().trim().min(1).max(700),
     voice: z.enum(Object.keys(TTS_VOICES) as [TTSVoice, ...TTSVoice[]]).default("Sulafat"),
   }).parse(await req.json());
-  if (!(await quota(user.id, "tts")())) throw new HttpError(429, "Jatah suara AI hari ini habis, memakai suara HP.");
+  if (!(await quota(user.id, "tts")())) throw new HttpError(429, "Jatah suara natural hari ini sudah terpakai");
   try {
     const audio = await generateSpeech(b.text, b.voice);
     return new Response(Buffer.from(audio), {

@@ -1,4 +1,7 @@
 "use client";
+import { refreshLimits } from "@/lib/limits";
+import CharCount from "./CharCount";
+import LimitNote from "./LimitNote";
 import { nameProblem } from "@/lib/validation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { api, Chips, useToast } from "./ui";
@@ -54,6 +57,7 @@ export default function DaftarTab({ profile, addName, onCheck }: {
     setBusy(true);
     try {
       setAnalysis(await api<Analysis>("/api/foods/analyze", { name: form.name, bahan: form.bahan }));
+      void refreshLimits();
     } catch (err) {
       toast.error((err as Error).message, "Gagal menganalisis");
     } finally {
@@ -111,13 +115,15 @@ export default function DaftarTab({ profile, addName, onCheck }: {
                 <input type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="mis. nasi tutug oncom" required />
               </label>
               <label className="field">Bahan / cara masak <span className="muted small">(makin lengkap makin akurat)</span>
-                <textarea rows={3} value={form.bahan} onChange={(e) => setForm({ ...form, bahan: e.target.value })} placeholder="mis. nasi, oncom bakar, ikan asin, sambal" />
+                <textarea rows={3} value={form.bahan} maxLength={500} onChange={(e) => setForm({ ...form, bahan: e.target.value })} placeholder="mis. nasi, oncom bakar, ikan asin, sambal" />
               </label>
+              <CharCount value={form.bahan} max={500} />
               {busy && <div className="bar"><span /></div>}
               <div className="row">
                 <button type="button" className="btn" onClick={() => setAdding(false)}>Batal</button>
                 <button className="btn ink" disabled={busy}>{busy ? "Menilai…" : "Analisis dengan AI"}</button>
               </div>
+              <LimitNote kind="analyze" />
             </form>
           ) : (
             <>

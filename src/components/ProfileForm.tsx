@@ -1,4 +1,7 @@
 "use client";
+import { refreshLimits } from "@/lib/limits";
+import CharCount from "./CharCount";
+import LimitNote from "./LimitNote";
 import { useState } from "react";
 import { Personalisasi, Profile } from "./types";
 import { api, useToast } from "./ui";
@@ -57,6 +60,7 @@ export default function ProfileForm({ initial, submitLabel, onSubmit, onCancel }
         usia: d.usia, kondisi: d.kondisi, kondisi_lain: d.kondisi_lain, obat_lain: d.obat_lain, alergen_lain: d.alergen_lain,
       });
       setSug(r);
+      void refreshLimits();
       if (r.aiError) toast.warning(`${r.aiError}. Yang bisa dikenali tanpa AI tetap ditampilkan.`, "AI belum tersedia");
     } catch (e) {
       toast.error((e as Error).message);
@@ -153,11 +157,13 @@ export default function ProfileForm({ initial, submitLabel, onSubmit, onCancel }
         <textarea rows={3} value={d.kondisi_lain} maxLength={300} onChange={(e) => set("kondisi_lain", e.target.value)}
           placeholder="Tulis bebas: obat yang diminum, penyakit lain, alergi. Mis. minum amlodipin, maag, alergi udang" />
       </label>
+      <CharCount value={d.kondisi_lain} max={300} />
       {hasOther && !sug && (
         <button type="button" className="btn ink" style={{ margin: "0 0 4px" }} onClick={understand} disabled={thinking}>
           {thinking ? "Sedang dipahami…" : "🤖 Bantu pahami tulisan ini"}
         </button>
       )}
+      {hasOther && !sug && <LimitNote kind="analyze" />}
       {d.personalisasi && !sug && (
         <div className="review-head">
           <p className="eyebrow">Catatan khusus aktif</p>
@@ -250,15 +256,16 @@ export default function ProfileForm({ initial, submitLabel, onSubmit, onCancel }
 
         <p className="eyebrow">📞 Kontak darurat keluarga</p>
         <div className="grid2">
-          <label className="field">Nama <input type="text" value={d.kontak_nama} onChange={(e) => set("kontak_nama", e.target.value)} placeholder="mis. Malik" /></label>
+          <label className="field">Nama <input type="text" value={d.kontak_nama} maxLength={40} onChange={(e) => set("kontak_nama", e.target.value)} placeholder="mis. Malik" /></label>
           <label className="field">Telepon <input type="tel" inputMode="tel" maxLength={24} value={d.kontak_telepon} className={phoneErr ? "invalid" : ""} aria-invalid={Boolean(phoneErr)}
             onChange={(e) => set("kontak_telepon", e.target.value)} onBlur={() => touch("telepon")} placeholder="08…" /></label>
         </div>
         {phoneErr && <p className="field-error">{phoneErr}</p>}
 
         <label className="field">Catatan dari dokter
-          <textarea rows={2} value={d.catatan_dokter} onChange={(e) => set("catatan_dokter", e.target.value)} placeholder="mis. nasi maks ¾ gelas, hindari santan" />
+          <textarea rows={2} value={d.catatan_dokter} maxLength={500} onChange={(e) => set("catatan_dokter", e.target.value)} placeholder="mis. nasi maks ¾ gelas, hindari santan" />
         </label>
+        <CharCount value={d.catatan_dokter} max={500} />
       </details>
 
       {error && <div className="error-box">{error}</div>}

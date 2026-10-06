@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import InstallGuide from "@/components/InstallGuide";
 import WaConnect from "@/components/WaConnect";
+import CharCount from "@/components/CharCount";
 import { api, useToast } from "@/components/ui";
 import { ALERGEN_LABEL, ALERGEN_LIST, CONDITIONS, ConditionId, EXCLUSIVE } from "@/lib/conditions";
 import { ensureDevice, restoreDevice } from "@/lib/device";
@@ -305,6 +306,7 @@ export default function Mulai() {
             <label className="field">Ada yang lain? (boleh kosong)
               <input type="text" value={lain} maxLength={300} onChange={(e) => setLain(e.target.value)} placeholder="mis. minum amlodipin, maag" />
             </label>
+            <CharCount value={lain} max={300} />
             <Consent agree={agree} setAgree={setAgree} />
             {error && <div className="error-box">{error}</div>}
             <Nav back={() => setStep("siapa")} next={finish} nextLabel={busy ? "Menyiapkan…" : "Selesai ✓"} disabled={busy} />

@@ -5,6 +5,7 @@ import ProfileForm, { emptyDraft, ProfileDraft } from "@/components/ProfileForm"
 import InviteCard from "@/components/InviteCard";
 import RecoveryCard from "@/components/RecoveryCard";
 import VoiceSettings from "@/components/VoiceSettings";
+import { LIMIT_TEXT, LimitKind, useLimits } from "@/lib/limits";
 import WaConnect from "@/components/WaConnect";
 import { api, useToast } from "@/components/ui";
 import { Me, Profile } from "@/components/types";
@@ -137,6 +138,8 @@ export default function ProfilPage() {
               )}
             </div>
 
+            <UsageCard />
+
             {me.wa.available && (
               <div className="card">
                 <h2>💬 WhatsApp</h2>
@@ -196,5 +199,35 @@ export default function ProfilPage() {
         <p className="disclaimer">Obat & target dipakai untuk peringatan saja. Keputusan pengobatan tetap di dokter.</p>
       </main>
     </>
+  );
+}
+
+/** Pemakaian hari ini: tenang & informatif, tanpa nada peringatan. */
+function UsageCard() {
+  const limits = useLimits();
+  if (!limits) return null;
+  const kinds: LimitKind[] = ["assess", "photo", "analyze", "summary", "tts"];
+  return (
+    <div className="card">
+      <details>
+        <summary><b>📊 Pemakaian hari ini</b> <small className="muted">· terisi lagi tiap 00.00 WIB</small></summary>
+        <p className="small muted" style={{ marginTop: 8 }}>Supaya aplikasi tetap gratis, fitur AI punya jatah harian per HP. Kalau terpakai semua, aplikasi tetap jalan dengan tabel gizi.</p>
+        {limits.budgetReached && <p className="limit-note out">AI sedang istirahat sampai bulan depan · semua jawaban sementara dari tabel gizi.</p>}
+        <div className="usage">
+          {kinds.map((k) => {
+            const u = limits.usage[k];
+            const pct = Math.round((u.left / u.limit) * 100);
+            return (
+              <div key={k} className="usage-row">
+                <b>{LIMIT_TEXT[k].label}</b>
+                <small>sisa {u.left} dari {u.limit}</small>
+                <span className="usage-bar"><i className={pct <= 20 ? "low" : ""} style={{ width: `${pct}%` }} /></span>
+              </div>
+            );
+          })}
+          <div className="usage-row"><b>Bel ke keluarga</b><small>tiap {limits.nudgeGapHours} jam per orang</small></div>
+        </div>
+      </details>
+    </div>
   );
 }

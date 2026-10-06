@@ -1,4 +1,6 @@
 "use client";
+import { refreshLimits } from "@/lib/limits";
+import LimitNote from "./LimitNote";
 import { useCallback, useEffect, useState } from "react";
 import { api, speak, useToast } from "./ui";
 import { Me, Profile, Review } from "./types";
@@ -61,9 +63,12 @@ export default function ReviewTab({ profile, me }: { profile: Profile; me: Me })
             <div className="row" style={{ marginTop: 14 }}><button className="btn sm" onClick={() => speak(rv.summary!, toast)}>Bacakan</button></div>
           </>
         ) : (
-          <button className="btn primary" disabled={asking} onClick={async () => { setAsking(true); await load(true); setAsking(false); }}>
-            {asking ? "Lagi menulis…" : "Minta ringkasan minggu ini"}
-          </button>
+          <>
+            <button className="btn primary" disabled={asking} onClick={async () => { setAsking(true); await load(true); setAsking(false); void refreshLimits(); }}>
+              {asking ? "Lagi menulis…" : "Minta ringkasan minggu ini"}
+            </button>
+            <LimitNote kind="summary" />
+          </>
         )}
       </div>
 
