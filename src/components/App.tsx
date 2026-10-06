@@ -66,7 +66,7 @@ export default function App() {
   const profile = me?.profiles.find((p) => p.id === profileId);
   const conditions = profile ? normalizeConditions(profile.kondisi) : [];
   const monitors = conditions.map((c) => conditionInfo(c)?.monitor).filter(Boolean) as MonitorKind[];
-  const simple = useClientValue(simpleMode, true);
+  const simple = useClientValue(simpleMode, false);
   const tabs: Tab[] = simple
     ? ["cek", "catatan", ...(monitors.length ? (["pantau"] as Tab[]) : [])]
     : ["cek", "daftar", "catatan", ...(monitors.length ? (["pantau"] as Tab[]) : []), "review"];

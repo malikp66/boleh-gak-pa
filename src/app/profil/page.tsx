@@ -27,7 +27,7 @@ export default function ProfilPage() {
   const initialSound = useClientValue(soundOn, true);
   const [soundOverride, setSoundState] = useState<boolean | null>(null);
   const sound = soundOverride ?? initialSound;
-  const initialSimple = useClientValue(simpleMode, true);
+  const initialSimple = useClientValue(simpleMode, false);
   const [simpleOverride, setSimpleState] = useState<boolean | null>(null);
   const simple = simpleOverride ?? initialSimple;
   const support = useClientValue<PushSupport>(pushSupport, "unsupported");
