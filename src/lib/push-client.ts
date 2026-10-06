@@ -28,14 +28,14 @@ export async function currentSubscription() {
   return (await registration()).pushManager.getSubscription();
 }
 
-export async function enablePush(profileId: string, pagi: boolean, malam: boolean) {
+export async function enablePush(profileId: string, pagi: boolean, malam: boolean, keluarga = true) {
   const key = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
   if (!key) throw new Error("Notifikasi belum dikonfigurasi");
   const perm = await Notification.requestPermission();
   if (perm !== "granted") throw new Error("Izin notifikasi ditolak");
   const reg = await registration();
   const sub = (await reg.pushManager.getSubscription()) ?? (await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlB64(key) }));
-  await api("/api/push", { subscription: sub.toJSON(), profileId, pagi, malam });
+  await api("/api/push", { subscription: sub.toJSON(), profileId, pagi, malam, keluarga });
   return sub;
 }
 

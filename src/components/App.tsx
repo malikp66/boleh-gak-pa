@@ -14,6 +14,8 @@ import { play } from "@/lib/sound";
 import Link from "next/link";
 import { EmergencyButton, EmergencySheet } from "./Emergency";
 import { simpleMode } from "@/lib/simple-mode";
+import { installSkipped, isStandalone, platform } from "@/lib/install";
+import InstallGuide from "./InstallGuide";
 import { useClientValue } from "@/lib/use-client-value";
 
 type Tab = "cek" | "daftar" | "catatan" | "pantau" | "review";
@@ -33,6 +35,10 @@ export default function App() {
     return t === "daftar" || t === "catatan" || t === "pantau" || t === "review" ? t : "cek";
   });
   const [sos, setSos] = useState(false);
+  const needsInstall = useClientValue(() => !isStandalone() && platform() !== "desktop", false);
+  const skippedInstall = useClientValue(installSkipped, false);
+  const [installOpen, setInstallOpen] = useState(false);
+  const [installHidden, setInstallHidden] = useState(false);
   const [flareJoint, setFlareJoint] = useState<string | null>(null);
   const [prefill, setPrefill] = useState<{ food: string; n: number } | null>(null);
   const [addName, setAddName] = useState<{ name: string; n: number } | null>(null);
@@ -104,6 +110,14 @@ export default function App() {
       </header>
 
       <main key={`${profileId}-${reload}`}>
+        {needsInstall && !installHidden && (
+          <div className="install-banner">
+            <span aria-hidden="true">📲</span>
+            <p><b>Pasang di layar HP</b><small>biar datanya aman &amp; bisa dapat pengingat</small></p>
+            <button className="btn sm primary" onClick={() => setInstallOpen(true)}>Pasang</button>
+            {skippedInstall && <button className="alert-close" aria-label="Tutup" onClick={() => setInstallHidden(true)}>×</button>}
+          </div>
+        )}
         {tab === "cek" && (
           <CekTab key={prefill?.n ?? 0} profile={profile} flareJoint={flareJoint} prefill={prefill} welcome={welcome && !prefill}
             onSaveUnknown={(name) => { setAddName({ name, n: Date.now() }); go("daftar"); }} />
@@ -119,6 +133,14 @@ export default function App() {
         </p>
       </main>
 
+      {installOpen && (
+        <div className="sheet-backdrop" onClick={() => setInstallOpen(false)}>
+          <div className="card sheet" onClick={(e) => e.stopPropagation()}>
+            <InstallGuide existing />
+            <button className="btn" style={{ marginTop: 14 }} onClick={() => setInstallOpen(false)}>Tutup</button>
+          </div>
+        </div>
+      )}
       {sos && <EmergencySheet profile={profile} onClose={() => setSos(false)} />}
       <nav className="bottom" style={{ gridTemplateColumns: `repeat(${tabs.length}, 1fr)` }}>
         {tabs.map((t) => <button key={t} className={tab === t ? "active" : ""} onClick={() => go(t)}><span aria-hidden="true">{TAB_LABEL[t][0]}</span>{TAB_LABEL[t][1]}</button>)}

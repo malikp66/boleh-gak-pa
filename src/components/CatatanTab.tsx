@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { api, CAT_EMOJI, dayKey, fmtDay, fmtTime, useToast } from "./ui";
 import { FoodItem, Me, Meal, Profile } from "./types";
+import FamilyCard from "./FamilyCard";
 import RecoveryCard from "./RecoveryCard";
 import { normalizeConditions } from "@/lib/conditions";
 
@@ -73,6 +74,7 @@ export default function CatatanTab({ profile, me }: { profile: Profile; me: Me }
   let lastDay = "";
   return (
     <>
+      {me.profiles.length > 1 && <FamilyCard />}
       {meals.length >= 3 && meals.length <= 5 && <RecoveryCard />}
       <div className="sticker-row">
         <div className="sticker yellow"><span className="emo">🔥</span><b>{streak}</b><small>hari tanpa merah</small></div>

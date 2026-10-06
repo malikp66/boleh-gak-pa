@@ -455,3 +455,27 @@ details.situasi > summary { cursor: pointer; font-size: 15px; font-weight: 600; 
 details.situasi > summary::-webkit-details-marker { display: none; }
 details.situasi .chips { margin-top: 8px; }
 .btn.listen { margin: 0 0 16px; }
+.fam-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-top: 2px solid var(--line); }
+.fam-row:first-of-type { border-top: 0; }
+.fam-icon { font-size: 26px; }
+.fam-text { flex: 1; min-width: 0; }
+.fam-text b { display: block; font-size: 18px; }
+.fam-text small { font-size: 14px; font-weight: 600; opacity: .75; }
+.fam-row .bell { width: auto; white-space: nowrap; background: var(--yellow); }
+.fam-note { font-size: 12px; text-align: right; max-width: 90px; }
+.install { text-align: left; }
+.install h2 { margin-top: 4px; }
+.install-steps { list-style: none; padding: 0; margin: 14px 0; display: grid; gap: 12px; }
+.install-steps li { display: flex; align-items: flex-start; gap: 12px; font-size: 17px; line-height: 1.4; }
+.install-steps li > span { flex: none; width: 32px; height: 32px; display: grid; place-items: center; border: var(--b) solid #111; border-radius: 50%; background: var(--yellow); font-weight: 800; }
+.ios-share { display: inline-grid; place-items: center; width: 26px; height: 26px; border: 2px solid #111; border-radius: 6px; font-style: normal; font-weight: 800; }
+.install-done, .install-code { border: var(--b) solid #111; border-radius: var(--r); background: #fff; padding: 12px 14px; margin: 12px 0; }
+.install-code code { display: block; font-size: 17px; font-weight: 800; letter-spacing: .04em; word-break: break-all; margin-top: 6px; }
+.linklike { display: block; margin: 16px auto 0; background: none; border: 0; color: var(--muted); font: 600 14px var(--body); text-decoration: underline; cursor: pointer; }
+.install-banner { position: relative; display: flex; align-items: center; gap: 12px; margin: 0 0 16px; padding: 12px 14px; background: #fff; border: var(--b) solid #111; border-radius: var(--r); box-shadow: 4px 4px 0 #111; }
+.install-banner > span { font-size: 28px; }
+.install-banner p { flex: 1; margin: 0; }
+.install-banner p b { display: block; font-size: 17px; }
+.install-banner p small { font-size: 13px; font-weight: 600; opacity: .7; }
+.install-banner .btn { width: auto; }
+.install-banner .alert-close { position: absolute; top: -12px; right: -10px; }

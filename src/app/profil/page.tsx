@@ -30,7 +30,7 @@ export default function ProfilPage() {
   const [simpleOverride, setSimpleState] = useState<boolean | null>(null);
   const simple = simpleOverride ?? initialSimple;
   const support = useClientValue<PushSupport>(pushSupport, "unsupported");
-  const [push, setPush] = useState<{ on: boolean; pagi: boolean; malam: boolean }>({ on: false, pagi: true, malam: true });
+  const [push, setPush] = useState<{ on: boolean; pagi: boolean; malam: boolean; keluarga: boolean }>({ on: false, pagi: true, malam: true, keluarga: true });
 
   const load = useCallback(() =>
     ensureDevice().then(() => api<Me>("/api/me")).then((m) => {
@@ -46,17 +46,17 @@ export default function ProfilPage() {
     if (pushSupport() === "ok") {
       currentSubscription().then(async (sub) => {
         if (!sub) return;
-        const r = await api<{ subscription: { pagi: boolean; malam: boolean } | null }>(`/api/push?endpoint=${encodeURIComponent(sub.endpoint)}`);
-        if (r.subscription) setPush({ on: true, pagi: r.subscription.pagi, malam: r.subscription.malam });
+        const r = await api<{ subscription: { pagi: boolean; malam: boolean; keluarga: boolean } | null }>(`/api/push?endpoint=${encodeURIComponent(sub.endpoint)}`);
+        if (r.subscription) setPush({ on: true, pagi: r.subscription.pagi, malam: r.subscription.malam, keluarga: r.subscription.keluarga });
       }).catch(() => {});
     }
   }, [load]);
 
   const profile = me?.profiles.find((p) => p.id === activeId);
 
-  async function savePush(next: { on: boolean; pagi: boolean; malam: boolean }) {
+  async function savePush(next: typeof push) {
     try {
-      if (next.on) await enablePush(activeId, next.pagi, next.malam);
+      if (next.on) await enablePush(activeId, next.pagi, next.malam, next.keluarga);
       else await disablePush();
       setPush(next);
       play("saved");
@@ -128,6 +128,7 @@ export default function ProfilPage() {
                     <>
                       <label className="care-item"><input type="checkbox" checked={push.pagi} onChange={(e) => savePush({ ...push, pagi: e.target.checked })} /><span className="ce">🌅</span>Pagi 07.00 · cek gula darah/tensi</label>
                       <label className="care-item"><input type="checkbox" checked={push.malam} onChange={(e) => savePush({ ...push, malam: e.target.checked })} /><span className="ce">🌙</span>Malam 19.00 · catat makan hari ini</label>
+                      {me.profiles.length > 1 && <label className="care-item"><input type="checkbox" checked={push.keluarga} onChange={(e) => savePush({ ...push, keluarga: e.target.checked })} /><span className="ce">👪</span>21.00 · kabari saya kalau keluarga lupa mencatat</label>}
                       <button className="btn sm" onClick={testPush}>Kirim notifikasi uji</button>
                     </>
                   )}

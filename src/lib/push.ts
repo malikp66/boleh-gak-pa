@@ -13,7 +13,7 @@ if (pushConfigured) {
 }
 
 export interface PushRow { id: string; endpoint: string; p256dh: string; auth: string }
-export interface Notice { title: string; body: string; url?: string; tag?: string }
+export interface Notice { title: string; body: string; url?: string; tag?: string; /** profileId: tampilkan tombol 'Ingatkan' */ nudge?: string }
 
 /** Kirim ke satu langganan. Langganan yang sudah kedaluwarsa (404/410) langsung dihapus. */
 export async function sendPush(row: PushRow, notice: Notice): Promise<boolean> {

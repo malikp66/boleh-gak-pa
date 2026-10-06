@@ -2,13 +2,17 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import InstallGuide from "@/components/InstallGuide";
 import { api } from "@/components/ui";
 import { ALERGEN_LABEL, ALERGEN_LIST, CONDITIONS, ConditionId, EXCLUSIVE } from "@/lib/conditions";
 import { ensureDevice, restoreDevice } from "@/lib/device";
+import { installSkipped, isStandalone, skipInstall } from "@/lib/install";
 import { mapLocally } from "@/lib/personalize";
+import { enablePush, pushSupport } from "@/lib/push-client";
+import { useClientValue } from "@/lib/use-client-value";
 
 type Untuk = "diri" | "orang_tua" | "pasangan" | "anak" | "lainnya";
-type Step = "welcome" | "siapa" | "kondisi" | "kode" | "pulih";
+type Step = "welcome" | "siapa" | "kondisi" | "notif" | "kode" | "pulih";
 
 const UNTUK: { id: Untuk; emoji: string; label: string; panggilan: string }[] = [
   { id: "diri", emoji: "🙋", label: "Diri sendiri", panggilan: "kamu" },
@@ -37,6 +41,10 @@ export default function Mulai() {
   const [recovery, setRecovery] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [newProfileId, setNewProfileId] = useState("");
+  const standalone = useClientValue<boolean | null>(isStandalone, null);
+  const skippedBefore = useClientValue(installSkipped, false);
+  const [skipped, setSkipped] = useState(false);
 
   // pengguna yang sudah punya profil langsung ke aplikasi
   useEffect(() => {
@@ -61,7 +69,7 @@ export default function Mulai() {
       const allAlergen = [...new Set([...(kondisi.includes("alergi") ? alergen : []), ...m.alergen])];
       if (allAlergen.length && !allKondisi.includes("alergi")) allKondisi.push("alergi");
       const name = nama.trim() || (untuk === "diri" ? "Saya" : "Keluargaku");
-      await api("/api/onboarding", {
+      const created = await api<{ profile: { id: string } }>("/api/onboarding", {
         action: "create",
         familyName: `Keluarga ${name}`.slice(0, 60),
         profile: {
@@ -71,7 +79,11 @@ export default function Mulai() {
           catatan_dokter: "", obat: m.obat, kondisi_lain: lain.trim(),
         },
       });
-      router.replace("/?welcome=1");
+      if (pushSupport() === "ok") {
+        setNewProfileId(created.profile.id);
+        setBusy(false);
+        setStep("notif");
+      } else router.replace("/?welcome=1");
     } catch (e) {
       setError((e as Error).message);
       setBusy(false);
@@ -105,6 +117,26 @@ export default function Mulai() {
   }
 
   const progress = ["siapa", "kondisi"].indexOf(step);
+
+  async function turnOnNotif() {
+    setBusy(true);
+    try { await enablePush(newProfileId, true, true, true); } catch (e) { setError((e as Error).message); setBusy(false); return; }
+    router.replace("/?welcome=1");
+  }
+
+  if (standalone === null) return <main className="center-page" />;
+  // wajib dipasang dulu, supaya ID perangkat dibuat di dalam aplikasi (lihat lib/install.ts)
+  if (!standalone && !skipped && !skippedBefore) {
+    return (
+      <main className="center-page">
+        <div className="card onboard">
+          <p className="eyebrow">Selamat datang di</p>
+          <h1 className="hero-title">Boleh Gak, Ya?</h1>
+          <InstallGuide onSkip={() => { skipInstall(); setSkipped(true); }} />
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="center-page">
@@ -154,6 +186,21 @@ export default function Mulai() {
               <button className="btn" onClick={() => setStep("welcome")}>← Kembali</button>
               <button className="btn primary" disabled={busy || recovery.replace(/[^0-9a-z]/gi, "").length < 24} onClick={pulih}>{busy ? "Memulihkan…" : "Pulihkan"}</button>
             </div>
+          </>
+        )}
+
+        {step === "notif" && (
+          <>
+            <span className="emo-big" aria-hidden="true">🔔</span>
+            <h2>Nyalakan pengingat?</h2>
+            <ul className="welcome-list">
+              <li><span>🌅</span>Pagi: cek gula darah atau tensi</li>
+              <li><span>🌙</span>Malam: catat makan hari ini</li>
+              <li><span>👪</span>Keluarga bisa membunyikan bel kalau lupa</li>
+            </ul>
+            {error && <div className="error-box">{error}</div>}
+            <button className="btn big primary" disabled={busy} onClick={turnOnNotif}>{busy ? "Menyalakan…" : "🔔 Nyalakan"}</button>
+            <button className="linklike" onClick={() => router.replace("/?welcome=1")}>Nanti saja</button>
           </>
         )}
 
