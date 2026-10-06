@@ -7,12 +7,19 @@ export interface Reading { level: Level; label: string; advice: string }
 
 export const GLUCOSE_CONTEXTS = ["puasa", "sebelum makan", "2 jam setelah makan", "sebelum tidur", "acak"] as const;
 
-export function glucose(mgdl: number, context: string): Reading {
+export function glucose(mgdl: number, context: string, tipe?: string | null): Reading {
   if (mgdl < 54) return { level: "bahaya", label: "Hipoglikemia berat", advice: "Segera makan/minum gula cepat dan minta bantuan orang terdekat. Hubungi dokter atau ke IGD." };
   if (mgdl < 70) return { level: "bahaya", label: "Gula darah rendah", advice: "Makan/minum 15 g gula cepat (mis. ½ gelas jus atau teh manis), cek ulang 15 menit lagi. Kalau masih < 70, ulangi dan hubungi dokter." };
   if (mgdl > 250) return { level: "bahaya", label: "Sangat tinggi", advice: "Minum air putih dan hubungi dokter, terutama jika sedang sakit, mual, atau muntah." };
   const fasting = context === "puasa" || context === "sebelum makan";
   const after = context === "2 jam setelah makan";
+  if (tipe === "gestasional") {
+    // target ADA untuk diabetes kehamilan: puasa < 95, 2 jam setelah makan < 120
+    if ((fasting && mgdl >= 95) || (after && mgdl >= 120) || (!fasting && !after && mgdl >= 140)) {
+      return { level: "perhatian", label: "Di atas target kehamilan", advice: "Target saat hamil lebih ketat. Catat terus dan bicarakan dengan dokter kandungan/ahli gizi." };
+    }
+    return { level: "aman", label: "Dalam target kehamilan", advice: "Bagus, pertahankan." };
+  }
   // target umum ADA: sebelum makan 80–130, 1–2 jam setelah makan < 180 (target pribadi bisa berbeda, ikuti dokter)
   if ((fasting && mgdl > 130) || (after && mgdl >= 180) || (!fasting && !after && mgdl >= 200)) {
     return { level: "perhatian", label: "Di atas target umum", advice: "Perhatikan porsi karbohidrat makan berikutnya. Ikuti target dari dokter kalau berbeda." };

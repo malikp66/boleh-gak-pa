@@ -11,6 +11,7 @@ export interface Food {
   karbo?: Level;
   gula?: Level;
   lemak?: Level;
+  ig?: Level | null;
   alergen?: string[];
   porsi_aman: string;
   trik: string[];

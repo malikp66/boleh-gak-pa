@@ -35,7 +35,7 @@ function LogView({ profile, kind }: { profile: Profile; kind: "gula_darah" | "te
   useEffect(() => { void load(); }, [load]);
 
   const read = (l: { value1: number; value2: number | null; context: string }) =>
-    isGlucose ? glucose(l.value1, l.context) : bloodPressure(l.value1, l.value2 ?? 0);
+    isGlucose ? glucose(l.value1, l.context, profile.diabetes_tipe) : bloodPressure(l.value1, l.value2 ?? 0);
 
   async function save(e: React.FormEvent) {
     e.preventDefault();
@@ -91,7 +91,9 @@ function LogView({ profile, kind }: { profile: Profile; kind: "gula_darah" | "te
               );
             })}
           </div>
-          <p className="small muted">{isGlucose ? "Target umum ADA: 80–130 sebelum makan, < 180 dua jam setelah makan. Ikuti target dari doktermu." : "Normal < 120/80. Ikuti target dari doktermu."}</p>
+          <p className="small muted">{isGlucose
+            ? profile.diabetes_tipe === "gestasional" ? "Target ADA saat hamil: puasa < 95, 2 jam setelah makan < 120. Ikuti target dari doktermu." : "Target umum ADA: 80–130 sebelum makan, < 180 dua jam setelah makan. Ikuti target dari doktermu."
+            : "Normal < 120/80. Ikuti target dari doktermu."}</p>
         </div>
       )}
 

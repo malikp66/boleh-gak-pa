@@ -23,7 +23,7 @@ const DM_TIPE = [
 
 const WELCOME = [
   { emoji: "🍽️", title: "Ragu sebelum makan?", text: "Ketik atau foto makanannya. Langsung tahu aman, dibatasi, atau sebaiknya jangan, sesuai kondisimu." },
-  { emoji: "🚦", title: "Lampu dari tabel gizi", text: "Penilaian memakai tabel 271 makanan Indonesia dan aturan dari pedoman Kemenkes, PERKENI, dan WHO. AI hanya menulis sarannya." },
+  { emoji: "🚦", title: "Lampu dari tabel gizi", text: "Penilaian memakai tabel 342 makanan Indonesia dan aturan dari pedoman Kemenkes, PERKENI, dan WHO. AI hanya menulis sarannya." },
   { emoji: "🔒", title: "Tanpa daftar, tetap aman", text: "Langsung pakai tanpa login atau email. Datamu hanya bisa dilihat olehmu dan keluarga yang kamu undang, dan bisa dipulihkan dengan kode pemulihan." },
 ];
 

@@ -15,6 +15,17 @@ describe("glucose", () => {
   });
 });
 
+describe("glucose (gestational targets)", () => {
+  it.each([
+    [90, "puasa", "aman"],
+    [100, "puasa", "perhatian"], // umum masih aman, saat hamil sudah di atas target
+    [125, "2 jam setelah makan", "perhatian"],
+    [60, "puasa", "bahaya"],
+  ])("%i mg/dL (%s) → %s", (v, ctx, level) => {
+    expect(glucose(v, ctx, "gestasional").level).toBe(level);
+  });
+});
+
 describe("bloodPressure", () => {
   it.each([
     [118, 76, "aman"],

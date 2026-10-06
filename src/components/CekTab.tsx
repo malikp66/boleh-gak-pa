@@ -13,9 +13,9 @@ const EXAMPLES: Record<ConditionId, string[]> = {
   alergi: ["gado-gado", "siomay", "kerupuk", "pempek"],
   sehat: ["nasi goreng", "boba", "ayam geprek", "salad"],
 };
-const DIM_LABEL: Record<string, string> = { purin: "Purin", garam: "Garam", karbo: "Karbo", gula: "Gula", lemak: "Lemak jenuh" };
+const DIM_LABEL: Record<string, string> = { purin: "Purin", garam: "Garam", karbo: "Karbo", gula: "Gula", lemak: "Lemak jenuh", ig: "Indeks glikemik" };
 const DIMS: Record<ConditionId, string[]> = {
-  asam_urat: ["purin"], hipertensi: ["garam"], diabetes: ["karbo", "gula"], kolesterol: ["lemak"], alergi: [], sehat: ["gula", "garam", "lemak"],
+  asam_urat: ["purin"], hipertensi: ["garam"], diabetes: ["karbo", "gula", "ig"], kolesterol: ["lemak"], alergi: [], sehat: ["gula", "garam", "lemak"],
 };
 const COND_EMOJI = (c: string) => (c === "umum" ? "⚕️" : conditionInfo(c)?.emoji ?? "•");
 const NOTE_CHIPS = ["Ditraktir teman", "Kondangan", "Di rumah", "Beli sendiri"] as const;

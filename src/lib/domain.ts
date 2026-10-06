@@ -29,7 +29,7 @@ export interface FlareSummary {
 export const conditionsOf = (p: Profile): ConditionId[] => normalizeConditions(p.kondisi);
 
 export function evalFor(parts: MatchedFood[] | Food[], profile: Profile, flare: boolean): Evaluation {
-  return evaluate(parts, { conditions: conditionsOf(profile), alergen: profile.alergen, flare });
+  return evaluate(parts, { conditions: conditionsOf(profile), alergen: profile.alergen, flare, diabetesTipe: profile.diabetes_tipe });
 }
 
 // ---------------------------------------------------------------- cek makanan
@@ -52,7 +52,7 @@ export interface AssessContext {
 }
 
 const pick = (f: Food) => ({
-  name: f.name, purin: f.purin, garam: f.garam, karbo: f.karbo, gula: f.gula, lemak: f.lemak,
+  name: f.name, purin: f.purin, garam: f.garam, karbo: f.karbo, gula: f.gula, lemak: f.lemak, ig: f.ig,
   alergen: f.alergen, porsi_aman: f.porsi_aman, trik: f.trik, pemicu: f.pemicu,
 });
 
@@ -78,7 +78,10 @@ function assessPrompt(foodText: string, food: CombinedFood | null, ev: Evaluatio
     `Bahasa: Indonesia santai dan hangat, kalimat pendek, mudah dibaca semua umur. Panggil dia '${p.panggilan}'.`,
     "Aturan keras: jangan menyarankan obat, dosis obat, atau dosis insulin; jangan menakut-nakuti; jujur soal risiko; selalu praktis.",
     `Fokus penilaian: ${conds.map((c) => conditionInfo(c)!.focus).join(" | ")}.`,
-    conds.includes("diabetes") ? "Untuk diabetes: sarankan urutan makan sayur → protein → karbohidrat, porsi nasi ±¾ gelas, dan ganti minuman manis dengan air putih/teh tawar (Isi Piringku)." : "",
+    conds.includes("diabetes") ? "Untuk diabetes: sarankan urutan makan sayur → protein → karbohidrat, porsi nasi ±¾ gelas, ganti nasi putih dengan nasi merah bila ada, dan ganti minuman manis dengan air putih/teh tawar (Isi Piringku). Perhatikan indeks glikemik (ig) di data tabel." : "",
+    conds.includes("diabetes") && ctx.profile.insulin ? "Orang ini memakai insulin: ingatkan jangan melewatkan makan setelah suntik dan kenali tanda gula darah rendah (gemetar, keringat dingin); jangan pernah menyarankan dosis." : "",
+    conds.includes("kolesterol") ? "Untuk kolesterol: sarankan cara masak dikukus/dibakar/direbus, ganti santan kental dengan santan encer, perbanyak serat (sayur, oat, kacang merah)." : "",
+    conds.includes("alergi") ? "Untuk alergi: data alergen adalah perkiraan resep umum. JANGAN pernah menyatakan pasti aman; selalu sarankan menanyakan bahan & alat masak ke penjual, dan waspadai kontaminasi silang." : "",
     "",
     `Makanan yang ditawarkan: ${foodText}`,
   ].filter((l) => l !== "");
@@ -163,7 +166,13 @@ export async function assess(
 ) {
   const found = findFoods(foodText, foods);
   const food = combine(found);
-  const ev = found.length ? evalFor(found, ctx.profile, Boolean(ctx.flare)) : { status: "kuning" as const, reasons: [] };
+  const conds = conditionsOf(ctx.profile);
+  const ev = found.length ? evalFor(found, ctx.profile, Boolean(ctx.flare)) : {
+    status: "kuning" as const,
+    reasons: conds.includes("alergi")
+      ? [{ condition: "alergi" as const, status: "kuning" as const, text: "tidak ada di daftar — tanyakan bahannya ke penjual sebelum makan" }]
+      : [],
+  };
   const key = assessCacheKey(foodText, foods, ctx);
 
   let text: AssessAI;
@@ -202,7 +211,10 @@ export async function assess(
     status: ev.status,
     reasons: ev.reasons,
     food: food?.name ?? foodText,
-    nutrients: food ? { purin: food.purin, garam: food.garam, karbo: food.karbo ?? null, gula: food.gula ?? null, lemak: food.lemak ?? null } : null,
+    nutrients: food ? {
+      purin: food.purin, garam: food.garam, karbo: food.karbo ?? null, gula: food.gula ?? null, lemak: food.lemak ?? null,
+      ig: food.components ? found.map((f) => f.ig).filter(Boolean).sort((a, b) => ["rendah", "sedang", "tinggi"].indexOf(b!) - ["rendah", "sedang", "tinggi"].indexOf(a!))[0] ?? null : food.ig ?? null,
+    } : null,
     alergen: food ? [...new Set(found.flatMap((f) => f.alergen ?? []))] : [],
     in_table: Boolean(food),
     flare_active: flare,
@@ -272,7 +284,7 @@ export async function analyzeFood(name: string, bahan: string) {
     karbo: z.enum(["rendah", "sedang", "tinggi"]),
     gula: z.enum(["rendah", "sedang", "tinggi"]),
     lemak: z.enum(["rendah", "sedang", "tinggi"]),
-    alergen: z.array(z.enum(["kacang tanah", "kacang pohon", "kedelai", "susu", "telur", "gluten", "ikan", "krustasea", "moluska"])),
+    alergen: z.array(z.enum(["kacang tanah", "kacang pohon", "kedelai", "susu", "telur", "gluten", "ikan", "krustasea", "moluska", "wijen"])),
     porsi_aman: z.string(),
     trik: z.array(z.string()).max(5),
     pemicu: z.array(z.string()).max(5),

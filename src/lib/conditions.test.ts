@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { ConditionId, evaluate, normalizeConditions } from "./conditions";
 import { findFoods } from "./foods/match";
 
-const ev = (text: string, conditions: ConditionId[], extra: { alergen?: string[]; flare?: boolean } = {}) =>
+const ev = (text: string, conditions: ConditionId[], extra: { alergen?: string[]; flare?: boolean; diabetesTipe?: string } = {}) =>
   evaluate(findFoods(text), { conditions, ...extra });
 
 describe("evaluate per condition", () => {
@@ -50,6 +50,37 @@ describe("evaluate per condition", () => {
 
   it("warns about kidneys regardless of condition", () => {
     expect(ev("belimbing", ["diabetes"]).status).toBe("kuning");
+  });
+
+  it("diabetes uses glycemic index and portion", () => {
+    expect(ev("nasi putih", ["diabetes"]).reasons[0].text).toContain("cepat menaikkan gula");
+    expect(ev("kentang", ["diabetes"]).status).toBe("kuning"); // karbo sedang, IG tinggi
+    expect(ev("nasi merah", ["diabetes"]).reasons[0].text).toBe("karbohidrat tinggi — jaga porsi"); // IG sedang
+    expect(ev("oatmeal", ["diabetes"]).status).toBe("hijau");
+    expect(ev("susu kental manis", ["diabetes"]).status).toBe("merah");
+    expect(ev("mie shirataki", ["diabetes"]).status).toBe("hijau");
+  });
+
+  it("is stricter on added sugar for gestational diabetes", () => {
+    expect(ev("kopi susu", ["diabetes"]).status).toBe("merah"); // gula tinggi untuk semua
+    expect(ev("bakpia", ["diabetes"]).status).toBe("kuning");
+    expect(ev("bakpia", ["diabetes"], { diabetesTipe: "gestasional" }).status).toBe("merah");
+  });
+
+  it("cholesterol: trans fat, dietary cholesterol, double saturated fat", () => {
+    expect(ev("biskuit krim", ["kolesterol"]).reasons[0].text).toContain("lemak trans");
+    expect(ev("udang", ["kolesterol"]).reasons[0].text).toBe("kolesterol makanan tinggi");
+    expect(ev("gulai otak", ["kolesterol"]).status).toBe("merah");
+    expect(ev("gorengan + martabak telur", ["kolesterol"]).status).toBe("merah");
+    expect(ev("tahu goreng + tempe goreng", ["kolesterol"]).status).toBe("hijau");
+  });
+
+  it("allergy: sesame and cross-contact", () => {
+    expect(ev("onde-onde", ["alergi"], { alergen: ["wijen"] }).status).toBe("merah");
+    const cross = ev("keripik", ["alergi"], { alergen: ["krustasea"] }); // gorengan: minyak bisa dipakai bersama udang
+    expect(cross.status).toBe("kuning");
+    expect(cross.reasons[0].text).toContain("tanya penjual");
+    expect(ev("apel", ["alergi"], { alergen: ["krustasea"] }).status).toBe("hijau");
   });
 
   it("reads v1 condition labels", () => {

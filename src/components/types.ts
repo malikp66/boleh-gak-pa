@@ -32,6 +32,7 @@ export interface FoodItem {
   karbo?: string;
   gula?: string;
   lemak?: string;
+  ig?: string | null;
   alergen?: string[];
   porsi_aman: string;
   custom?: boolean;
@@ -49,7 +50,7 @@ export interface AssessResult {
   status: Status;
   reasons: { condition: string; status: Status; text: string }[];
   food: string;
-  nutrients: { purin: string; garam: string; karbo: string | null; gula: string | null; lemak: string | null } | null;
+  nutrients: { purin: string; garam: string; karbo: string | null; gula: string | null; lemak: string | null; ig: string | null } | null;
   alergen: string[];
   in_table: boolean;
   flare_active: boolean;

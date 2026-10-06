@@ -9,12 +9,12 @@ Teman makan untuk yang sedang menjaga kesehatan: **diabetes**, **darah tinggi**,
 
 ```
 HP (PWA) ──► Vercel: Next.js 16 (UI + API routes) ──┬──► Neon Postgres (Singapura)
-                                                    └──► Gemma 3 lewat Google AI Studio (atau Ollama lokal)
+                                                    └──► Gemini lewat Google AI Studio (atau Gemma lokal via Ollama)
 ```
 
-- **Tabel dulu, AI belakangan.** Lampu ditentukan [tabel 271 makanan](src/lib/foods/foods.json) (purin, garam, karbo, gula, lemak jenuh, alergen) + aturan per kondisi di [`conditions.ts`](src/lib/conditions.ts), termasuk aturan kombinasi (dobel garam, dobel karbohidrat). AI hanya menulis kalimatnya. Semua sumber & ambang: [docs/SUMBER-GIZI.md](docs/SUMBER-GIZI.md).
+- **Tabel dulu, AI belakangan.** Lampu ditentukan [tabel 342 makanan](src/lib/foods/foods.json) (purin, garam, karbo, gula, lemak jenuh, indeks glikemik, alergen) + aturan per kondisi di [`conditions.ts`](src/lib/conditions.ts), termasuk aturan kombinasi (dobel garam, dobel karbohidrat). AI hanya menulis kalimatnya. Semua sumber & ambang: [docs/SUMBER-GIZI.md](docs/SUMBER-GIZI.md).
 - **Tanpa daftar.** Saat pertama dibuka, server membuat kunci acak 120-bit untuk perangkat itu (cookie httpOnly + cadangan di browser). Database hanya menyimpan hash-nya. Kunci yang sama ditampilkan sebagai **kode pemulihan** (`XXXX-XXXX-…`) untuk membuka data lagi setelah data browser dihapus atau ganti HP. Lihat [`server.ts`](src/lib/server.ts) dan [`device-key.ts`](src/lib/device-key.ts).
-- **Hemat biaya AI.** Jawaban disimpan di `ai_cache` dan dipakai ulang semua keluarga (saran umum, tanpa data pribadi). Ada batas harian per pengguna (tabel `ai_usage`) dan batas perangkat baru per IP, dan kalau AI gagal atau kuota habis, jawaban otomatis jatuh ke tabel.
+- **Hemat biaya AI.** Teks memakai `gemini-3.1-flash-lite` (thinking minimal), foto memakai `gemini-3.8-flash` (dibatasi 8/hari/orang). Setiap panggilan dicatat di `ai_spend`, dan kalau perkiraan biaya bulan ini melewati `AI_MONTHLY_BUDGET_USD` (default $5), aplikasi otomatis kembali ke mode tabel. Jawaban disimpan di `ai_cache` dan dipakai ulang semua keluarga (saran umum, tanpa data pribadi). Ada batas harian per pengguna (tabel `ai_usage`) dan batas perangkat baru per IP, dan kalau AI gagal atau kuota habis, jawaban otomatis jatuh ke tabel.
 - **Privasi.** Setiap query data keluarga di server menyertakan syarat keanggotaan keluarga. Foto tidak disimpan. Ada layar persetujuan (UU PDP) dan [halaman privasi](src/app/privasi/page.tsx).
 
 ## Setup
