@@ -35,7 +35,7 @@ function LogView({ profile, kind }: { profile: Profile; kind: "gula_darah" | "te
   };
 
   const load = useCallback(() =>
-    api<HealthLog[]>(`/api/health-logs?profileId=${profile.id}&kind=${kind}`).then(setLogs).catch((e: Error) => toast(e.message)),
+    api<HealthLog[]>(`/api/health-logs?profileId=${profile.id}&kind=${kind}`).then(setLogs).catch((e: Error) => toast.error(e.message)),
   [profile.id, kind, toast]);
   useEffect(() => { void load(); }, [load]);
 
@@ -47,7 +47,7 @@ function LogView({ profile, kind }: { profile: Profile; kind: "gula_darah" | "te
   async function save(e: React.FormEvent) {
     e.preventDefault();
     const a = Number(v1), b = v2 ? Number(v2) : null;
-    if (!a || (!isGlucose && !b)) return toast("Isi angkanya dulu ya");
+    if (!a || (!isGlucose && !b)) return toast.warning("Isi angkanya dulu ya.");
     try {
       await api("/api/health-logs", { profileId: profile.id, kind, value1: a, value2: isGlucose ? null : b, context: isGlucose ? ctx : "" });
       const reading = read({ value1: a, value2: b, context: ctx });
@@ -57,7 +57,7 @@ function LogView({ profile, kind }: { profile: Profile; kind: "gula_darah" | "te
       setV2("");
       load();
     } catch (err) {
-      toast((err as Error).message);
+      toast.error((err as Error).message);
     }
   }
 

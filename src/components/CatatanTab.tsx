@@ -30,7 +30,7 @@ export default function CatatanTab({ profile, me }: { profile: Profile; me: Me }
   const [foods, setFoods] = useState<FoodItem[]>([]);
 
   useEffect(() => {
-    api<Meal[]>(`/api/meals?profileId=${profile.id}`).then(setMeals).catch((e) => toast(e.message));
+    api<Meal[]>(`/api/meals?profileId=${profile.id}`).then(setMeals).catch((e) => toast.error(e.message));
     api<FoodItem[]>(`/api/foods?profileId=${profile.id}`).then(setFoods).catch(() => {});
   }, [profile.id, toast]);
 

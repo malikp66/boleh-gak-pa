@@ -55,7 +55,7 @@ export default function KambuhTab({ profile, onChanged }: { profile: Profile; on
       setFlares(f);
       setReview(r);
       setUpd(null);
-    }).catch((e: Error) => toast(e.message)),
+    }).catch((e: Error) => toast.error(e.message)),
   [profile.id, toast]);
 
   useEffect(() => {
@@ -77,11 +77,11 @@ export default function KambuhTab({ profile, onChanged }: { profile: Profile; on
     try {
       await api("/api/flares", { profileId: profile.id, joint, pain, fever });
       play("saved");
-      toast("Tercatat. Semoga cepat reda.");
+      toast.success("Semoga cepat reda.", "Kambuh tercatat");
       load();
       onChanged();
     } catch (e) {
-      toast((e as Error).message);
+      toast.error((e as Error).message);
     }
   }
 
@@ -132,8 +132,8 @@ export default function KambuhTab({ profile, onChanged }: { profile: Profile; on
             <PainPicker value={current} onChange={setUpd} min={0} />
             <label className="check"><input type="checkbox" checked={updFever} onChange={(e) => setUpdFever(e.target.checked)} /> 🌡️ Ada demam</label>
             <div className="row">
-              <button className="btn" onClick={async () => { await api(`/api/flares/${active.id}/pain`, { pain: current, fever: updFever }); toast("Nyeri tercatat"); load(); }}>Simpan nyeri</button>
-              <button className="btn good" onClick={async () => { await api(`/api/flares/${active.id}/end`, {}); toast("Alhamdulillah, sudah sembuh! 🎉"); load(); onChanged(); }}>Sudah sembuh 🎉</button>
+              <button className="btn" onClick={async () => { await api(`/api/flares/${active.id}/pain`, { pain: current, fever: updFever }); toast.success("Nyeri hari ini tercatat."); load(); }}>Simpan nyeri</button>
+              <button className="btn good" onClick={async () => { await api(`/api/flares/${active.id}/end`, {}); toast.success("Alhamdulillah, sudah sembuh! 🎉", "Sembuh"); load(); onChanged(); }}>Sudah sembuh 🎉</button>
             </div>
           </div>
 

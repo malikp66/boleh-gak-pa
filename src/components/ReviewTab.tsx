@@ -13,7 +13,7 @@ export default function ReviewTab({ profile, me }: { profile: Profile; me: Me })
   const load = useCallback((ai = false) =>
     api<Review>(`/api/review?profileId=${profile.id}${ai ? "&ai=1" : ""}`)
       .then(setRv)
-      .catch((e: Error) => toast(e.message)),
+      .catch((e: Error) => toast.error(e.message)),
   [profile.id, toast]);
   useEffect(() => { void load(); }, [load]);
 
@@ -74,7 +74,7 @@ export default function ReviewTab({ profile, me }: { profile: Profile; me: Me })
             <code>{family.invite_code}</code>
             <button className="btn sm" style={{ width: "auto" }} onClick={() => {
               const text = `Gabung "${family.name}" di Boleh Gak, Ya? → ${location.origin} (kode: ${family.invite_code})`;
-              (navigator.share ? navigator.share({ text }) : navigator.clipboard.writeText(text)).then(() => toast("Siap dibagikan"), () => {});
+              (navigator.share ? navigator.share({ text }) : navigator.clipboard.writeText(text)).then(() => toast.success("Undangan siap dibagikan."), () => {});
             }}>Bagikan</button>
           </div>
         </div>

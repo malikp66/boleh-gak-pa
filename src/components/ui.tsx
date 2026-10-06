@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useCallback, useContext, useRef, useState } from "react";
+import type { Toast } from "./Alerts";
 
 export async function api<T = unknown>(path: string, body?: unknown, method?: string, retried = false): Promise<T> {
   const res = await fetch(path, body === undefined && !method ? {} : {
@@ -18,25 +18,9 @@ export async function api<T = unknown>(path: string, body?: unknown, method?: st
   return data as T;
 }
 
-// ---------------------------------------------------------------- toast
-const ToastCtx = createContext<(msg: string) => void>(() => {});
-export const useToast = () => useContext(ToastCtx);
-
-export function ToastProvider({ children }: { children: React.ReactNode }) {
-  const [msg, setMsg] = useState("");
-  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
-  const show = useCallback((m: string) => {
-    setMsg(m);
-    clearTimeout(timer.current);
-    timer.current = setTimeout(() => setMsg(""), 2600);
-  }, []);
-  return (
-    <ToastCtx.Provider value={show}>
-      {children}
-      {msg && <div className="toast">{msg}</div>}
-    </ToastCtx.Provider>
-  );
-}
+// ---------------------------------------------------------------- alert global (lihat Alerts.tsx)
+export { ToastProvider, useToast } from "./Alerts";
+export type { Toast } from "./Alerts";
 
 // ---------------------------------------------------------------- kecil-kecil
 export function Chips<T extends string>({ items, value, onPick, labels }: {
@@ -65,8 +49,8 @@ export function Meter({ label, level }: { label: string; level: string | null })
   );
 }
 
-export function speak(text: string, toast: (m: string) => void) {
-  if (!("speechSynthesis" in window)) return toast("HP ini belum bisa membacakan");
+export function speak(text: string, toast: Toast) {
+  if (!("speechSynthesis" in window)) return toast.warning("HP ini belum bisa membacakan suara.");
   speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
   u.lang = "id-ID";

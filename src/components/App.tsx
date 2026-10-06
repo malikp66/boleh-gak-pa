@@ -6,7 +6,7 @@ import CekTab from "./CekTab";
 import DaftarTab from "./DaftarTab";
 import PantauTab from "./PantauTab";
 import ReviewTab from "./ReviewTab";
-import { api, ToastProvider } from "./ui";
+import { api } from "./ui";
 import { Flare, Me } from "./types";
 import { conditionInfo, MonitorKind, normalizeConditions } from "@/lib/conditions";
 import { ensureDevice } from "@/lib/device";
@@ -74,7 +74,7 @@ export default function App() {
   if (!me || !profile) return <main><div className="card"><p className="muted">Menyiapkan…</p></div></main>;
 
   return (
-    <ToastProvider>
+    <>
       <header className="top">
         <div className="brand">
           <h1>Boleh Gak, Ya?</h1>
@@ -115,6 +115,6 @@ export default function App() {
       <nav className="bottom" style={{ gridTemplateColumns: `repeat(${tabs.length}, 1fr)` }}>
         {tabs.map((t) => <button key={t} className={tab === t ? "active" : ""} onClick={() => go(t)}>{t}</button>)}
       </nav>
-    </ToastProvider>
+    </>
   );
 }

@@ -35,7 +35,7 @@ export default function DaftarTab({ profile, addName, onCheck }: {
   const [busy, setBusy] = useState(false);
 
   const load = useCallback(
-    () => api<FoodItem[]>(`/api/foods?profileId=${profile.id}`).then(setFoods).catch((e) => toast(e.message)),
+    () => api<FoodItem[]>(`/api/foods?profileId=${profile.id}`).then(setFoods).catch((e) => toast.error(e.message)),
     [profile.id, toast],
   );
   useEffect(() => { load(); }, [load]);
@@ -52,7 +52,7 @@ export default function DaftarTab({ profile, addName, onCheck }: {
     try {
       setAnalysis(await api<Analysis>("/api/foods/analyze", { name: form.name, bahan: form.bahan }));
     } catch (err) {
-      toast("Gagal menganalisis: " + (err as Error).message);
+      toast.error((err as Error).message, "Gagal menganalisis");
     } finally {
       setBusy(false);
     }
@@ -68,20 +68,20 @@ export default function DaftarTab({ profile, addName, onCheck }: {
         trik: analysis.trik.filter(Boolean), pemicu: analysis.pemicu, alasan: analysis.alasan,
         aliases: form.alias.split(",").map((s) => s.trim()).filter(Boolean),
       });
-      toast(`"${form.name}" masuk daftar keluarga`);
+      toast.success(`"${form.name}" masuk daftar keluarga.`, "Tersimpan");
       setAdding(false);
       setAnalysis(null);
       setQ(form.name.toLowerCase());
       setCat("Semua");
       load();
     } catch (err) {
-      toast((err as Error).message);
+      toast.error((err as Error).message);
     }
   }
 
   async function remove(f: FoodItem) {
     if (!f.id || !confirm(`Hapus "${f.name}" dari daftar?`)) return;
-    await api(`/api/foods/${f.id}`, undefined, "DELETE").catch((e) => toast(e.message));
+    await api(`/api/foods/${f.id}`, undefined, "DELETE").catch((e) => toast.error(e.message));
     load();
   }
 

@@ -68,12 +68,12 @@ export default function CekTab({ profile, flareJoint, prefill, welcome, onSaveUn
         }
         setTimeout(() => document.getElementById("result")?.scrollIntoView({ behavior: "smooth" }), 50);
       })
-      .catch((e: Error) => { play("error"); toast("Gagal: " + e.message); })
+      .catch((e: Error) => { play("error"); toast.error(e.message, "Gagal mengecek"); })
       .finally(() => setLoading(""));
   }, [profile.id, note, toast]);
 
   function check(text: string) {
-    if (!text.trim()) return toast("Ketik, foto, atau ucapkan makanannya dulu ya");
+    if (!text.trim()) return toast.warning("Ketik, foto, atau ucapkan makanannya dulu ya.");
     clear();
     setLoading("Lagi mikir…");
     runAssess(text);
@@ -108,7 +108,7 @@ export default function CekTab({ profile, flareJoint, prefill, welcome, onSaveUn
       setFood(r.food === "lainnya" ? "" : r.food);
       setPhoto(r);
     } catch (err) {
-      toast((err as Error).message || "Belum bisa baca foto. Ketik saja namanya ya.");
+      toast.error((err as Error).message || "Belum bisa baca foto. Ketik saja namanya ya.", "Foto belum terbaca");
     } finally {
       setLoading("");
     }
@@ -119,14 +119,14 @@ export default function CekTab({ profile, flareJoint, prefill, welcome, onSaveUn
     try {
       await api("/api/meals", { profileId: profile.id, food: result.food, portion, status: portion === "ditolak" ? "hijau" : result.status, note });
       play("saved");
-      toast(portion === "ditolak" ? "Mantap! Tercatat." : "Tercatat di catatan makan");
+      toast.success(portion === "ditolak" ? "Berhasil menolak, tercatat. Mantap! 💪" : "Masuk ke catatan makan.", portion === "ditolak" ? "Hebat" : "Tercatat");
       setResult(null);
       setFood("");
       setPreview("");
       setPhoto(null);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (e) {
-      toast((e as Error).message);
+      toast.error((e as Error).message);
     }
   }
 
@@ -245,7 +245,7 @@ export default function CekTab({ profile, flareJoint, prefill, welcome, onSaveUn
                 <p>“{x.text}”</p>
                 <div className="row">
                   <button className="btn sm" onClick={() => speak(x.text, toast)}>Bacakan</button>
-                  <button className="btn sm" onClick={() => navigator.clipboard.writeText(x.text).then(() => toast("Tersalin"), () => toast("Tidak bisa menyalin"))}>Salin</button>
+                  <button className="btn sm" onClick={() => navigator.clipboard.writeText(x.text).then(() => toast.success("Kalimat tersalin."), () => toast.error("Tidak bisa menyalin di HP ini."))}>Salin</button>
                 </div>
               </div>
             ))}

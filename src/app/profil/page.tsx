@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import ProfileForm, { emptyDraft, ProfileDraft } from "@/components/ProfileForm";
 import RecoveryCard from "@/components/RecoveryCard";
-import { api } from "@/components/ui";
+import { api, useToast } from "@/components/ui";
 import { Me, Profile } from "@/components/types";
 import { conditionInfo, normalizeConditions } from "@/lib/conditions";
 import { ensureDevice } from "@/lib/device";
@@ -18,7 +18,8 @@ export default function ProfilPage() {
   const [me, setMe] = useState<Me | null>(null);
   const [activeId, setActiveId] = useState("");
   const [mode, setMode] = useState<"list" | "edit" | "add">("list");
-  const [msg, setMsg] = useState("");
+  const toast = useToast();
+  const [loadError, setLoadError] = useState("");
   const initialSound = useClientValue(soundOn, true);
   const [soundOverride, setSoundState] = useState<boolean | null>(null);
   const sound = soundOverride ?? initialSound;
@@ -31,7 +32,7 @@ export default function ProfilPage() {
       try { saved = localStorage.getItem(PROFILE_KEY) ?? ""; } catch {}
       setActiveId((cur) => cur || (m.profiles.some((p) => p.id === saved) ? saved : m.profiles[0]?.id ?? ""));
       setMe(m);
-    }).catch((e: Error) => setMsg(e.message)),
+    }).catch((e: Error) => setLoadError(e.message)),
   []);
 
   useEffect(() => {
@@ -53,20 +54,23 @@ export default function ProfilPage() {
       else await disablePush();
       setPush(next);
       play("saved");
-      setMsg(next.on ? "Pengingat aktif." : "Pengingat dimatikan.");
+      if (next.on) toast.success("Pengingat pagi/malam akan dikirim ke HP ini.", "Pengingat aktif");
+      else toast.info("Pengingat dimatikan.");
     } catch (e) {
       play("error");
-      setMsg((e as Error).message);
+      toast.error((e as Error).message, "Pengingat gagal diatur");
     }
   }
 
   async function testPush() {
     const sub = await currentSubscription();
-    if (!sub) return setMsg("Aktifkan pengingat dulu.");
-    await api("/api/push/test", { endpoint: sub.endpoint }).then(() => setMsg("Notifikasi uji dikirim.")).catch((e: Error) => setMsg(e.message));
+    if (!sub) return toast.warning("Aktifkan pengingat dulu.");
+    await api("/api/push/test", { endpoint: sub.endpoint })
+      .then(() => toast.success("Cek panel notifikasi HP-mu.", "Notifikasi uji dikirim"))
+      .catch((e: Error) => toast.error(e.message));
   }
 
-  if (!me) return <main><div className="card"><p className="muted">{msg || "Memuat…"}</p></div></main>;
+  if (!me) return <main><div className="card"><p className="muted">{loadError || "Memuat…"}</p></div></main>;
 
   return (
     <>
@@ -75,7 +79,6 @@ export default function ProfilPage() {
         <Link className="pill" href="/">← Kembali</Link>
       </header>
       <main>
-        {msg && <div className="secure" style={{ padding: 10 }}><p style={{ margin: 0 }}>{msg}</p></div>}
 
         {mode === "list" && (
           <>
@@ -130,7 +133,7 @@ export default function ProfilPage() {
               onSubmit={async (d) => {
                 await api("/api/profiles", { id: profile.id, ...d }, "PATCH");
                 play("saved");
-                setMsg(`Profil ${d.nama} tersimpan.`);
+                toast.success(`Profil ${d.nama} tersimpan.`);
                 setMode("list");
                 await load();
               }} />
@@ -147,7 +150,7 @@ export default function ProfilPage() {
                 play("saved");
                 try { localStorage.setItem(PROFILE_KEY, created.id); } catch {}
                 setActiveId(created.id);
-                setMsg(`${d.nama} ditambahkan dan dipilih.`);
+                toast.success(`${d.nama} ditambahkan dan dipilih.`, "Anggota baru");
                 setMode("list");
                 await load();
               }} />

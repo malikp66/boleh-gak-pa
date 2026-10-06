@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo_Black, Space_Grotesk } from "next/font/google";
+import { ToastProvider } from "@/components/Alerts";
 import "./globals.css";
 
 const head = Archivo_Black({ weight: "400", subsets: ["latin"], variable: "--font-head" });
@@ -24,7 +25,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="id" className={`${head.variable} ${body.variable}`}>
-      <body>{children}</body>
+      <body><ToastProvider>{children}</ToastProvider></body>
     </html>
   );
 }
