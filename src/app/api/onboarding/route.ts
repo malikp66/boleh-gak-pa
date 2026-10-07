@@ -2,7 +2,7 @@ import { z } from "zod";
 import { one, tx } from "@/lib/db";
 import { ProfileInput } from "@/lib/schemas";
 import { normalizeInvite } from "@/lib/validation";
-import { HttpError, requireUser, route } from "@/lib/server";
+import { HttpError, invalidateFamily, invalidateUser, requireUser, route } from "@/lib/server";
 
 const Body = z.discriminatedUnion("action", [
   z.object({ action: z.literal("create"), familyName: z.string().trim().min(1).max(60), profile: ProfileInput }),
@@ -16,10 +16,11 @@ export const POST = route(async (req) => {
     const family = await one<{ id: string; name: string }>("select id, name from families where invite_code = upper($1)", [body.code]);
     if (!family) throw new HttpError(404, "Kode keluarga tidak ditemukan. Periksa lagi hurufnya, atau minta kode baru ke keluargamu.");
     await one("insert into family_members (family_id, user_id) values ($1, $2) on conflict do nothing", [family.id, user.id]);
+    await invalidateFamily(family.id);
     return { family };
   }
   const p = body.profile;
-  return tx(async (c) => {
+  const created = await tx(async (c) => {
     const family = (await c.query("insert into families (name, created_by) values ($1, $2) returning id, name, invite_code", [body.familyName, user.id])).rows[0];
     await c.query("insert into family_members (family_id, user_id, role) values ($1, $2, 'admin')", [family.id, user.id]);
     const profile = (await c.query(
@@ -33,4 +34,6 @@ export const POST = route(async (req) => {
     await c.query("update users set self_profile_id = $2 where id = $1 and phone is not null and self_profile_id is null", [user.id, profile.id]);
     return { family, profile };
   });
+  await invalidateUser(user.id);
+  return created;
 });

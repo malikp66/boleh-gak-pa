@@ -9,6 +9,7 @@ import { formatKey, generateKey, hashKey, isValidKey, normalizeKey } from "./dev
 import { AssessAI, FlareSummary, Profile } from "./domain";
 import { loadAiFoods } from "./ai-foods";
 import { FOODS } from "./foods/match";
+import { forget, k as rk, redis, safe, throttle, wibDay } from "./redis";
 import { Food } from "./foods/types";
 
 export class HttpError extends Error {
@@ -74,13 +75,24 @@ async function userByKey(key: string | undefined): Promise<User | null> {
   const k = normalizeKey(key);
   if (!isValidKey(k)) return null;
   const h = hashKey(k);
+  // Redis: kunci perangkat → id pengguna (1 hari), supaya setiap permintaan tidak perlu ke Postgres.
+  // last_seen cukup diperbarui paling sering tiap 6 jam.
+  const hit = await safe((r) => r.get<string>(rk("dev", h)), null);
+  if (hit) {
+    void safe(async (r) => {
+      if (await r.set(rk("seen", hit), 1, { ex: 6 * 3600, nx: true })) await q("update users set last_seen = now() where id = $1", [hit]);
+    }, null);
+    return { id: hit };
+  }
   // HP utama akun, atau HP tambahan yang masuk lewat WhatsApp (user_devices)
-  return one<User>(
+  const user = await one<User>(
     `update users set last_seen = now()
      where id = coalesce((select id from users where device_key_hash = $1), (select user_id from user_devices where key_hash = $1))
      returning id`,
     [h],
   );
+  if (user) void safe((r) => r.set(rk("dev", h), user.id, { ex: 86400 }), null);
+  return user;
 }
 
 export async function currentUser(): Promise<User | null> {
@@ -120,12 +132,17 @@ export async function ensureDevice(backup?: string): Promise<{ status: "ok" | "r
   }
   const ip = (await headers()).get("x-forwarded-for")?.split(",")[0].trim() ?? "local";
   const ipHash = createHash("sha256").update(`ip:${ip}`).digest("hex");
-  const row = await one<{ count: number }>(
-    `insert into device_creations (ip_hash, day, count) values ($1, current_date, 1)
-     on conflict (ip_hash, day) do update set count = device_creations.count + 1 returning count`,
-    [ipHash],
-  );
-  if ((row?.count ?? 0) > DEVICES_PER_IP_PER_DAY) throw new HttpError(429, "Terlalu banyak perangkat baru dari jaringan ini hari ini. Coba lagi besok.");
+  const tooMany = "Terlalu banyak perangkat baru dari jaringan ini hari ini. Coba lagi besok.";
+  if (redis) {
+    if (await throttle("device", ipHash)) throw new HttpError(429, tooMany);
+  } else {
+    const row = await one<{ count: number }>(
+      `insert into device_creations (ip_hash, day, count) values ($1, current_date, 1)
+       on conflict (ip_hash, day) do update set count = device_creations.count + 1 returning count`,
+      [ipHash],
+    );
+    if ((row?.count ?? 0) > DEVICES_PER_IP_PER_DAY) throw new HttpError(429, tooMany);
+  }
   const key = generateKey();
   await q("insert into users (device_key_hash) values ($1)", [hashKey(key)]);
   await setKeyCookie(key);
@@ -134,6 +151,9 @@ export async function ensureDevice(backup?: string): Promise<{ status: "ok" | "r
 
 /** Pindah ke akun lain memakai kode pemulihan. */
 export async function restoreWithCode(code: string) {
+  const ip = (await headers()).get("x-forwarded-for")?.split(",")[0].trim() ?? "local";
+  const wait = await throttle("restore", createHash("sha256").update(`ip:${ip}`).digest("hex"));
+  if (wait) throw new HttpError(429, `Terlalu banyak percobaan. Coba lagi dalam ${Math.ceil(wait / 60)} menit.`);
   const k = normalizeKey(code);
   if (!isValidKey(k) || !(await userByKey(k))) throw new HttpError(404, "Kode pemulihan tidak ditemukan. Periksa lagi ketikannya.");
   await setKeyCookie(k);
@@ -183,11 +203,17 @@ export type QuotaKind = keyof typeof LIMITS;
 
 /** Pemakaian hari ini per jenis (tanpa menambah hitungan). */
 export async function usageToday(userId: string): Promise<Record<QuotaKind, { limit: number; used: number; left: number }>> {
-  const rows = await q<{ kind: QuotaKind; count: number }>(
-    "select kind, count from ai_usage where user_id = $1 and day = (now() at time zone 'Asia/Jakarta')::date",
-    [userId],
-  );
-  const used = new Map(rows.map((r) => [r.kind, r.count]));
+  const kinds = Object.keys(LIMITS) as QuotaKind[];
+  const fromRedis = await safe((r) => r.mget<(number | null)[]>(...kinds.map((kd) => quotaKey(userId, kd))), null);
+  const used = new Map<QuotaKind, number>();
+  if (fromRedis) kinds.forEach((kd, i) => used.set(kd, Number(fromRedis[i] ?? 0)));
+  else {
+    const rows = await q<{ kind: QuotaKind; count: number }>(
+      "select kind, count from ai_usage where user_id = $1 and day = (now() at time zone 'Asia/Jakarta')::date",
+      [userId],
+    );
+    rows.forEach((r) => used.set(r.kind, r.count));
+  }
   return Object.fromEntries(
     (Object.keys(LIMITS) as QuotaKind[]).map((k) => {
       const u = Math.min(used.get(k) ?? 0, LIMITS[k]);
@@ -202,8 +228,19 @@ export async function budgetReached(): Promise<boolean> {
 }
 
 /** Pakai satu jatah AI harian (hari menurut WIB). Dipanggil hanya saat benar-benar memanggil model. */
+const quotaKey = (userId: string, kind: QuotaKind, day = wibDay()) => rk("q", userId, day, kind);
+
 export function quota(userId: string, kind: QuotaKind) {
   return async () => {
+    if (redis) {
+      // INCR atomik + kedaluwarsa otomatis; tidak perlu baris baru di Postgres setiap pertanyaan
+      const n = await safe(async (r) => {
+        const key = quotaKey(userId, kind);
+        const [count] = await r.multi().incr(key).expire(key, 36 * 3600).exec<[number, number]>();
+        return count;
+      }, null);
+      if (n !== null) return n <= LIMITS[kind];
+    }
     const row = await one<{ count: number }>(
       `insert into ai_usage (user_id, day, kind, count) values ($1, (now() at time zone 'Asia/Jakarta')::date, $2, 1)
        on conflict (user_id, day, kind) do update set count = ai_usage.count + 1 returning count`,
@@ -229,10 +266,19 @@ export async function requireQuota(userId: string, kind: QuotaKind) {
 export function aiCache() {
   return {
     async get(key: string): Promise<AssessAI | null> {
-      return (await one<{ response: AssessAI }>("select response from ai_cache where key = $1", [key]))?.response ?? null;
+      const hash = createHash("sha256").update(key).digest("hex");
+      const hit = await safe((r) => r.get<AssessAI>(rk("ai", hash)), null);
+      if (hit) return hit;
+      const row = (await one<{ response: AssessAI }>("select response from ai_cache where key = $1", [key]))?.response ?? null;
+      if (row) void safe((r) => r.set(rk("ai", hash), row, { ex: 30 * 86400 }), null); // hangatkan Redis dari Postgres
+      return row;
     },
     async set(key: string, response: AssessAI, model: string) {
-      await q("insert into ai_cache (key, response, model) values ($1, $2, $3) on conflict (key) do nothing", [key, response, model]);
+      const hash = createHash("sha256").update(key).digest("hex");
+      await Promise.all([
+        safe((r) => r.set(rk("ai", hash), response, { ex: 30 * 86400 }), null),
+        q("insert into ai_cache (key, response, model) values ($1, $2, $3) on conflict (key) do nothing", [key, response, model]),
+      ]);
     },
   };
 }
@@ -251,15 +297,26 @@ onSpend(async (model, input, output) => {
     [model, input, output, usd],
   );
   if (budgetCache) budgetCache.spent += usd;
+  // penghitung bersama untuk semua instance serverless (tanpa Redis tiap instance hanya tahu dirinya sendiri)
+  void safe((r) => r.multi().incrbyfloat(budgetKey(), usd).expire(budgetKey(), 40 * 86400).exec(), null);
 });
 
+const budgetKey = () => rk("budget", wibDay().slice(0, 7));
+
 const budgetGuardFn = async () => {
+  const shared = await safe((r) => r.get<number>(budgetKey()), null);
+  if (shared !== null) {
+    if (Number(shared) >= MONTHLY_BUDGET) throw new AIUnavailableError("Anggaran AI bulan ini sudah tercapai; sementara memakai tabel saja.");
+    return;
+  }
   if (!budgetCache || Date.now() - budgetCache.at > 60_000) {
     const row = await one<{ spent: string }>(
       `select coalesce(sum(est_usd), 0) as spent from ai_spend
        where day >= date_trunc('month', now() at time zone 'Asia/Jakarta')::date`,
     );
     budgetCache = { at: Date.now(), spent: Number(row?.spent ?? 0) };
+    // isi penghitung Redis dari Postgres sekali di awal bulan / setelah Redis kosong
+    void safe((r) => r.set(budgetKey(), budgetCache!.spent, { ex: 40 * 86400, nx: true }), null);
   }
   if (budgetCache.spent >= MONTHLY_BUDGET) {
     throw new AIUnavailableError("Anggaran AI bulan ini sudah tercapai; sementara memakai tabel saja.");
@@ -273,3 +330,14 @@ export const todayStartISO = () => {
   wib.setUTCHours(0, 0, 0, 0);
   return new Date(wib.getTime() - 7 * 3600_000).toISOString();
 };
+
+// ---------------------------------------------------------------- cache /api/me
+export const meKey = (userId: string) => rk("me", userId);
+
+/** Hapus cache /api/me untuk semua anggota keluarga (dipanggil setelah data keluarga/profil berubah). */
+export async function invalidateFamily(familyId: string) {
+  if (!redis) return;
+  const members = await q<{ user_id: string }>("select user_id from family_members where family_id = $1", [familyId]);
+  await forget(...members.map((m) => meKey(m.user_id)));
+}
+export const invalidateUser = (userId: string) => forget(meKey(userId));

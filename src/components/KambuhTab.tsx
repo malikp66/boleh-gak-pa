@@ -1,4 +1,5 @@
 "use client";
+import { SkeletonCard } from "./Loading";
 import { useCallback, useEffect, useState } from "react";
 import { api, CAT_EMOJI, Chips, dayKey, fmtShort, painFace, useToast } from "./ui";
 import { play } from "@/lib/sound";
@@ -63,7 +64,7 @@ export default function KambuhTab({ profile, onChanged }: { profile: Profile; on
     api<FoodItem[]>(`/api/foods?profileId=${profile.id}`).then(setFoods).catch(() => {});
   }, [load, profile.id]);
 
-  if (!flares || !review) return <div className="card"><p className="muted">Memuat…</p></div>;
+  if (!flares || !review) return <><SkeletonCard rows={3} /><SkeletonCard rows={5} /></>;
 
   const rec = review.recovery;
   const active = flares.find((f) => !f.ended);

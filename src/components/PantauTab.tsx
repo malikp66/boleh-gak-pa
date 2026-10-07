@@ -116,7 +116,7 @@ function LogView({ profile, kind }: { profile: Profile; kind: "gula_darah" | "te
 
       <div className="card">
         <h2>Riwayat</h2>
-        {!logs ? <p className="muted">Memuat…</p> : !logs.length ? (
+        {!logs ? <div className="skeleton"><span className="sk sk-row" /><span className="sk sk-row" style={{ width: "78%" }} /><span className="sk sk-row" style={{ width: "64%" }} /></div> : !logs.length ? (
           <div className="empty-state"><span className="emo-big">{isGlucose ? "🩸" : "💓"}</span><p><b>Belum ada catatan.</b><br />Catat setiap habis cek supaya polanya kelihatan.</p></div>
         ) : logs.map((l) => {
           const r = read(l);

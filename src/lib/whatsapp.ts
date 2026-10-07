@@ -2,6 +2,7 @@ import "server-only";
 import { createHmac, randomInt, timingSafeEqual } from "node:crypto";
 import { one, q, tx } from "./db";
 import { normalizePhone } from "./validation";
+import { forget, k as rk, redis, throttle } from "./redis";
 
 /**
  * WhatsApp Business Platform (Cloud API resmi dari Meta).
@@ -69,8 +70,13 @@ export async function notifyUser(u: { phone: string; wa_last_inbound: string | n
 
 export async function createLink(userId: string, profileId: string | null) {
   if (!waConfigured()) throw new Error("WhatsApp belum dikonfigurasi");
-  const recent = await one<{ n: number }>("select count(*)::int n from wa_links where user_id = $1 and created_at > now() - interval '1 hour'", [userId]);
-  if ((recent?.n ?? 0) >= LINKS_PER_HOUR) throw new Error("Terlalu sering mencoba. Tunggu sebentar lalu coba lagi.");
+  const busy = "Terlalu sering mencoba. Tunggu sebentar lalu coba lagi.";
+  if (redis) {
+    if (await throttle("wa_link", userId)) throw new Error(busy);
+  } else {
+    const recent = await one<{ n: number }>("select count(*)::int n from wa_links where user_id = $1 and created_at > now() - interval '1 hour'", [userId]);
+    if ((recent?.n ?? 0) >= LINKS_PER_HOUR) throw new Error(busy);
+  }
   const code = Array.from({ length: 6 }, () => CODE_ALPHABET[randomInt(CODE_ALPHABET.length)]).join("");
   await q("insert into wa_links (code, user_id, profile_id, expires_at) values ($1, $2, $3, now() + interval '" + CODE_TTL_MIN + " minutes')", [code, userId, profileId]);
   const text = `Kode masuk Boleh Gak: ${code}\n(tekan Kirim, jangan diubah)`;
@@ -120,12 +126,18 @@ export async function handleInbound(fromWaId: string, text: string): Promise<voi
     const dev = (await c.query<{ device_key_hash: string }>("select device_key_hash from users where id = $1", [link.user_id])).rows[0];
     await c.query("update wa_links set user_id = $2 where user_id = $1", [link.user_id, owner.id]); // supaya status tetap bisa dibaca
     await c.query("delete from users where id = $1", [link.user_id]);
+    if (dev?.device_key_hash) void forget(rk("dev", dev.device_key_hash)); // pemetaan HP → akun lama sudah tidak berlaku
     if (dev?.device_key_hash) await c.query("insert into user_devices (key_hash, user_id) values ($1, $2) on conflict (key_hash) do update set user_id = excluded.user_id", [dev.device_key_hash, owner.id]);
     await c.query("update users set wa_last_inbound = now() where id = $1", [owner.id]);
     return "merged" as const;
   });
 
   await q("update wa_links set status = $2, phone = $3 where code = $1", [link.code, result, phone]);
+  await forget(rk("me", link.user_id)); // data /api/me (nomor WA) berubah
+  if (result === "merged") {
+    const owner = await one<{ id: string }>("select id from users where phone = $1", [phone]);
+    if (owner) await forget(rk("me", owner.id));
+  }
   await sendText(phone, result === "conflict"
     ? "Nomor ini sudah terhubung ke akun lain, dan HP yang kamu pakai juga sudah punya data sendiri. Supaya tidak ada data yang tertimpa, hubungkan dari HP yang lama, atau pakai kode pemulihan."
     : result === "merged"
@@ -135,4 +147,5 @@ export async function handleInbound(fromWaId: string, text: string): Promise<voi
 
 export async function unlink(userId: string) {
   await q("update users set phone = null, wa_linked_at = null, wa_last_inbound = null where id = $1", [userId]);
+  await forget(rk("me", userId));
 }

@@ -29,9 +29,9 @@ export default function FamilyCard() {
       const res = await api<{ viaWa: boolean }>("/api/nudge", { profileId: r.profile_id });
       play("saved");
       toast.success(res.viaWa ? `Pengingat terkirim ke WhatsApp ${r.nama}.` : `Pengingat terkirim ke HP ${r.nama}.`, "🔔 Bel terkirim");
-      const at = Date.now();
-      setNow(at);
-      setRows((list) => list?.map((x) => (x.profile_id === r.profile_id ? { ...x, last_nudge: new Date(at).toISOString() } : x)) ?? null);
+      const at = new Date();
+      setNow(at.getTime());
+      setRows((list) => list?.map((x) => (x.profile_id === r.profile_id ? { ...x, last_nudge: at.toISOString() } : x)) ?? null);
     } catch (e) {
       play("error");
       toast.warning((e as Error).message);

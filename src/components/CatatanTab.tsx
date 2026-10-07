@@ -1,4 +1,5 @@
 "use client";
+import { SkeletonCard } from "./Loading";
 import { useEffect, useState } from "react";
 import { api, CAT_EMOJI, dayKey, fmtDay, fmtTime, useToast } from "./ui";
 import { FoodItem, Me, Meal, Profile } from "./types";
@@ -35,7 +36,7 @@ export default function CatatanTab({ profile, me }: { profile: Profile; me: Me }
     api<FoodItem[]>(`/api/foods?profileId=${profile.id}`).then(setFoods).catch(() => {});
   }, [profile.id, toast]);
 
-  if (!meals) return <div className="card"><p className="muted">Memuat…</p></div>;
+  if (!meals) return <><SkeletonCard rows={2} title={false} /><SkeletonCard rows={4} /></>;
 
   const emoji = (name: string) => CAT_EMOJI[foods.find((f) => f.name === name.split(" + ")[0])?.kategori ?? ""] ?? "🍽️";
   const today = dayKey(new Date());

@@ -1,4 +1,5 @@
 "use client";
+import { SkeletonCard } from "./Loading";
 import { refreshLimits } from "@/lib/limits";
 import LimitNote from "./LimitNote";
 import { useCallback, useEffect, useState } from "react";
@@ -20,7 +21,7 @@ export default function ReviewTab({ profile, me }: { profile: Profile; me: Me })
   [profile.id, toast]);
   useEffect(() => { void load(); }, [load]);
 
-  if (!rv) return <div className="card"><p className="muted">Memuat…</p></div>;
+  if (!rv) return <><SkeletonCard rows={4} /><SkeletonCard rows={2} /></>;
   const { week: w, triggers: t, recovery: rec } = rv;
   const family = me.families.find((f) => f.id === profile.family_id);
   const conditions = normalizeConditions(profile.kondisi);

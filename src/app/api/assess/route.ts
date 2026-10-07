@@ -4,7 +4,8 @@ import { recordCheck } from "@/lib/checks";
 import { learnFood } from "@/lib/ai-foods";
 import { assess } from "@/lib/domain";
 import { findFoods, leftoverWords } from "@/lib/foods/match";
-import { aiCache, loadProfileContext, quota, requireUser, route, todayStartISO } from "@/lib/server";
+import { aiCache, HttpError, loadProfileContext, quota, requireUser, route, todayStartISO } from "@/lib/server";
+import { throttle } from "@/lib/redis";
 
 export const POST = route(async (req) => {
   const user = await requireUser();
@@ -13,6 +14,8 @@ export const POST = route(async (req) => {
     food: z.string().trim().min(1).max(200),
     note: z.string().max(40).default(""),
   }).parse(await req.json());
+  const wait = await throttle("assess", user.id);
+  if (wait) throw new HttpError(429, `Pelan-pelan ya 🙂 Coba lagi ${wait} detik lagi.`);
   const ctx = await loadProfileContext(user.id, body.profileId);
   const { profile, flare } = ctx;
   let foods = ctx.foods;

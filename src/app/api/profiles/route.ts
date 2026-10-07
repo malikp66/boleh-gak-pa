@@ -2,7 +2,7 @@ import { z } from "zod";
 import { one } from "@/lib/db";
 import { checkProfile, ProfileBase } from "@/lib/schemas";
 import { profileProblem } from "@/lib/validation";
-import { assertFamily, getProfile, HttpError, requireUser, route } from "@/lib/server";
+import { assertFamily, getProfile, HttpError, invalidateFamily, requireUser, route } from "@/lib/server";
 
 const COLS = [
   "nama", "panggilan", "usia", "untuk", "kondisi", "alergen", "diabetes_tipe", "insulin", "catatan_dokter", "obat",
@@ -14,10 +14,12 @@ export const POST = route(async (req) => {
   const user = await requireUser();
   const b = checkProfile(ProfileBase.extend({ family_id: z.string().uuid() })).parse(await req.json());
   await assertFamily(user.id, b.family_id);
-  return one(
+  const created = await one(
     `insert into profiles (family_id, ${COLS.join(", ")}) values ($1, ${COLS.map((_, i) => `$${i + 2}`).join(", ")}) returning *`,
     [b.family_id, ...COLS.map((c) => b[c])],
   );
+  await invalidateFamily(b.family_id);
+  return created;
 });
 
 export const PATCH = route(async (req) => {
@@ -32,8 +34,10 @@ export const PATCH = route(async (req) => {
   const merged = { ...current, ...Object.fromEntries(cols.map((c) => [c, b[c]])) };
   const problem = profileProblem(merged as Parameters<typeof profileProblem>[0]);
   if (problem) throw new HttpError(400, problem);
-  return one(
+  const updated = await one(
     `update profiles set ${cols.map((c, i) => `${c} = $${i + 2}`).join(", ")} where id = $1 returning *`,
     [b.id, ...cols.map((c) => b[c])],
   );
+  await invalidateFamily(current.family_id);
+  return updated;
 });

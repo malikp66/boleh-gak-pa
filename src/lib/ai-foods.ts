@@ -2,6 +2,7 @@ import "server-only";
 import { one, q } from "./db";
 import { analyzeFood } from "./domain";
 import { normalize } from "./foods/match";
+import { cached, forget, k as rk } from "./redis";
 import { closestMatch } from "./foods/similarity";
 import { Food, FoodBasis } from "./foods/types";
 
@@ -11,7 +12,9 @@ import { Food, FoodBasis } from "./foods/types";
  * Tabel resmi & daftar keluarga tetap diutamakan; ini dipakai kalau keduanya tidak punya.
  */
 
-const TTL = 5 * 60_000;
+// Dua lapis: memori per instance (60 detik) + Redis bersama semua instance (10 menit, dihapus saat ada makanan baru).
+const TTL = 60_000;
+const SHARED_KEY = rk("ai_foods", "v1");
 let cache: { at: number; foods: Food[] } | null = null;
 
 type Row = Omit<Food, "custom" | "basis"> & { verified: boolean; nutrisi: FoodBasis["nutrisi"] | null; rincian: FoodBasis["rincian"] | null; sumber: FoodBasis["sumber"] | null; sumber_ref: string | null };
@@ -23,11 +26,11 @@ const toFood = (r: Row): Food => {
 
 export async function loadAiFoods(): Promise<Food[]> {
   if (cache && Date.now() - cache.at < TTL) return cache.foods;
-  const rows = await q<Row>(
+  const rows = await cached(SHARED_KEY, 600, () => q<Row>(
     `select name, aliases, kategori, purin, garam, karbo, gula, lemak, ig, alergen, porsi_aman, trik, pemicu, alasan, verified,
        nutrisi, rincian, sumber, sumber_ref
      from ai_foods order by hits desc limit 5000`,
-  );
+  ));
   cache = { at: Date.now(), foods: rows.map(toFood) };
   return cache.foods;
 }
@@ -55,6 +58,7 @@ export async function learnFood(text: string, userId: string): Promise<Food | nu
       [known.name, asked],
     );
     cache = null;
+    void forget(SHARED_KEY);
     return toFood(known);
   }
 
@@ -75,5 +79,6 @@ export async function learnFood(text: string, userId: string): Promise<Food | nu
       r.alasan.slice(0, 400), r.model, userId, JSON.stringify(r.nutrisi), JSON.stringify(r.rincian), r.sumber, r.sumber_ref.slice(0, 300)],
   );
   cache = null; // supaya pengguna lain langsung bisa memakai
+  await forget(SHARED_KEY);
   return row ? toFood(row) : null;
 }

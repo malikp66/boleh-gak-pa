@@ -1,8 +1,20 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "regions": [
+    "sin1"
+  ],
   "crons": [
-    { "path": "/api/cron/reminders?slot=pagi", "schedule": "0 0 * * *" },
-    { "path": "/api/cron/reminders?slot=malam", "schedule": "0 12 * * *" },
-    { "path": "/api/cron/reminders?slot=keluarga", "schedule": "0 14 * * *" }
+    {
+      "path": "/api/cron/reminders?slot=pagi",
+      "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/cron/reminders?slot=malam",
+      "schedule": "0 12 * * *"
+    },
+    {
+      "path": "/api/cron/reminders?slot=keluarga",
+      "schedule": "0 14 * * *"
+    }
   ]
 }
