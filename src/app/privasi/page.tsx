@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export const metadata = { title: "Kebijakan Privasi · Boleh Gak, Ya?" };
+export const metadata = { title: "Kebijakan privasi", alternates: { canonical: "/privasi" } };
 
 export default function Privasi() {
   return (

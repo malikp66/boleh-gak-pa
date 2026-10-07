@@ -1,10 +1,16 @@
 import { Suspense } from "react";
+import { cookies } from "next/headers";
 import App from "@/components/App";
+import Landing from "@/components/public/Landing";
 import { dbConfigured } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
-export default function Home() {
+/**
+ * Beranda: tamu baru & mesin pencari (belum punya cookie perangkat) melihat halaman perkenalan,
+ * pengguna yang sudah punya perangkat terdaftar langsung masuk aplikasi.
+ */
+export default async function Home() {
   if (!dbConfigured) {
     return (
       <main className="center-page">
@@ -15,5 +21,6 @@ export default function Home() {
       </main>
     );
   }
+  if (!(await cookies()).has("bgy_key")) return <Landing />;
   return <Suspense><App /></Suspense>;
 }
