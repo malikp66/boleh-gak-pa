@@ -1,4 +1,5 @@
 import "server-only";
+import { cached, k as rk } from "./redis";
 
 /**
  * Open Food Facts: database label gizi kemasan yang terbuka (ODbL).
@@ -22,6 +23,12 @@ const tokens = (s: string) => s.toLowerCase().normalize("NFKD").replace(/[^a-z0-
  * Merek WAJIB cocok (supaya 'Chitato sapi panggang' tidak tertukar dengan merek lain rasa sama).
  */
 export async function findProduct(merek: string, produk: string): Promise<OffProduct | null> {
+  // hasil pencarian disimpan seminggu (Open Food Facts membatasi ±10 pencarian/menit)
+  const key = rk("off", `${merek} ${produk}`.toLowerCase().replace(/\s+/g, " ").trim());
+  return cached(key, 7 * 86400, () => searchProduct(merek, produk));
+}
+
+async function searchProduct(merek: string, produk: string): Promise<OffProduct | null> {
   const query = `${merek} ${produk}`;
   const url = "https://search.openfoodfacts.org/search?" + new URLSearchParams({
     q: query, page_size: "20", fields: "code,product_name,brands,serving_quantity,nutriments",

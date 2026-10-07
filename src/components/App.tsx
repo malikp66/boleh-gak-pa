@@ -16,6 +16,8 @@ import { EmergencyButton, EmergencySheet } from "./Emergency";
 import { simpleMode } from "@/lib/simple-mode";
 import { installSkipped, isStandalone, platform } from "@/lib/install";
 import InstallGuide from "./InstallGuide";
+import { Splash } from "./Loading";
+import { readMeCache, writeMeCache } from "@/lib/me-cache";
 import { useClientValue } from "@/lib/use-client-value";
 
 type Tab = "cek" | "daftar" | "catatan" | "pantau" | "review";
@@ -27,7 +29,11 @@ const TAB_LABEL: Record<Tab, [string, string]> = {
 export default function App() {
   const router = useRouter();
   const params = useSearchParams();
-  const [me, setMe] = useState<Me | null>(null);
+  const [fresh, setMe] = useState<Me | null>(null);
+  // tampil langsung dari salinan terakhir di HP; data segar menyusul di belakang layar
+  const cachedMe = useClientValue(readMeCache, null);
+  const me = fresh ?? cachedMe;
+  const savedProfile = useClientValue(() => { try { return localStorage.getItem(PROFILE_KEY) ?? ""; } catch { return ""; } }, "");
   const [error, setError] = useState("");
   const [profileId, setProfileId] = useState("");
   const [tab, setTab] = useState<Tab>(() => {
@@ -45,17 +51,17 @@ export default function App() {
   const [reload, setReload] = useState(0);
   const welcome = params.get("welcome") === "1";
 
+  // satu permintaan saja: /api/me langsung (kalau cookie hilang, api() memulihkan perangkat lalu mengulang).
+  // Perpanjangan cookie & penyegaran cadangan berjalan di belakang, tidak menahan tampilan.
   const loadMe = useCallback(() =>
-    ensureDevice()
-      .then(() => api<Me>("/api/me"))
+    api<Me>("/api/me")
       .then((m) => {
         if (!m.consented || !m.profiles.length) return router.replace("/mulai");
-        let saved = "";
-        try { saved = localStorage.getItem(PROFILE_KEY) ?? ""; } catch {}
-        setProfileId((cur) => cur || (m.profiles.some((p) => p.id === saved) ? saved : m.profiles[0].id));
+        writeMeCache(m);
         setMe(m);
+        void ensureDevice().catch(() => {});
       })
-      .catch((e: Error) => setError(e.message)),
+      .catch((e: Error) => { if (!readMeCache()) setError(e.message); }),
   [router]);
 
   useEffect(() => {
@@ -63,7 +69,8 @@ export default function App() {
     if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});
   }, [loadMe]);
 
-  const profile = me?.profiles.find((p) => p.id === profileId);
+  const activeId = profileId || (me?.profiles.some((p) => p.id === savedProfile) ? savedProfile : me?.profiles[0]?.id ?? "");
+  const profile = me?.profiles.find((p) => p.id === activeId);
   const conditions = profile ? normalizeConditions(profile.kondisi) : [];
   const monitors = conditions.map((c) => conditionInfo(c)?.monitor).filter(Boolean) as MonitorKind[];
   const simple = useClientValue(simpleMode, false);
@@ -74,9 +81,9 @@ export default function App() {
 
   // banner "lagi kambuh" di tab Cek; dimuat ulang setiap ada perubahan di tab Pantau (reload)
   useEffect(() => {
-    if (!profileId || !hasGout) return;
-    api<Flare[]>(`/api/flares?profileId=${profileId}`).then((f) => setFlareJoint(f.find((x) => !x.ended)?.joint ?? null)).catch(() => {});
-  }, [profileId, hasGout, reload]);
+    if (!activeId || !hasGout) return;
+    api<Flare[]>(`/api/flares?profileId=${activeId}`).then((f) => setFlareJoint(f.find((x) => !x.ended)?.joint ?? null)).catch(() => {});
+  }, [activeId, hasGout, reload]);
 
   const go = (t: Tab) => {
     play("tap");
@@ -84,8 +91,8 @@ export default function App() {
     window.scrollTo(0, 0);
   };
 
-  if (error) return <main className="center-page"><div className="card"><div className="error-box">{error}</div><button className="btn" onClick={() => location.reload()}>Coba lagi</button></div></main>;
-  if (!me || !profile) return <main><div className="card"><p className="muted">Menyiapkan…</p></div></main>;
+  if (error) return <Splash error={`Belum bisa terhubung: ${error}`} onRetry={() => { setError(""); void loadMe(); }} />;
+  if (!me || !profile) return <Splash />;
 
   return (
     <>
@@ -97,7 +104,7 @@ export default function App() {
         <div className="top-actions">
           {conditions.includes("stroke_jantung") && <EmergencyButton onOpen={() => setSos(true)} />}
           {me.profiles.length > 1 && (
-            <select className="profile-switch" value={profileId} onChange={(e) => {
+            <select className="profile-switch" value={activeId} onChange={(e) => {
               play("tap");
               setProfileId(e.target.value);
               try { localStorage.setItem(PROFILE_KEY, e.target.value); } catch {}
@@ -109,7 +116,7 @@ export default function App() {
         </div>
       </header>
 
-      <main key={`${profileId}-${reload}`}>
+      <main key={`${activeId}-${reload}`}>
         {needsInstall && !installHidden && (
           <div className="install-banner">
             <span aria-hidden="true">📲</span>

@@ -1,6 +1,6 @@
 import { q } from "@/lib/db";
 import { CONSENT_VERSION } from "@/lib/schemas";
-import { requireUser, route } from "@/lib/server";
+import { invalidateUser, requireUser, route } from "@/lib/server";
 
 export const POST = route(async () => {
   const user = await requireUser();
@@ -9,5 +9,6 @@ export const POST = route(async () => {
      on conflict (user_id) do update set version = excluded.version, consented_at = now()`,
     [user.id, CONSENT_VERSION],
   );
+  await invalidateUser(user.id);
   return { ok: true };
 });

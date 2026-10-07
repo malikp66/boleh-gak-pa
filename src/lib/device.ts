@@ -1,4 +1,5 @@
 "use client";
+import { clearMeCache } from "./me-cache";
 
 // Cadangan kunci perangkat di browser. Kalau cookie hilang tapi cadangan masih ada, akun dipulihkan otomatis.
 // Kalau dua-duanya hilang (data browser dihapus), pengguna memakai kode pemulihan.
@@ -36,4 +37,5 @@ export async function restoreDevice(code: string): Promise<void> {
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(data.error || "Gagal memulihkan");
   write(code.toUpperCase().replace(/[^0-9A-Z]/g, ""));
+  clearMeCache(); // akun berbeda: jangan tampilkan salinan data akun sebelumnya
 }

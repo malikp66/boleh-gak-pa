@@ -1,4 +1,5 @@
 "use client";
+import { SkeletonCard } from "./Loading";
 import { useCallback, useEffect, useState } from "react";
 import { api, CAT_EMOJI, Chips, dayKey, fmtShort, painFace, useToast } from "./ui";
 import { play } from "@/lib/sound";
@@ -17,6 +18,12 @@ function rangeText(rec: Recovery) {
   return lo === 0 || lo === hi ? `Kira-kira ${hi} hari lagi` : `Kira-kira ${lo}–${hi} hari lagi`;
 }
 
+/** Selisih hari kalender (tengah malam ke tengah malam di HP), tidak pernah negatif. */
+const calendarDaysBetween = (from: Date, to: Date) => {
+  const a = new Date(from); a.setHours(0, 0, 0, 0);
+  const b = new Date(to); b.setHours(0, 0, 0, 0);
+  return Math.max(0, Math.round((b.getTime() - a.getTime()) / 86_400_000));
+};
 const flareDays = (f: Flare) => Math.max(1, Math.round((new Date(f.ended!).getTime() - new Date(f.started).getTime()) / 86_400_000));
 
 // checklist "sambil menunggu" diingat per hari di HP ini saja
@@ -45,7 +52,9 @@ export default function KambuhTab({ profile, onChanged }: { profile: Profile; on
   const [upd, setUpd] = useState<number | null>(null);
   const [updFever, setUpdFever] = useState(false);
   const [care, setCare] = useState<number[]>(careGet);
-  const [now] = useState(() => Date.now());
+  // waktu acuan diperbarui setiap data dimuat ulang (dulu dibekukan saat halaman dibuka,
+  // sehingga setelah "Sudah sembuh" hasilnya bisa negatif)
+  const [now, setNow] = useState(() => Date.now());
 
   const load = useCallback(() =>
     Promise.all([
@@ -54,6 +63,7 @@ export default function KambuhTab({ profile, onChanged }: { profile: Profile; on
     ]).then(([f, r]) => {
       setFlares(f);
       setReview(r);
+      setNow(Date.now());
       setUpd(null);
     }).catch((e: Error) => toast.error(e.message)),
   [profile.id, toast]);
@@ -63,13 +73,13 @@ export default function KambuhTab({ profile, onChanged }: { profile: Profile; on
     api<FoodItem[]>(`/api/foods?profileId=${profile.id}`).then(setFoods).catch(() => {});
   }, [load, profile.id]);
 
-  if (!flares || !review) return <div className="card"><p className="muted">Memuat…</p></div>;
+  if (!flares || !review) return <><SkeletonCard rows={3} /><SkeletonCard rows={5} /></>;
 
   const rec = review.recovery;
   const active = flares.find((f) => !f.ended);
   const done = flares.filter((f) => f.ended);
   const last = flares[0];
-  const sinceLast = last ? Math.floor((now - new Date(last.ended ?? last.started).getTime()) / 86_400_000) : null;
+  const sinceLast = last ? calendarDaysBetween(new Date(last.ended ?? last.started), new Date(now)) : null;
   const avg = done.length ? (done.reduce((a, f) => a + flareDays(f), 0) / done.length).toFixed(1).replace(".0", "") : "–";
   const emoji = (name: string) => CAT_EMOJI[foods.find((f) => f.name === name)?.kategori ?? ""] ?? "🍽️";
 
@@ -113,7 +123,7 @@ export default function KambuhTab({ profile, onChanged }: { profile: Profile; on
   return (
     <>
       <div className="sticker-row">
-        <div className={`sticker ${active ? "pink" : "yellow"}`}><span className="emo">{active ? "🤕" : "🗓️"}</span><b>{active ? rec.day : sinceLast ?? "–"}</b><small>{active ? "hari kambuh" : "hari sejak kambuh"}</small></div>
+        <div className={`sticker ${active ? "pink" : "yellow"}`}><span className="emo">{active ? "🤕" : "🗓️"}</span><b>{active ? rec.day : sinceLast ?? "–"}</b><small>{active ? "hari kambuh" : sinceLast === 0 ? "sembuh hari ini 🎉" : "hari sejak sembuh"}</small></div>
         <div className="sticker blue"><span className="emo">🔁</span><b>{flares.length}</b><small>total kambuh</small></div>
         <div className="sticker pink"><span className="emo">⏱️</span><b>{avg}</b><small>rata-rata hari sembuh</small></div>
       </div>

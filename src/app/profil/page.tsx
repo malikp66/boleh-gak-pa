@@ -1,4 +1,6 @@
 "use client";
+import { Splash } from "@/components/Loading";
+import { readMeCache, writeMeCache } from "@/lib/me-cache";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import ProfileForm, { emptyDraft, ProfileDraft } from "@/components/ProfileForm";
@@ -10,7 +12,6 @@ import WaConnect from "@/components/WaConnect";
 import { api, useToast } from "@/components/ui";
 import { Me, Profile } from "@/components/types";
 import { conditionInfo, normalizeConditions } from "@/lib/conditions";
-import { ensureDevice } from "@/lib/device";
 import { currentSubscription, disablePush, enablePush, pushSupport, PushSupport } from "@/lib/push-client";
 import { play, setSound, soundOn } from "@/lib/sound";
 import { setSimpleMode, simpleMode } from "@/lib/simple-mode";
@@ -20,7 +21,9 @@ const PROFILE_KEY = "active-profile";
 const strip = (p: Profile): ProfileDraft => { const { id, family_id, ...rest } = p; void id; void family_id; return rest; };
 
 export default function ProfilPage() {
-  const [me, setMe] = useState<Me | null>(null);
+  const [fresh, setMe] = useState<Me | null>(null);
+  const cachedMe = useClientValue(readMeCache, null);
+  const me = fresh ?? cachedMe;
   const [activeId, setActiveId] = useState("");
   const [mode, setMode] = useState<"list" | "edit" | "add">("list");
   const toast = useToast();
@@ -35,12 +38,13 @@ export default function ProfilPage() {
   const [push, setPush] = useState<{ on: boolean; pagi: boolean; malam: boolean; keluarga: boolean }>({ on: false, pagi: true, malam: true, keluarga: true });
 
   const load = useCallback(() =>
-    ensureDevice().then(() => api<Me>("/api/me")).then((m) => {
+    api<Me>("/api/me").then((m) => {
+      writeMeCache(m);
       let saved = "";
       try { saved = localStorage.getItem(PROFILE_KEY) ?? ""; } catch {}
       setActiveId((cur) => cur || (m.profiles.some((p) => p.id === saved) ? saved : m.profiles[0]?.id ?? ""));
       setMe(m);
-    }).catch((e: Error) => setLoadError(e.message)),
+    }).catch((e: Error) => { if (!readMeCache()) setLoadError(e.message); }),
   []);
 
   useEffect(() => {
@@ -78,7 +82,7 @@ export default function ProfilPage() {
       .catch((e: Error) => toast.error(e.message));
   }
 
-  if (!me) return <main><div className="card"><p className="muted">{loadError || "Memuat…"}</p></div></main>;
+  if (!me) return <Splash text="Membuka profil" error={loadError || undefined} onRetry={() => { setLoadError(""); void load(); }} />;
 
   return (
     <>

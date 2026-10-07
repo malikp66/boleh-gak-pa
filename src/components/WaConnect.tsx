@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { api, useToast } from "./ui";
 import { ensureDevice } from "@/lib/device";
 import { play } from "@/lib/sound";
+import { clearMeCache } from "@/lib/me-cache";
 
 type Result = "linked" | "merged";
 
@@ -42,6 +43,7 @@ export default function WaConnect({ label, profileId = null, onDone }: { label: 
           play("saved");
           toast.success(s.status === "merged" ? "Data keluargamu sudah kembali di HP ini." : `HP ini terhubung dengan WhatsApp ${s.phone ?? ""}.`, "Berhasil");
           setLink(null);
+          if (s.status === "merged") clearMeCache();
           onDone(s.status, s.phone);
         } else if (s.status === "conflict") {
           stopped = true;
